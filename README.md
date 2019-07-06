@@ -1,6 +1,5 @@
-# project_ledger
+# flutter_template
 
-Finance app
 
 ## Getting Started
 

@@ -1,4 +1,4 @@
-# project_ez_finance
+# project_ledger
 
 Finance app
 

@@ -5,7 +5,15 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("test"),
+      appBar: AppBar(
+        title: Text("Dollavu"),
+        actions: <Widget>[
+          Icon(Icons.more_vert),
+        ],
+      ),
+      body: Center(
+        child: Text("test"),
+      ),
     );
   }
 }

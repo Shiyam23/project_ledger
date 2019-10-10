@@ -9,7 +9,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Dollavu", style: DTheme.of(context)?.inivisText),
+        title: Text("Dollavu"),
         actions: <Widget>[
           Icon(Icons.more_vert),
         ],

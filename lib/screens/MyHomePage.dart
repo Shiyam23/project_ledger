@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:project_ez_finance/themes/DTheme.dart';
+import 'package:project_ez_finance/themes/DThemeDark.dart';
+import 'package:project_ez_finance/themes/DThemeLight.dart';
 
 class MyHomePage extends StatelessWidget {
   @override
@@ -13,6 +16,23 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Center(
         child: Text("test"),
+      ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          FloatingActionButton(
+            child: Text("L"),
+            onPressed: () {
+              DTheme.switchTheme(context: context, newDTheme: DThemeLight());
+            },
+          ),
+          FloatingActionButton(
+            child: Text("D"),
+            onPressed: () {
+              DTheme.switchTheme(context: context, newDTheme: DThemeDark());
+            },
+          ),
+        ],
       ),
     );
   }

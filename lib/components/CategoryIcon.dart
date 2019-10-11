@@ -15,7 +15,7 @@ class CategoryIcon extends StatefulWidget {
     this.backgroundColor,
     this.icon,
     this.iconColor,
-    this.selectable = true,
+    this.selectable = false,
     this.selected = false,
     this.onTap,
   }) {

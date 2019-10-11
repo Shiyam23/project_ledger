@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarFilter.dart';
-import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarIcon.dart';
-import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarSearch.dart';
+import 'ViewFilterBarFilter.dart';
+import 'ViewFilterBarIcon.dart';
+import 'ViewFilterBarSearch.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
   ViewFilterBarSection({Key key}) : super(key: key);

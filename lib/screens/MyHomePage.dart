@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarSection.dart';
 
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeDark.dart';
@@ -14,9 +15,7 @@ class MyHomePage extends StatelessWidget {
           Icon(Icons.more_vert),
         ],
       ),
-      body: Center(
-        child: Text("test"),
-      ),
+      body: ViewFilterBarSection(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarTimeDialog.dart';
 import 'ViewFilterBarFilter.dart';
 import 'ViewFilterBarIcon.dart';
 import 'ViewFilterBarSearch.dart';
@@ -54,15 +55,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 await showDialog(
                     context: context,
                     builder: (context) {
-                      return SimpleDialog(
-                        title: Text("TITLE"),
-                        children: <Widget>[
-                          Divider(thickness: 2.0),
-                          Center(
-                            child: Text("body"),
-                          ),
-                        ],
-                      );
+                      return ViewFilterBarTimeDialog();
                     });
               },
             ),

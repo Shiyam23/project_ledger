@@ -50,7 +50,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 dynamic viewOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return ViewFilterBarViewDialog(initialOption: _viewOption);
+                      return ViewFilterBarViewDialog(
+                          initialOption: _viewOption);
                     });
                 if (viewOption is ViewFilterBarViewOptions) {
                   setState(() {
@@ -67,7 +68,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 dynamic timeOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return ViewFilterBarTimeDialog(initialOption: _timeOption);
+                      return ViewFilterBarTimeDialog(
+                          initialOption: _timeOption);
                     });
                 if (timeOption is ViewFilterBarTimeOptions) {
                   setState(() {
@@ -84,7 +86,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 dynamic sortOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return ViewFilterBarSortDialog(initialOption: _sortOption);
+                      return ViewFilterBarSortDialog(
+                          initialOption: _sortOption);
                     });
                 if (sortOption is ViewFilterBarSortOptions) {
                   setState(() {

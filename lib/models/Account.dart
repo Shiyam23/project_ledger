@@ -1,0 +1,13 @@
+import 'package:project_ez_finance/components/CategoryIcon.dart';
+
+class Account {
+  String name;
+  CategoryIcon icon;
+
+  Account({this.name, this.icon});
+
+  @override
+  String toString() {
+    return this.name;
+  }
+}

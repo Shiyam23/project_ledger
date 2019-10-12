@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarTimeDialog.dart';
+import 'ViewFilterBarTimeDialog.dart';
+import 'ViewFilterBarViewDialog.dart';
+import 'ViewFilterBarSortDialog.dart';
 import 'ViewFilterBarFilter.dart';
 import 'ViewFilterBarIcon.dart';
 import 'ViewFilterBarSearch.dart';
@@ -14,6 +16,18 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   bool _openSearchBar = false;
   bool _openFilterBar = false;
 
+  ViewFilterBarTimeOptions _timeOption;
+  ViewFilterBarViewOptions _viewOption;
+  ViewFilterBarSortOptions _sortOption;
+
+  @override
+  void initState() {
+    super.initState();
+    _timeOption = ViewFilterBarTimeOptions.individual;
+    _viewOption = ViewFilterBarViewOptions.list;
+    _sortOption = ViewFilterBarSortOptions.dateDown;
+  }
+
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width / 6;
@@ -26,25 +40,23 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               width: _width,
               canOpen: false,
               icon: Icons.file_upload,
+              onTap: (open) => print("exporting ..."),
             ),
             ViewFilterBarIcon(
               width: _width,
               canOpen: false,
-              icon: Icons.format_align_left,
+              icon: Icons.list,
               onTap: (open) async {
-                await showDialog(
+                dynamic viewOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return SimpleDialog(
-                        title: Text("TITLE"),
-                        children: <Widget>[
-                          Divider(thickness: 2.0),
-                          Center(
-                            child: Text("body"),
-                          ),
-                        ],
-                      );
+                      return ViewFilterBarViewDialog(initialOption: _viewOption);
                     });
+                if (viewOption is ViewFilterBarViewOptions) {
+                  setState(() {
+                    _viewOption = viewOption;
+                  });
+                }
               },
             ),
             ViewFilterBarIcon(
@@ -52,11 +64,16 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               canOpen: false,
               icon: Icons.calendar_today,
               onTap: (open) async {
-                await showDialog(
+                dynamic timeOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return ViewFilterBarTimeDialog();
+                      return ViewFilterBarTimeDialog(initialOption: _timeOption);
                     });
+                if (timeOption is ViewFilterBarTimeOptions) {
+                  setState(() {
+                    _timeOption = timeOption;
+                  });
+                }
               },
             ),
             ViewFilterBarIcon(
@@ -64,19 +81,16 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               canOpen: false,
               icon: Icons.sort,
               onTap: (open) async {
-                await showDialog(
+                dynamic sortOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return SimpleDialog(
-                        title: Text("TITLE"),
-                        children: <Widget>[
-                          Divider(thickness: 2.0),
-                          Center(
-                            child: Text("body"),
-                          ),
-                        ],
-                      );
+                      return ViewFilterBarSortDialog(initialOption: _sortOption);
                     });
+                if (sortOption is ViewFilterBarSortOptions) {
+                  setState(() {
+                    _sortOption = sortOption;
+                  });
+                }
               },
             ),
             ViewFilterBarIcon(

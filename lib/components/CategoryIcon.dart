@@ -10,6 +10,7 @@ class CategoryIcon extends StatefulWidget {
   final bool selectable;
   final bool selected;
   final void Function() onTap;
+  final AnimationController flipController;
 
   CategoryIcon({
     this.backgroundColor,
@@ -18,37 +19,38 @@ class CategoryIcon extends StatefulWidget {
     this.selectable = false,
     this.selected = false,
     this.onTap,
-  }) {
-    assert(selectable == (selected != null));
-  }
+    this.flipController,
+  });
 
   @override
-  _CategoryIconState createState() => _CategoryIconState();
+  _CategoryIconState createState() => _CategoryIconState(flipController);
 }
 
 class _CategoryIconState extends State<CategoryIcon>
     with SingleTickerProviderStateMixin {
-  AnimationController _animController;
+  //
+  AnimationController _flipController;
   Animation<double> _animation;
   bool isSelected;
 
-  AnimationController get animation => _animController;
+  _CategoryIconState(this._flipController);
+
   @override
   void initState() {
     super.initState();
     isSelected = widget.selected;
-    _animController =
+    _flipController ??=
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
 
     _animation =
-        Tween<double>(begin: 0, end: (1 / 2) * math.pi).animate(_animController)
+        Tween<double>(begin: 0, end: (1 / 2) * math.pi).animate(_flipController)
           ..addListener(() {
             setState(() {});
           })
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
               isSelected = !isSelected;
-              _animController.reverse();
+              _flipController.reverse();
             }
           });
   }
@@ -98,13 +100,13 @@ class _CategoryIconState extends State<CategoryIcon>
   }
 
   void flip() {
-    if (widget.selectable) _animController.forward();
-    widget.onTap?.call();
+    if (widget.selectable) _flipController.forward();
+    widget.onTap();
   }
 
   @override
   void dispose() {
-    _animController.dispose();
+    _flipController.dispose();
     super.dispose();
   }
 }

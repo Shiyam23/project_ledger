@@ -1,4 +1,4 @@
-class TransactionCategory {
+class Category {
   String name;
 
   TransactionCategory({this.name});

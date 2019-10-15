@@ -66,8 +66,8 @@ class _CategoryIconState extends State<CategoryIcon>
 
     final Container frontSideContainer = Container(
       key: ValueKey(1),
-      height: MediaQuery.of(context).size.width / 7,
-      width: MediaQuery.of(context).size.width / 7,
+      height: MediaQuery.of(context).size.width / 7.5,
+      width: MediaQuery.of(context).size.width / 7.5,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: widget.backgroundColor,
@@ -82,8 +82,8 @@ class _CategoryIconState extends State<CategoryIcon>
 
     final Container backSideContainer = Container(
       key: ValueKey(2),
-      height: MediaQuery.of(context).size.width / 7,
-      width: MediaQuery.of(context).size.width / 7,
+      height: MediaQuery.of(context).size.width / 7.5,
+      width: MediaQuery.of(context).size.width / 7.5,
       decoration: BoxDecoration(
           shape: BoxShape.circle, color: Theme.of(context).colorScheme.primary),
       child: backSideIcon,

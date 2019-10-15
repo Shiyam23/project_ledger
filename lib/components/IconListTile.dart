@@ -59,10 +59,10 @@ class _IconListTileState extends State<IconListTile>
           contentPadding: EdgeInsets.only(left: 20, right: 40),
           title: tile.title,
           subtitle: tile.secondaryTitle,
-          isThreeLine: false,
+          isThreeLine: true,
           leading: icon,
           onTap: widget.onTap,
-          trailing: tile.rightText,
+          trailing: Center(widthFactor: 1, child: tile.rightText),
         ),
       ],
     );

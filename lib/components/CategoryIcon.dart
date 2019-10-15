@@ -101,7 +101,7 @@ class _CategoryIconState extends State<CategoryIcon>
 
   void flip() {
     if (widget.selectable) _flipController.forward();
-    widget.onTap();
+    widget.onTap?.call();
   }
 
   @override

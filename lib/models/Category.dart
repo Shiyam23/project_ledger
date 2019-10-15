@@ -1,5 +1,5 @@
 class Category {
   String name;
 
-  TransactionCategory({this.name});
+  Category({this.name});
 }

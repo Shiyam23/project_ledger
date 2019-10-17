@@ -65,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             bottomSelectedIndex = index;
             setPage(index);
             overViewTabController.index = 1;
+            newTabController.index = 0;
           }),
     );
   }

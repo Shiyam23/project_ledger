@@ -15,6 +15,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  Color newIndicatorColor = Colors.red;
+  Color overViewIndicatorColor;
+
   TabController overViewTabController;
   TabController newTabController;
   int currentPage = 2;
@@ -55,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void initState() {
     overViewTabController =
         TabController(length: 2, initialIndex: 1, vsync: this);
-    newTabController = TabController(length: 3, initialIndex: 1, vsync: this);
+    newTabController = TabController(length: 3, initialIndex: 0, vsync: this);
     super.initState();
   }
 
@@ -75,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             setPage(index);
             overViewTabController.index = 1;
             newTabController.index = 0;
+            newIndicatorColor = Colors.red;
           }),
     );
   }
@@ -102,11 +106,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   void pageChanged(int index) {
     currentPage = index;
     if (pageController.page + index < 2) {
-      overViewTabController.index = index;
+      overViewTabController.animateTo(index,
+          duration: Duration(milliseconds: 500));
       return;
     }
     if (pageController.page + index > 6) {
-      newTabController.index = index - 3;
+      newTabController.animateTo(index - 3,
+          duration: Duration(milliseconds: 500));
       return;
     }
     ;
@@ -131,7 +137,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       return AppBar(
         title: TabBar(
           onTap: (index) => setPage(index - 1),
-          labelPadding: EdgeInsets.only(top: 20, bottom: 10),
           indicatorColor: Colors.white,
           controller: overViewTabController,
           tabs: <Widget>[
@@ -168,8 +173,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       return AppBar(
         title: TabBar(
           onTap: (index) => setPage(index + 2),
-          labelPadding: EdgeInsets.only(top: 20, bottom: 10),
-          indicatorColor: Colors.white,
+          indicatorColor: newIndicatorColor,
           controller: newTabController,
           tabs: <Widget>[
             Text("Expense",style: TextStyle(fontSize: 18.0),),

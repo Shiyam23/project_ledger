@@ -128,7 +128,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       return AppBar(
         title: TabBar(
           onTap: (index) => setPage(index - 1),
-          labelPadding: EdgeInsets.only(top: 20, bottom: 10),
           indicatorColor: Colors.white,
           controller: overViewTabController,
           tabs: <Widget>[
@@ -148,7 +147,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       return AppBar(
         title: TabBar(
           onTap: (index) => setPage(index + 2),
-          labelPadding: EdgeInsets.only(top: 20, bottom: 10),
           indicatorColor: newIndicatorColor,
           controller: newTabController,
           tabs: <Widget>[

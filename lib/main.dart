@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Dollavu',
       theme: DTheme.of(context)?.themeData,
       home: MyHomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -11,7 +11,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Text("Home Screen"),
+        child: Text("Home Screen", style: new TextStyle(fontFamily: "Pacifico",fontSize: 30.0),),
       ),
     );
   }

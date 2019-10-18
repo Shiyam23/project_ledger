@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/screens/home/HomeScreen.dart';
 import 'package:project_ez_finance/screens/new/NewScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewScreen.dart';
+import 'package:project_ez_finance/screens/home/PopUpMenuButtonChoices.dart';
 
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeDark.dart';
@@ -18,6 +19,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   TabController newTabController;
   int currentPage = 2;
   int bottomSelectedIndex = 1;
+
+  final titleDollavuText = new Text(
+    "Dollavu",
+    style: new TextStyle(
+        fontFamily: "Pacifico",
+        fontSize: 20.0
+    ),
+  );
 
   List<BottomNavigationBarItem> buildBottomNavBarItems() {
     return [
@@ -126,16 +135,33 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           indicatorColor: Colors.white,
           controller: overViewTabController,
           tabs: <Widget>[
-            Text("Daueraufträge"),
-            Text("Transaktionen"),
+            Text("Daueraufträge",style: TextStyle(fontSize: 18.0),),
+            Text("Transaktionen",style: TextStyle(fontSize: 18.0),),
           ],
         ),
       );
     if (index == 2)
       return AppBar(
-        title: Text("Dollavu"),
+        title: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: titleDollavuText,
+            ),
+          ],
+        ),
         actions: <Widget>[
-          Icon(Icons.more_vert),
+          PopupMenuButton<String>(
+            onSelected: choiceAction,
+            itemBuilder: (BuildContext context){
+              return PopUpMenuButtonChoices.choices.map((String choice){
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
         ],
       );
     if (index > 2)
@@ -146,12 +172,28 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           indicatorColor: Colors.white,
           controller: newTabController,
           tabs: <Widget>[
-            Text("Expense"),
-            Text("Income"),
-            Text("Template"),
+            Text("Expense",style: TextStyle(fontSize: 18.0),),
+            Text("Income",style: TextStyle(fontSize: 18.0),),
+            Text("Template",style: TextStyle(fontSize: 18.0),),
           ],
         ),
       );
     return null;
+  }
+
+  choiceAction(String choice) {
+    if (choice == PopUpMenuButtonChoices.Accounts){
+      print ('This Konten Page is to do.');
+    }if (choice == PopUpMenuButtonChoices.Categories){
+      print ('This Kategorien Page is to do.');
+    }if (choice == PopUpMenuButtonChoices.Backup){
+      print ('This Backup Page is to do.');
+    }if (choice == PopUpMenuButtonChoices.Setting){
+      print ('This Einstellung Page is to do.');
+    }if (choice == PopUpMenuButtonChoices.RateUs){
+      print ('This BewerteUns? Page is to do.');
+    }if (choice == PopUpMenuButtonChoices.AboutUs){
+      print ('This Über Page is to do.');
+    }
   }
 }

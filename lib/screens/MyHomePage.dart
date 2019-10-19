@@ -3,7 +3,12 @@ import 'package:project_ez_finance/components/LayoutController.dart';
 import 'package:project_ez_finance/components/MainBottomNavigationBar.dart';
 import 'package:project_ez_finance/screens/home/HomeAppBar.dart';
 import 'package:project_ez_finance/screens/home/HomeScreen.dart';
+import 'package:project_ez_finance/screens/new/NewExpenseScreen.dart';
+import 'package:project_ez_finance/screens/new/NewIncomeScreen.dart';
 import 'package:project_ez_finance/screens/new/NewTabBar.dart';
+import 'package:project_ez_finance/screens/new/NewTemplateScreen.dart';
+import 'package:project_ez_finance/screens/view/ViewStandingOrderScreen.dart';
+import 'package:project_ez_finance/screens/view/ViewTransactionScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewTabBar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -44,15 +49,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       controller: lController.pageController,
       onPageChanged: (index) => pageChanged(index),
       children: <Widget>[
-            Center(child: Text("Daueraufträge")),
-            Center(child: Text("Transaktionen")),
-          ] +
-          <Widget>[
-            HomeScreen(),
-            Center(child: Text("Expense")),
-            Center(child: Text("Income")),
-            Center(child: Text("Template")),
-          ],
+        ViewStandingOrderScreen(),
+        ViewTransactionScreen(),
+        HomeScreen(),
+        NewExpenseScreen(),
+        NewIncomeScreen(),
+        NewTemplateScreen()
+      ],
     );
   }
 

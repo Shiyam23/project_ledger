@@ -15,9 +15,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
-  Color newIndicatorColor = Colors.red;
-  Color overViewIndicatorColor;
-
   TabController overViewTabController;
   TabController newTabController;
   int currentPage = 2;
@@ -25,10 +22,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   final titleDollavuText = new Text(
     "Dollavu",
-    style: new TextStyle(
-        fontFamily: "Pacifico",
-        fontSize: 20.0
-    ),
+    style: new TextStyle(fontFamily: "Pacifico", fontSize: 28.0),
   );
 
   List<BottomNavigationBarItem> buildBottomNavBarItems() {
@@ -78,7 +72,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             setPage(index);
             overViewTabController.index = 1;
             newTabController.index = 0;
-            newIndicatorColor = Colors.red;
           }),
     );
   }
@@ -140,8 +133,14 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           indicatorColor: Colors.white,
           controller: overViewTabController,
           tabs: <Widget>[
-            Text("Daueraufträge",style: TextStyle(fontSize: 18.0),),
-            Text("Transaktionen",style: TextStyle(fontSize: 18.0),),
+            Text(
+              "Daueraufträge",
+              style: TextStyle(fontSize: 18.0),
+            ),
+            Text(
+              "Transaktionen",
+              style: TextStyle(fontSize: 18.0),
+            ),
           ],
         ),
       );
@@ -158,8 +157,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         actions: <Widget>[
           PopupMenuButton<String>(
             onSelected: choiceAction,
-            itemBuilder: (BuildContext context){
-              return PopUpMenuButtonChoices.choices.map((String choice){
+            itemBuilder: (BuildContext context) {
+              return PopUpMenuButtonChoices.choices.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(choice),
@@ -173,12 +172,21 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       return AppBar(
         title: TabBar(
           onTap: (index) => setPage(index + 2),
-          indicatorColor: newIndicatorColor,
+          indicatorColor: Colors.white,
           controller: newTabController,
           tabs: <Widget>[
-            Text("Expense",style: TextStyle(fontSize: 18.0),),
-            Text("Income",style: TextStyle(fontSize: 18.0),),
-            Text("Template",style: TextStyle(fontSize: 18.0),),
+            Text(
+              "Expense",
+              style: TextStyle(fontSize: 18.0),
+            ),
+            Text(
+              "Income",
+              style: TextStyle(fontSize: 18.0),
+            ),
+            Text(
+              "Template",
+              style: TextStyle(fontSize: 18.0),
+            ),
           ],
         ),
       );
@@ -186,18 +194,23 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   choiceAction(String choice) {
-    if (choice == PopUpMenuButtonChoices.Accounts){
-      print ('This Konten Page is to do.');
-    }if (choice == PopUpMenuButtonChoices.Categories){
-      print ('This Kategorien Page is to do.');
-    }if (choice == PopUpMenuButtonChoices.Backup){
-      print ('This Backup Page is to do.');
-    }if (choice == PopUpMenuButtonChoices.Setting){
-      print ('This Einstellung Page is to do.');
-    }if (choice == PopUpMenuButtonChoices.RateUs){
-      print ('This BewerteUns? Page is to do.');
-    }if (choice == PopUpMenuButtonChoices.AboutUs){
-      print ('This Über Page is to do.');
+    if (choice == PopUpMenuButtonChoices.Accounts) {
+      print('This Konten Page is to do.');
+    }
+    if (choice == PopUpMenuButtonChoices.Categories) {
+      print('This Kategorien Page is to do.');
+    }
+    if (choice == PopUpMenuButtonChoices.Backup) {
+      print('This Backup Page is to do.');
+    }
+    if (choice == PopUpMenuButtonChoices.Setting) {
+      print('This Einstellung Page is to do.');
+    }
+    if (choice == PopUpMenuButtonChoices.RateUs) {
+      print('This BewerteUns? Page is to do.');
+    }
+    if (choice == PopUpMenuButtonChoices.AboutUs) {
+      print('This Über Page is to do.');
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:project_ez_finance/screens/MyHomePage.dart';
+import 'package:project_ez_finance/screens/Layout.dart';
 
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeLight.dart';
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Dollavu',
       theme: DTheme.of(context)?.themeData,
-      home: MyHomePage(),
+      home: Layout(),
       debugShowCheckedModeBanner: false,
     );
   }

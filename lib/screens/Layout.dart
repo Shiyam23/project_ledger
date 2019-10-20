@@ -11,12 +11,12 @@ import 'package:project_ez_finance/screens/view/ViewStandingOrderScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewTransactionScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewTabBar.dart';
 
-class MyHomePage extends StatefulWidget {
+class Layout extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LayoutState createState() => _LayoutState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   //
   LayoutController lController;
 

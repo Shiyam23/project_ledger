@@ -17,11 +17,11 @@ class ViewTabBar extends StatelessWidget implements PreferredSizeWidget {
         controller: layoutController.overViewTabController,
         tabs: <Widget>[
           Text(
-            "Daueraufträge",
+            "Standing orders",
             style: TextStyle(fontSize: 18.0),
           ),
           Text(
-            "Transaktionen",
+            "Transactions",
             style: TextStyle(fontSize: 18.0),
           ),
         ],

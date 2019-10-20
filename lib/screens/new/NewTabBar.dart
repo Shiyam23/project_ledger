@@ -25,7 +25,7 @@ class NewTabBar extends StatelessWidget implements PreferredSizeWidget {
             style: TextStyle(fontSize: 18.0),
           ),
           Text(
-            "Template",
+            "Templates",
             style: TextStyle(fontSize: 18.0),
           ),
         ],

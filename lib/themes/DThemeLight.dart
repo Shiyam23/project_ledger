@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'DTheme.dart';
 
 class DThemeLight implements DTheme {
+  static Color primaryColor = Color(0xff2f3840);
+
   final ThemeData _themeData = ThemeData(
     brightness: Brightness.light,
     primarySwatch: MaterialColor(0xff2f3840, <int, Color>{
@@ -18,6 +20,12 @@ class DThemeLight implements DTheme {
       900: Color(0xff1a1f23),
     }),
     canvasColor: Color(0xfff0f1f5),
+    bottomAppBarColor: primaryColor,
+    tabBarTheme: TabBarTheme(
+        labelPadding: EdgeInsets.only(top: 15, bottom: 7.5),
+        unselectedLabelStyle:
+            TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
   );
 
   ThemeData get themeData => _themeData;

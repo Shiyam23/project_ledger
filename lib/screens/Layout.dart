@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
 import 'package:project_ez_finance/components/MainBottomNavigationBar.dart';
 import 'package:project_ez_finance/screens/home/HomeAppBar.dart';
@@ -19,6 +21,7 @@ class Layout extends StatefulWidget {
 class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   //
   LayoutController lController;
+  TransactionBloc transactionBloc = TransactionBloc();
 
   @override
   void initState() {
@@ -45,17 +48,20 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   }
 
   Widget buildPageView() {
-    return PageView(
-      controller: lController.pageController,
-      onPageChanged: (index) => pageChanged(index),
-      children: <Widget>[
-        ViewStandingOrderScreen(),
-        ViewTransactionScreen(),
-        HomeScreen(),
-        NewExpenseScreen(),
-        NewIncomeScreen(),
-        NewTemplateScreen()
-      ],
+    return BlocProvider(
+      builder: (_) => transactionBloc,
+      child: PageView(
+        controller: lController.pageController,
+        onPageChanged: (index) => pageChanged(index),
+        children: <Widget>[
+          ViewStandingOrderScreen(),
+          ViewTransactionScreen(),
+          HomeScreen(),
+          NewExpenseScreen(),
+          NewIncomeScreen(),
+          NewTemplateScreen()
+        ],
+      ),
     );
   }
 

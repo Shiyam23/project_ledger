@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +8,13 @@ import 'package:project_ez_finance/components/CategoryIcon.dart';
 import 'package:project_ez_finance/models/Category.dart' as Dollavu;
 import 'package:project_ez_finance/models/SelectableTile.dart';
 
-class Transaction implements SelectableTile {
-  String name;
-  DateTime date;
-  CategoryIcon icon;
-  String amount;
-  bool isExpense;
-  Dollavu.Category category;
+class Transaction extends Equatable implements SelectableTile {
+  final String name;
+  final DateTime date;
+  final CategoryIcon icon;
+  final String amount;
+  final bool isExpense;
+  final Dollavu.Category category;
 
   Transaction(
       {@required this.name,
@@ -38,4 +39,7 @@ class Transaction implements SelectableTile {
 
   @override
   Text get title => Text(name);
+
+  @override
+  List<Object> get props => [name, date, icon, amount, isExpense, category];
 }

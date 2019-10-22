@@ -13,7 +13,9 @@ class TransactionFilter extends Filter<Transaction> {
 
   @override
   List<Transaction> filterList(List<Transaction> list) {
+    if (_searchText == null) return list;
     return list
-        .where((t) => t.name.toLowerCase().contains(_searchText.toLowerCase()));
+        .where((t) => t.name.toLowerCase().contains(_searchText.toLowerCase()))
+        .toList();
   }
 }

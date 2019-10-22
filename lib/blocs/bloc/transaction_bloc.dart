@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/components/CategoryIcon.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
+import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 import './bloc.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
@@ -25,23 +26,23 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         name: "Schuhe")
   ];
 
+  final TransactionFilter filter = TransactionFilter();
+
   @override
   Stream<TransactionState> mapEventToState(
     TransactionEvent event,
   ) async* {
     if (event is GetTransaction) {
       yield TransactionLoading();
-      // await _fetchTransaction();
-      yield TransactionLoaded(transactions);
-    } else if (event is AddTransaction) {
-      yield TransactionLoading();
       //await _fetchTransaction();
+      yield TransactionLoaded(filter.filterList(transactions));
+    } else if (event is AddTransaction) {
       transactions.add(event.transaction);
       yield TransactionLoaded(transactions);
     }
   }
 
   Future<void> _fetchTransaction() {
-    return Future.delayed(Duration(seconds: 3));
+    return Future.delayed(Duration(milliseconds: 500));
   }
 }

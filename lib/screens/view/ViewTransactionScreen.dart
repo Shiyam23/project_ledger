@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction_event.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction_state.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
+import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarSection.dart';
 
 class ViewTransactionScreen extends StatefulWidget {
@@ -13,21 +16,31 @@ class ViewTransactionScreen extends StatefulWidget {
 }
 
 class _ViewScreenState extends State<ViewTransactionScreen> {
+  TransactionFilter transactionFilter;
+  TransactionBloc transactionBloc;
+  @override
+  void initState() {
+    super.initState();
+    transactionBloc = BlocProvider.of<TransactionBloc>(context);
+    transactionBloc.dispatch(GetTransaction());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         ViewFilterBarSection(),
         BlocBuilder(
-          bloc: BlocProvider.of<TransactionBloc>(context),
+          bloc: transactionBloc,
           builder: (BuildContext context, TransactionState state) {
             if (state is TransactionInitial) {
-              return Text("test");
+              return Text("Initial");
             } else if (state is TransactionLoading) {
               return CircularProgressIndicator();
             } else if (state is TransactionLoaded) {
               return Flexible(
                 child: ListView.builder(
+                    key: ValueKey(DateTime.now()),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemCount: state.transactionList.length,

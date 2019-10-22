@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
+import 'package:project_ez_finance/models/filters/Filter.dart';
 
 abstract class TransactionEvent extends Equatable {
   const TransactionEvent();

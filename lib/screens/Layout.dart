@@ -105,4 +105,10 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
       );
     return null;
   }
+
+  @override
+  void dispose() {
+    transactionBloc.dispose();
+    super.dispose();
+  }
 }

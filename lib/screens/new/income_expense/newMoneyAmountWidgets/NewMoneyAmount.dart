@@ -68,9 +68,8 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
         ],
         onChanged: (text) => setState(() => updateFontSize(text.length)),
         controller: controller,
-        // toolbarOptions: ToolbarOptions(
-        //     copy: false, cut: false, paste: false, selectAll: false),
-        //TODO (shiyam): does not work, waitin for fix
+        toolbarOptions: ToolbarOptions(
+            copy: true, cut: false, paste: false, selectAll: true),
         keyboardType: TextInputType.numberWithOptions(
           decimal: true,
           signed: false,

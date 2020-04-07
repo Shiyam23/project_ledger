@@ -26,7 +26,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   font_awesome_flutter: ^8.5.0
   intl: ^0.16.0
-  flushbar: ^1.9.0
+  flushbar: 1.9.0
   dotted_border: ^1.0.3
 
 

@@ -1,4 +1,4 @@
-import 'package:project_ez_finance/components/CategoryIcon.dart';
+import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 
 class Account {
   String name;

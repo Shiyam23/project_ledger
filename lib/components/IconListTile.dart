@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/components/CategoryIcon.dart';
+import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
+import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import 'package:project_ez_finance/models/SelectableTile.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -31,9 +32,11 @@ class _IconListTileState extends State<IconListTile>
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
 
     icon = CategoryIcon(
-      backgroundColor: oldIcon.backgroundColor,
-      icon: oldIcon.icon,
-      iconColor: oldIcon.iconColor,
+      iconData: CategoryIconData(
+        backgroundColorName: oldIcon.iconData.backgroundColorName,
+        iconName: oldIcon.iconData.iconName,
+        iconColorName: oldIcon.iconData.iconColorName,
+      ),
       selectable: true,
       selected: false,
       onTap: widget.onSelect,

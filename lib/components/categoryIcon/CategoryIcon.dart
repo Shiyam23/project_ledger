@@ -1,21 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 import 'dart:math' as math;
+import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 
+part 'CategoryIcon.g.dart';
+
+@HiveType(typeId: 0)
 class CategoryIcon extends StatefulWidget {
-  final Color backgroundColor;
-  final IconData icon;
-  final Color iconColor;
+  @HiveField(0)
+  final CategoryIconData iconData;
   final bool selectable;
   final bool selected;
   final void Function() onTap;
   final AnimationController flipController;
 
   CategoryIcon({
-    this.backgroundColor,
-    this.icon,
-    this.iconColor,
+    this.iconData,
     this.selectable = false,
     this.selected = false,
     this.onTap,
@@ -60,8 +62,8 @@ class _CategoryIconState extends State<CategoryIcon>
     //
 
     final Icon frontSideIcon = Icon(
-      widget.icon,
-      color: widget.iconColor,
+      widget.iconData.icon,
+      color: widget.iconData.iconColor,
     );
 
     final Container frontSideContainer = Container(
@@ -70,7 +72,7 @@ class _CategoryIconState extends State<CategoryIcon>
       width: MediaQuery.of(context).size.width / 7.5,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: widget.backgroundColor,
+        color: widget.iconData.backgroundColor,
       ),
       child: frontSideIcon,
     );

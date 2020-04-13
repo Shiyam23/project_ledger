@@ -17,9 +17,7 @@ class CategoryIconDataAdapter extends TypeAdapter<CategoryIconData> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CategoryIconData(
-      backgroundColorName: fields[0] as String,
       iconName: fields[1] as String,
-      iconColorName: fields[2] as String,
     );
   }
 
@@ -28,10 +26,10 @@ class CategoryIconDataAdapter extends TypeAdapter<CategoryIconData> {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.backgroundColorName)
+      ..write(obj.backgroundColorInt)
       ..writeByte(1)
       ..write(obj.iconName)
       ..writeByte(2)
-      ..write(obj.iconColorName);
+      ..write(obj.iconColorInt);
   }
 }

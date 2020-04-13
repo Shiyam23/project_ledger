@@ -24,10 +24,10 @@ void setupDatabase() async {
   Hive.init(appDocumentDir.path);
 
   // Registering all adapters
-  Hive.registerAdapter(CategoryAdapter());
-  Hive.registerAdapter(TransactionAdapter());
-  Hive.registerAdapter(CategoryIconAdapter());
-  Hive.registerAdapter(CategoryIconDataAdapter());
+  //Hive.registerAdapter(CategoryAdapter());
+  // Hive.registerAdapter(TransactionAdapter());
+  // Hive.registerAdapter(CategoryIconAdapter());
+  // Hive.registerAdapter(CategoryIconDataAdapter());
 
   // Opening all boxes
   await Hive.openBox("transaction");

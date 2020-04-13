@@ -7,7 +7,7 @@ part 'CategoryIconData.g.dart';
 @HiveType(typeId: 1)
 class CategoryIconData {
   @HiveField(0)
-  final String backgroundColorName;
+  final int backgroundColorInt;
   final Color backgroundColor;
 
   @HiveField(1)
@@ -15,24 +15,8 @@ class CategoryIconData {
   final IconData icon;
 
   @HiveField(2)
-  final String iconColorName;
+  final int iconColorInt;
   final Color iconColor;
-
-  static const Map<String, Color> colorList = {
-    "white": Colors.white,
-    "grey": Colors.grey,
-    "black": Colors.black,
-    "red": Colors.red,
-    "orange": Colors.orange,
-    "yellow": Colors.yellow,
-    "green": Colors.green,
-    "lightGreen": Colors.lightGreen,
-    "blue": Colors.blue,
-    "lightBlue": Colors.lightBlue,
-    "purple": Colors.purple,
-    "pink": Colors.pink,
-    "teal": Colors.teal
-  };
 
   static const Map<String, IconData> iconList = {
     "shopping": FontAwesomeIcons.shoppingBag,
@@ -45,12 +29,14 @@ class CategoryIconData {
     "others": FontAwesomeIcons.ellipsisH,
     "insurance": FontAwesomeIcons.houseDamage,
     "pet": FontAwesomeIcons.paw,
-    "subscription": FontAwesomeIcons.bell
+    "subscription": FontAwesomeIcons.bell,
+    "suitcaseRolling": FontAwesomeIcons.suitcaseRolling,
+    "pen": FontAwesomeIcons.pen
   };
 
   CategoryIconData(
-      {this.backgroundColorName, this.iconName, this.iconColorName = "white"})
-      : this.backgroundColor = colorList[backgroundColorName],
-        this.iconColor = colorList[iconColorName],
+      {this.backgroundColor, this.iconName, this.iconColor = Colors.white})
+      : this.backgroundColorInt = backgroundColor.value,
+        this.iconColorInt = iconColor.value,
         this.icon = iconList[iconName];
 }

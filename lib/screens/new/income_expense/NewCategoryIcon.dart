@@ -2,7 +2,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:project_ez_finance/components/CategoryIcon.dart';
+import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
+import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 
 class NewCategoryIcon extends StatelessWidget {
   @override
@@ -18,9 +19,11 @@ class NewCategoryIcon extends StatelessWidget {
               padding: EdgeInsets.all(1),
               borderType: BorderType.Circle,
               child: CategoryIcon(
-                backgroundColor: Colors.white,
-                icon: FontAwesomeIcons.pen,
-                iconColor: Colors.black45,
+                iconData: CategoryIconData(
+                  backgroundColor: Colors.white,
+                  iconName: "pen",
+                  iconColor: Colors.black45,
+                ),
               )),
         ),
         Padding(

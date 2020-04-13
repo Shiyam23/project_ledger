@@ -53,16 +53,18 @@ class NewRepetitionTextFieldController extends TextEditingController {
                         SizedBox(
                             width: MediaQuery.of(context).size.width * 0.2,
                             child: DropdownButtonFormField(
+                              isDense: true,
+                              isExpanded: true,
                               value: isEnabled,
                               onChanged: (enabled) =>
                                   setDialogState(() => isEnabled = enabled),
                               items: [
                                 DropdownMenuItem(
-                                  child: Text("Nie"),
+                                  child: Center(child: Text("Nie")),
                                   value: false,
                                 ),
                                 DropdownMenuItem(
-                                  child: Text("Alle"),
+                                  child: Center(child: Text("Alle")),
                                   value: true,
                                 ),
                               ],
@@ -92,6 +94,8 @@ class NewRepetitionTextFieldController extends TextEditingController {
                                 (context, StateSetter setDropDownState) {
                               return DropdownButtonFormField(
                                 value: _selectedUnit,
+                                isDense: true,
+                                isExpanded: true,
                                 onChanged: (unit) => setDropDownState(
                                     () => _selectedUnit = unit),
                                 decoration: InputDecoration(enabled: isEnabled),

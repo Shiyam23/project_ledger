@@ -35,6 +35,12 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
   final FormatHelper helper;
   final String symbol;
 
+  final RegExp zeroSwapper;
+  final RegExp zeroDeleter;
+  final RegExp decimalSwapper;
+  final RegExp inputDecimalSwapper;
+  final RegExp zeroGenerator;
+
   NewMoneyAmountFormatter(
       {this.decimalSeparator,
       this.thousandSeparator,
@@ -42,7 +48,16 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
       this.symbol})
       : helper = new FormatHelper(
             decimalSeparator: decimalSeparator,
-            thousandSeparator: thousandSeparator);
+            thousandSeparator: thousandSeparator),
+        zeroSwapper = RegExp(
+            r"^0" + "$decimalSeparator" + r"\d" * precision + " $symbol"),
+        zeroDeleter = RegExp(
+            r"^0\d" "$decimalSeparator" + r"\d" * precision + " $symbol"),
+        decimalSwapper = RegExp(decimalSeparator + r"\d" * (precision + 1)),
+        inputDecimalSwapper =
+            RegExp(decimalSeparator + r"\d" * (precision - 1) + " $symbol"),
+        zeroGenerator =
+            RegExp("^$decimalSeparator" + r"\d" * precision + " $symbol");
 
   @override
   TextEditingValue formatEditUpdate(
@@ -50,19 +65,24 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
     String newText = newValue.text;
     String oldText = oldValue.text;
 
+    // Generate zero if there is no integer before separator -----> This takes too much performance
+    if (zeroGenerator.hasMatch(newText)) {
+      return TextEditingValue(
+          text: "0" + newText,
+          selection: TextSelection(baseOffset: 0, extentOffset: 0));
+    }
+
     // if cursor left of zero, swap it with input number
-    if (RegExp(r"^0" + "$decimalSeparator" + r"\d" * precision + " $symbol")
-            .hasMatch(oldText) &&
-        oldValue.selection.baseOffset == 0) {
+    if (oldValue.selection.baseOffset == 0 && zeroSwapper.hasMatch(oldText)) {
       return TextEditingValue(
           text: newText[0] + newText.substring(2),
           selection: TextSelection(baseOffset: 1, extentOffset: 1));
     }
 
     //  delete not-allowed thousandOperators
-    if (newText.allMatches(thousandSeparator).length !=
-            oldText.allMatches(thousandSeparator).length &&
-        !newText.contains(thousandSeparator + decimalSeparator)) {
+    if (!newText.contains(thousandSeparator + decimalSeparator) &&
+        newText.allMatches(thousandSeparator).length !=
+            oldText.allMatches(thousandSeparator).length) {
       return oldValue;
     }
 
@@ -86,8 +106,7 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
     }
 
     // Delete leading zero, if there's already one
-    if (RegExp(r"^0\d" "$decimalSeparator" + r"\d" * precision + " $symbol")
-        .hasMatch(newText)) {
+    if (zeroDeleter.hasMatch(newText)) {
       int cursorPos = newValue.selection.baseOffset;
 
       return TextEditingValue(
@@ -103,7 +122,7 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
     }
 
     // swap decimal digit (0) with input decimal digit
-    if (RegExp(decimalSeparator + r"\d" * (precision + 1)).hasMatch(newText)) {
+    if (decimalSwapper.hasMatch(newText)) {
       return TextEditingValue(
           text: newText.substring(0, newValue.selection.baseOffset) +
               newText.substring(newValue.selection.baseOffset + 1),
@@ -111,8 +130,7 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
     }
 
     // swap input decimial digit with 0 if deleted
-    if (RegExp(decimalSeparator + r"\d" * (precision - 1) + " $symbol")
-        .hasMatch(newText)) {
+    if (inputDecimalSwapper.hasMatch(newText)) {
       return TextEditingValue(
           text: newText.substring(0, newValue.selection.baseOffset) +
               "0" +
@@ -136,14 +154,6 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
                   initialOffset,
               extentOffset: updatedThousandsValue.indexOf(decimalSeparator) -
                   initialOffset));
-    }
-
-    // Generate zero if there is no integer before separator -----> This takes too much performance
-    if (RegExp("^$decimalSeparator" + r"\d" * precision + " $symbol")
-        .hasMatch(newText)) {
-      return TextEditingValue(
-          text: "0" + newText,
-          selection: TextSelection(baseOffset: 0, extentOffset: 0));
     }
 
     return newValue;

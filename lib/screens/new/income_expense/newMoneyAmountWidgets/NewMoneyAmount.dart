@@ -58,7 +58,7 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 7,
       alignment: Alignment.center,
-      child: TextField(
+      child: TextFormField(
         inputFormatters: [
           NewMoneyAmountFormatter(
               decimalSeparator: decimalSeparator,

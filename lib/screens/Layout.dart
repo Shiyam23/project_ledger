@@ -39,6 +39,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: getTopBar(lController.currentPage),
         body: buildPageView(),
         bottomNavigationBar: MainBottomNaviationBar(

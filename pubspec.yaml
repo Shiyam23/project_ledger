@@ -30,6 +30,8 @@ dependencies:
   hive_flutter: ^0.3.0+2
   hive: ^1.4.1+1
   path_provider: ^1.6.5
+  flushbar: 1.9.0
+  dotted_border: ^1.0.3
 
 
 

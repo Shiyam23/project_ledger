@@ -7,10 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/models/Category.dart' as Dollavu;
 import 'package:project_ez_finance/models/SelectableTile.dart';
+import 'Repetition.dart';
 
 part 'Transaction.g.dart';
 
-@HiveType(typeId: 4)
+@HiveType(typeId: 3)
 class Transaction extends Equatable implements SelectableTile {
   @HiveField(0)
   final String name;
@@ -24,6 +25,8 @@ class Transaction extends Equatable implements SelectableTile {
   final bool isExpense;
   @HiveField(5)
   final Dollavu.Category category;
+  @HiveField(6)
+  final Repetition repetition;
 
   Transaction(
       {@required this.name,
@@ -31,7 +34,8 @@ class Transaction extends Equatable implements SelectableTile {
       @required this.date,
       @required this.icon,
       @required this.amount,
-      @required this.isExpense});
+      @required this.isExpense,
+      this.repetition = Repetition.none});
 
   @override
   Text get rightText => Text(amount.toString(),

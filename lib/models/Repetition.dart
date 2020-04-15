@@ -1,13 +1,22 @@
 import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
-class Repetition {
-  int amount;
-  CalenderUnit time;
-  DateTime endDate;
-  static Repetition none = Repetition(amount: null, time: null, endDate: null);
+part 'Repetition.g.dart';
 
-  Repetition(
+@HiveType(typeId: 4)
+class Repetition {
+  @HiveField(0)
+  final int amount;
+  @HiveField(1)
+  final CalenderUnit time;
+  @HiveField(2)
+  final DateTime endDate;
+
+  static const Repetition none =
+      Repetition(amount: null, time: null, endDate: null);
+
+  const Repetition(
       {@required this.amount, @required this.time, @required this.endDate});
 
   @override
@@ -52,4 +61,12 @@ class Repetition {
   }
 }
 
-enum CalenderUnit { dayly, monthly, yearly }
+@HiveType(typeId: 5)
+enum CalenderUnit {
+  @HiveField(0)
+  dayly,
+  @HiveField(1)
+  monthly,
+  @HiveField(2)
+  yearly
+}

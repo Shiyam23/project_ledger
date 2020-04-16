@@ -8,7 +8,6 @@ part 'CategoryIconData.g.dart';
 class CategoryIconData {
   @HiveField(0)
   final int backgroundColorInt;
-  final Color backgroundColor;
 
   @HiveField(1)
   final String iconName;
@@ -16,7 +15,6 @@ class CategoryIconData {
 
   @HiveField(2)
   final int iconColorInt;
-  final Color iconColor;
 
   static const Map<String, IconData> iconList = {
     "shopping": FontAwesomeIcons.shoppingBag,
@@ -35,8 +33,6 @@ class CategoryIconData {
   };
 
   CategoryIconData(
-      {this.backgroundColor, this.iconName, this.iconColor = Colors.white})
-      : this.backgroundColorInt = backgroundColor.value,
-        this.iconColorInt = iconColor.value,
-        this.icon = iconList[iconName];
+      {this.backgroundColorInt, this.iconName, this.iconColorInt = 0xFFFFFFFF})
+      : this.icon = iconList[iconName];
 }

@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
@@ -28,15 +25,22 @@ class NewExpenseScreen extends StatefulWidget {
 }
 
 class _NewExpenseScreenState extends State<NewExpenseScreen> {
-  final String currency = " €";
-  DateTime _selectedDate = DateTime.now();
+  // Selections and Settings
+  final Transaction transaction = Transaction();
+  static String currency = " €";
+  static DateTime _selectedDate = DateTime.now();
   Account _selectedAccount;
   Repetition _selectedRepetition;
-  NewAccountTextFieldController accountController;
-  NewDateTextFieldController dateController;
   CalenderUnit chosenTimeUnit = CalenderUnit.monthly;
 
+  //Controllers
+  NewAccountTextFieldController accountController;
+  NewDateTextFieldController dateController;
   NewRepetitionTextFieldController repeatController;
+
+  //Input fields
+  NewTitleTextField titleField = NewTitleTextField();
+  NewMoneyAmount moneyField;
 
   _NewExpenseScreenState() {
     dateController = NewDateTextFieldController(
@@ -44,12 +48,10 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
         startValue: _selectedDate.subtract(Duration(days: 365 * 30)),
         endValue: _selectedDate.add(Duration(days: 365 * 30)));
     accountController = NewAccountTextFieldController();
-
     repeatController =
         NewRepetitionTextFieldController(initialRepetition: Repetition.none);
+    moneyField = NewMoneyAmount(transaction: transaction, currency: currency);
   }
-
-  //int amount;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Spacer(),
-        NewMoneyAmount(currency: currency),
+        moneyField,
         Spacer(),
         Container(
           alignment: Alignment.centerLeft,
@@ -73,7 +75,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
                 Container(
                     padding: EdgeInsets.only(left: 20),
                     width: MediaQuery.of(context).size.width * 0.6,
-                    child: NewTitleTextField())
+                    child: titleField)
               ],
             ),
           ),
@@ -118,7 +120,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
         Spacer(
           flex: 2,
         ),
-        NewBottonButtons(),
+        NewBottonButtons(onSave: saveTransaction, onReset: resetInput),
         Spacer(flex: 2),
       ],
     );
@@ -131,4 +133,29 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
     repeatController.dispose();
     super.dispose();
   }
+
+  void saveTransaction() {
+    transaction.date = _selectedDate;
+    transaction.account = Account(
+        icon: CategoryIcon(
+      iconData: CategoryIconData(
+          backgroundColorInt: Theme.of(context).backgroundColor.value,
+          iconName: "suitcaseRolling"),
+    ));
+    transaction.isExpense = true;
+    transaction.repetition = _selectedRepetition;
+    transaction.category = Category(
+        name: "Testkategorie",
+        icon: CategoryIcon(
+          iconData: CategoryIconData(
+              backgroundColorInt: Theme.of(context).backgroundColor.value,
+              iconName: "suitcaseRolling"),
+        ));
+    transaction.name = titleField.getText();
+
+    BlocProvider.of<DatabaseBloc>(context)
+        .dispatch(AddTransaction(transaction));
+  }
+
+  void resetInput() {}
 }

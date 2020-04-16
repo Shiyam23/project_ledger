@@ -63,7 +63,7 @@ class _CategoryIconState extends State<CategoryIcon>
 
     final Icon frontSideIcon = Icon(
       widget.iconData.icon,
-      color: widget.iconData.iconColor,
+      color: Color(widget.iconData.iconColorInt),
     );
 
     final Container frontSideContainer = Container(
@@ -72,7 +72,7 @@ class _CategoryIconState extends State<CategoryIcon>
       width: MediaQuery.of(context).size.width / 7.5,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: widget.iconData.backgroundColor,
+        color: Color(widget.iconData.backgroundColorInt),
       ),
       child: frontSideIcon,
     );

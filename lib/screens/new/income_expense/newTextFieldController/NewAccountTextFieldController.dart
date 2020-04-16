@@ -18,9 +18,10 @@ class NewAccountTextFieldController extends TextEditingController {
               ListTile(
                 leading: CategoryIcon(
                   iconData: CategoryIconData(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    backgroundColorInt:
+                        Theme.of(context).colorScheme.primary.value,
                     iconName: "home",
-                    iconColor: Colors.white,
+                    iconColorInt: Colors.white.value,
                   ),
                 ),
                 onTap: () {
@@ -36,9 +37,10 @@ class NewAccountTextFieldController extends TextEditingController {
               ListTile(
                 leading: CategoryIcon(
                   iconData: CategoryIconData(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    backgroundColorInt:
+                        Theme.of(context).colorScheme.primary.value,
                     iconName: "suitcaseRolling",
-                    iconColor: Colors.white,
+                    iconColorInt: Colors.white.value,
                   ),
                 ),
                 onTap: () {

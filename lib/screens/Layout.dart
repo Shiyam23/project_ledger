@@ -21,7 +21,7 @@ class Layout extends StatefulWidget {
 class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   //
   LayoutController lController;
-  TransactionBloc transactionBloc = TransactionBloc();
+  DatabaseBloc databaseBloc = DatabaseBloc();
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
 
   Widget buildPageView() {
     return BlocProvider(
-      builder: (_) => transactionBloc,
+      builder: (_) => databaseBloc,
       child: PageView(
         controller: lController.pageController,
         onPageChanged: (index) => pageChanged(index),
@@ -109,7 +109,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    transactionBloc.dispose();
+    databaseBloc.dispose();
     super.dispose();
   }
 }

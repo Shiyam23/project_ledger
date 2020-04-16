@@ -48,7 +48,7 @@ class _NewIncomeScreenState extends State<NewIncomeScreen> {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         Spacer(),
-        NewMoneyAmount(currency: currency),
+        //NewMoneyAmount(currency: currency),
         Spacer(),
         Container(
           alignment: Alignment.centerLeft,

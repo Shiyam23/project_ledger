@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/models/Category.dart' as Dollavu;
 import 'package:project_ez_finance/models/SelectableTile.dart';
+import 'Account.dart';
 import 'Repetition.dart';
 
 part 'Transaction.g.dart';
@@ -14,28 +15,28 @@ part 'Transaction.g.dart';
 @HiveType(typeId: 3)
 class Transaction extends Equatable implements SelectableTile {
   @HiveField(0)
-  final String name;
+  String name;
   @HiveField(1)
-  final DateTime date;
+  DateTime date;
   @HiveField(2)
-  final CategoryIcon icon;
+  Dollavu.Category category;
   @HiveField(3)
-  final String amount;
+  String amount;
   @HiveField(4)
-  final bool isExpense;
+  bool isExpense;
   @HiveField(5)
-  final Dollavu.Category category;
+  Repetition repetition;
   @HiveField(6)
-  final Repetition repetition;
+  Account account;
 
   Transaction(
-      {@required this.name,
-      @required this.category,
-      @required this.date,
-      @required this.icon,
-      @required this.amount,
-      @required this.isExpense,
-      this.repetition = Repetition.none});
+      {this.name,
+      this.category,
+      this.date,
+      this.amount,
+      this.isExpense,
+      this.repetition = Repetition.none,
+      this.account});
 
   @override
   Text get rightText => Text(amount.toString(),
@@ -54,5 +55,10 @@ class Transaction extends Equatable implements SelectableTile {
   Text get title => Text(name);
 
   @override
-  List<Object> get props => [name, date, icon, amount, isExpense, category];
+  List<Object> get props =>
+      [name, date, icon, amount, isExpense, category, repetition, account];
+
+  @override
+  // TODO: implement icon
+  CategoryIcon get icon => category.icon;
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_event.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_state.dart';
+import 'package:project_ez_finance/blocs/bloc/database_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/database_event.dart';
+import 'package:project_ez_finance/blocs/bloc/database_state.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
 import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarSection.dart';
@@ -15,13 +15,13 @@ class ViewTransactionScreen extends StatefulWidget {
 
 class _ViewScreenState extends State<ViewTransactionScreen> {
   TransactionFilter transactionFilter;
-  TransactionBloc transactionBloc;
+  DatabaseBloc databaseBloc;
   int listKey = 0;
   @override
   void initState() {
     super.initState();
-    transactionBloc = BlocProvider.of<TransactionBloc>(context);
-    transactionBloc.dispatch(GetTransaction());
+    databaseBloc = BlocProvider.of<DatabaseBloc>(context);
+    databaseBloc.dispatch(GetTransaction());
   }
 
   @override
@@ -31,8 +31,8 @@ class _ViewScreenState extends State<ViewTransactionScreen> {
       children: <Widget>[
         ViewFilterBarSection(),
         BlocBuilder(
-          bloc: transactionBloc,
-          builder: (BuildContext context, TransactionState state) {
+          bloc: databaseBloc,
+          builder: (BuildContext context, DatabaseState state) {
             if (state is TransactionInitial) {
               return Text("Initial");
             } else if (state is TransactionLoading) {

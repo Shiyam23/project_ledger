@@ -20,9 +20,9 @@ class NewCategoryIcon extends StatelessWidget {
               borderType: BorderType.Circle,
               child: CategoryIcon(
                 iconData: CategoryIconData(
-                  backgroundColor: Colors.white,
+                  backgroundColorInt: Colors.white.value,
                   iconName: "pen",
-                  iconColor: Colors.black45,
+                  iconColorInt: Colors.black45.value,
                 ),
               )),
         ),

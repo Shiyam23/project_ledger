@@ -18,12 +18,12 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
     };
     return Transaction(
       name: fields[0] as String,
-      category: fields[5] as Dollavu.Category,
+      category: fields[2] as Dollavu.Category,
       date: fields[1] as DateTime,
-      icon: fields[2] as CategoryIcon,
       amount: fields[3] as String,
       isExpense: fields[4] as bool,
-      repetition: fields[6] as Repetition,
+      repetition: fields[5] as Repetition,
+      account: fields[6] as Account,
     );
   }
 
@@ -36,14 +36,14 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(1)
       ..write(obj.date)
       ..writeByte(2)
-      ..write(obj.icon)
+      ..write(obj.category)
       ..writeByte(3)
       ..write(obj.amount)
       ..writeByte(4)
       ..write(obj.isExpense)
       ..writeByte(5)
-      ..write(obj.category)
+      ..write(obj.repetition)
       ..writeByte(6)
-      ..write(obj.repetition);
+      ..write(obj.account);
   }
 }

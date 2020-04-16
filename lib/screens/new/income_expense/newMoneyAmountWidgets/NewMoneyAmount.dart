@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:project_ez_finance/models/Transaction.dart';
 import 'NewMoneyAmountController.dart';
 import 'NewMoneyAmountFormatter.dart';
 
 class NewMoneyAmount extends StatefulWidget {
-  const NewMoneyAmount({
-    Key key,
-    @required this.currency,
-  }) : super(key: key);
+  const NewMoneyAmount(
+      {Key key, @required this.currency, @required this.transaction})
+      : super(key: key);
 
+  final Transaction transaction;
   final String currency;
 
   @override
@@ -68,6 +69,7 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
         ],
         onChanged: (text) => setState(() => updateFontSize(text.length)),
         controller: controller,
+        onEditingComplete: () => widget.transaction.amount = controller.text,
         toolbarOptions: ToolbarOptions(
             copy: true, cut: false, paste: false, selectAll: true),
         keyboardType: TextInputType.numberWithOptions(

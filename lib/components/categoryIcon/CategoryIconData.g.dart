@@ -17,7 +17,9 @@ class CategoryIconDataAdapter extends TypeAdapter<CategoryIconData> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CategoryIconData(
+      backgroundColorInt: fields[0] as int,
       iconName: fields[1] as String,
+      iconColorInt: fields[2] as int,
     );
   }
 

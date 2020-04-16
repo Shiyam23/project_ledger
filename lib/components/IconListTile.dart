@@ -33,9 +33,9 @@ class _IconListTileState extends State<IconListTile>
 
     icon = CategoryIcon(
       iconData: CategoryIconData(
-        backgroundColor: oldIcon.iconData.backgroundColor,
+        backgroundColorInt: oldIcon.iconData.backgroundColorInt,
         iconName: oldIcon.iconData.iconName,
-        iconColor: oldIcon.iconData.iconColor,
+        iconColorInt: oldIcon.iconData.iconColorInt,
       ),
       selectable: true,
       selected: false,

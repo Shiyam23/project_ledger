@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_event.dart';
+import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/database_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/database_event.dart';
 import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 
 class ViewFilterBarSearch extends StatelessWidget {
@@ -17,8 +18,7 @@ class ViewFilterBarSearch extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 25.0),
             child: TextField(
               onSubmitted: (string) {
-                TransactionBloc bloc =
-                    BlocProvider.of<TransactionBloc>(context);
+                DatabaseBloc bloc = BlocProvider.of<DatabaseBloc>(context);
                 bloc.filter.searchText = string;
                 bloc.dispatch(GetTransaction());
               },

@@ -5,13 +5,13 @@ part 'Account.g.dart';
 
 @HiveType(typeId: 6)
 class Account {
-  String name;
-  CategoryIcon icon;
+  String? name;
+  CategoryIcon? icon;
 
   Account({this.name, this.icon});
 
   @override
   String toString() {
-    return this.name;
+    return this.name!;
   }
 }

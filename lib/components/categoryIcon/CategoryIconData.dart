@@ -7,14 +7,14 @@ part 'CategoryIconData.g.dart';
 @HiveType(typeId: 1)
 class CategoryIconData {
   @HiveField(0)
-  final int backgroundColorInt;
+  final int? backgroundColorInt;
 
   @HiveField(1)
-  final String iconName;
-  final IconData icon;
+  final String? iconName;
+  final IconData? icon;
 
   @HiveField(2)
-  final int iconColorInt;
+  final int? iconColorInt;
 
   static const Map<String, IconData> iconList = {
     "shopping": FontAwesomeIcons.shoppingBag,
@@ -34,5 +34,5 @@ class CategoryIconData {
 
   CategoryIconData(
       {this.backgroundColorInt, this.iconName, this.iconColorInt = 0xFFFFFFFF})
-      : this.icon = iconList[iconName];
+      : this.icon = iconList[iconName!];
 }

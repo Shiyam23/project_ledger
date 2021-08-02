@@ -21,13 +21,13 @@ class NewIncomeScreen extends StatefulWidget {
 class _NewIncomeScreenState extends State<NewIncomeScreen> {
   final String currency = " €";
   DateTime _selectedDate = DateTime.now();
-  Account _selectedAccount;
-  Repetition _selectedRepetition;
-  NewAccountTextFieldController accountController;
-  NewDateTextFieldController dateController;
+  Account? _selectedAccount;
+  Repetition? _selectedRepetition;
+  NewAccountTextFieldController? accountController;
+  NewDateTextFieldController? dateController;
   CalenderUnit chosenTimeUnit = CalenderUnit.monthly;
 
-  NewRepetitionTextFieldController repeatController;
+  NewRepetitionTextFieldController? repeatController;
 
   _NewIncomeScreenState() {
     dateController = NewDateTextFieldController(
@@ -74,9 +74,10 @@ class _NewIncomeScreenState extends State<NewIncomeScreen> {
             labelText: "Datum",
             controller: dateController,
             onTap: () async {
-              DateTime temp = await (dateController).selectDate(context);
+              DateTime? temp = await (dateController!.selectDate(context)
+                  as Future<DateTime?>);
               if (temp != null) {
-                setState(() => dateController.text =
+                setState(() => dateController!.text =
                     DateFormat("dd.MM.yyyy").format(temp).toString());
                 _selectedDate = temp;
               }
@@ -86,9 +87,9 @@ class _NewIncomeScreenState extends State<NewIncomeScreen> {
             labelText: "Konto",
             controller: accountController,
             onTap: () async {
-              Account temp = await accountController.chooseAccount(context);
+              Account? temp = await accountController!.chooseAccount(context);
               if (temp != null) {
-                setState(() => accountController.text = temp.toString());
+                setState(() => accountController!.text = temp.toString());
                 _selectedAccount = temp;
               }
             }),
@@ -97,10 +98,10 @@ class _NewIncomeScreenState extends State<NewIncomeScreen> {
             labelText: "Dauerauftrag",
             controller: repeatController,
             onTap: () async {
-              Repetition temp =
-                  await repeatController.chooseRepetition(context);
+              Repetition? temp =
+                  await repeatController!.chooseRepetition(context);
               if (temp != null) {
-                setState(() => repeatController.text = temp.toString());
+                setState(() => repeatController!.text = temp.toString());
                 _selectedRepetition = temp;
               }
             }),
@@ -117,9 +118,9 @@ class _NewIncomeScreenState extends State<NewIncomeScreen> {
 
   @override
   void dispose() {
-    dateController.dispose();
-    accountController.dispose();
-    repeatController.dispose();
+    dateController!.dispose();
+    accountController!.dispose();
+    repeatController!.dispose();
     super.dispose();
   }
 }

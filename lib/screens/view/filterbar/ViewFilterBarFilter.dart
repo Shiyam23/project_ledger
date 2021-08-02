@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ViewFilterBarFilter extends StatelessWidget {
-  const ViewFilterBarFilter({Key key}) : super(key: key);
+  const ViewFilterBarFilter({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

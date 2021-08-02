@@ -6,10 +6,10 @@ import 'package:flutter/cupertino.dart';
 
 class IconListTile extends StatefulWidget {
   final SelectableTile tile;
-  final void Function() onTap;
-  final void Function() onSelect;
+  final void Function()? onTap;
+  final void Function()? onSelect;
 
-  const IconListTile({@required this.tile, this.onTap, this.onSelect, Key key})
+  const IconListTile({required this.tile, this.onTap, this.onSelect, Key? key})
       : super(key: key);
 
   @override
@@ -18,24 +18,24 @@ class IconListTile extends StatefulWidget {
 
 class _IconListTileState extends State<IconListTile>
     with SingleTickerProviderStateMixin {
-  AnimationController flipController;
-  CategoryIcon icon;
-  SelectableTile tile;
+  AnimationController? flipController;
+  CategoryIcon? icon;
+  late SelectableTile tile;
 
   @override
   void initState() {
     super.initState();
     tile = widget.tile;
-    CategoryIcon oldIcon = tile.icon;
+    CategoryIcon oldIcon = tile.icon!;
 
     flipController =
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
 
     icon = CategoryIcon(
       iconData: CategoryIconData(
-        backgroundColorInt: oldIcon.iconData.backgroundColorInt,
-        iconName: oldIcon.iconData.iconName,
-        iconColorInt: oldIcon.iconData.iconColorInt,
+        backgroundColorInt: oldIcon.iconData!.backgroundColorInt,
+        iconName: oldIcon.iconData!.iconName,
+        iconColorInt: oldIcon.iconData!.iconColorInt,
       ),
       selectable: true,
       selected: false,
@@ -56,7 +56,7 @@ class _IconListTileState extends State<IconListTile>
         ),
         ListTile(
           onLongPress: () {
-            flipController.forward();
+            flipController!.forward();
             widget.onSelect?.call();
           },
           contentPadding: EdgeInsets.only(left: 20, right: 40),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'DTheme.dart';
 
@@ -6,6 +7,10 @@ class DThemeLight implements DTheme {
   static Color primaryColor = Color(0xff2f3840);
 
   final ThemeData _themeData = ThemeData(
+    appBarTheme: AppBarTheme(
+        backwardsCompatibility: false,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        backgroundColor: primaryColor),
     brightness: Brightness.light,
     primarySwatch: MaterialColor(0xff2f3840, <int, Color>{
       50: Color(0xff7a8085),

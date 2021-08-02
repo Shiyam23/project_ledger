@@ -10,11 +10,11 @@ part 'CategoryIcon.g.dart';
 @HiveType(typeId: 0)
 class CategoryIcon extends StatefulWidget {
   @HiveField(0)
-  final CategoryIconData iconData;
+  final CategoryIconData? iconData;
   final bool selectable;
   final bool selected;
-  final void Function() onTap;
-  final AnimationController flipController;
+  final void Function()? onTap;
+  final AnimationController? flipController;
 
   CategoryIcon({
     this.iconData,
@@ -31,9 +31,9 @@ class CategoryIcon extends StatefulWidget {
 class _CategoryIconState extends State<CategoryIcon>
     with SingleTickerProviderStateMixin {
   //
-  AnimationController _flipController;
-  Animation<double> _animation;
-  bool isSelected;
+  AnimationController? _flipController;
+  late Animation<double> _animation;
+  late bool isSelected;
 
   _CategoryIconState(this._flipController);
 
@@ -45,14 +45,14 @@ class _CategoryIconState extends State<CategoryIcon>
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
 
     _animation =
-        Tween<double>(begin: 0, end: (1 / 2) * math.pi).animate(_flipController)
+        Tween<double>(begin: 0, end: (1 / 2) * math.pi).animate(_flipController!)
           ..addListener(() {
             setState(() {});
           })
           ..addStatusListener((status) {
             if (status == AnimationStatus.completed) {
               isSelected = !isSelected;
-              _flipController.reverse();
+              _flipController!.reverse();
             }
           });
   }
@@ -62,8 +62,8 @@ class _CategoryIconState extends State<CategoryIcon>
     //
 
     final Icon frontSideIcon = Icon(
-      widget.iconData.icon,
-      color: Color(widget.iconData.iconColorInt),
+      widget.iconData!.icon,
+      color: Color(widget.iconData!.iconColorInt!),
     );
 
     final Container frontSideContainer = Container(
@@ -72,7 +72,7 @@ class _CategoryIconState extends State<CategoryIcon>
       width: MediaQuery.of(context).size.width / 7.5,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Color(widget.iconData.backgroundColorInt),
+        color: Color(widget.iconData!.backgroundColorInt!),
       ),
       child: frontSideIcon,
     );
@@ -102,13 +102,13 @@ class _CategoryIconState extends State<CategoryIcon>
   }
 
   void flip() {
-    if (widget.selectable) _flipController.forward();
+    if (widget.selectable) _flipController!.forward();
     widget.onTap?.call();
   }
 
   @override
   void dispose() {
-    _flipController.dispose();
+    _flipController!.dispose();
     super.dispose();
   }
 }

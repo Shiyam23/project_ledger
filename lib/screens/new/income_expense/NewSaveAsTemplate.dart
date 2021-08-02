@@ -7,7 +7,7 @@ class NewSaveAsTemplate extends StatefulWidget {
 }
 
 class _NewSaveAsTemplateState extends State<NewSaveAsTemplate> {
-  bool _checked = false;
+  bool? _checked = false;
 
   @override
   Widget build(BuildContext context) {

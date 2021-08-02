@@ -8,29 +8,29 @@ part of 'Transaction.dart';
 
 class TransactionAdapter extends TypeAdapter<Transaction> {
   @override
-  final typeId = 3;
+  final int typeId = 3;
 
   @override
   Transaction read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Transaction(
-      name: fields[0] as String,
-      category: fields[2] as Dollavu.Category,
-      date: fields[1] as DateTime,
-      amount: fields[3] as String,
-      isExpense: fields[4] as bool,
-      repetition: fields[5] as Repetition,
-      account: fields[6] as Account,
-    );
+      name: fields[0] as String?,
+      category: fields[2] as Dollavu.Category?,
+      date: fields[1] as DateTime?,
+      amount: fields[3] as String?,
+      isExpense: fields[4] as bool?,
+      repetition: fields[5] as Repetition?,
+      account: fields[6] as Account?,
+    )..addDateTime = fields[7] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, Transaction obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -44,6 +44,18 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(5)
       ..write(obj.repetition)
       ..writeByte(6)
-      ..write(obj.account);
+      ..write(obj.account)
+      ..writeByte(7)
+      ..write(obj.addDateTime);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TransactionAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

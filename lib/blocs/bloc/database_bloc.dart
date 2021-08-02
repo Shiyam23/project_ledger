@@ -14,14 +14,11 @@ import './bloc.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
-  @override
-  DatabaseState get initialState => TransactionInitial();
-
-  List<Transaction> transactions = List<Transaction>();
-  Box<Transaction> transactionBox;
+  List<Transaction> transactions = [];
+  late Box<Transaction> transactionBox;
   final TransactionFilter filter = TransactionFilter();
 
-  DatabaseBloc() {
+  DatabaseBloc(DatabaseState initialState) : super(initialState) {
     setupDatabase();
   }
 
@@ -31,22 +28,31 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   ) async* {
     if (event is GetTransaction) {
       yield TransactionLoading();
-      yield TransactionLoaded(filter.filterList(transactions));
+      yield TransactionLoaded(transactions);
     } else if (event is AddTransaction) {
       saveTransaction(event.transaction);
       yield TransactionLoaded(transactions);
+    } else if (event is DeleteAll) {
+      yield TransactionLoading();
+      deleteAllTransactions();
+      yield TransactionLoaded([]);
     }
   }
 
   void saveTransaction(Transaction transaction) async {
+    transaction.addDateTime = DateTime.now();
     await transactionBox.add(transaction);
     transactions.add(transaction);
+  }
+
+  void deleteAllTransactions() async {
+    transactions.clear();
+    await transactionBox.clear();
   }
 
   void setupDatabase() async {
     final appDocumentDir =
         await path_provider.getApplicationDocumentsDirectory();
-    print(appDocumentDir.path);
     Hive.init(appDocumentDir.path);
 
     // Registering all adapters

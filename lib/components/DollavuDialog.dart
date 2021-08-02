@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DollavuDialog extends StatelessWidget {
   const DollavuDialog({
-    Key key,
+    Key? key,
     this.child,
     this.title,
     this.padding = const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
@@ -11,12 +11,12 @@ class DollavuDialog extends StatelessWidget {
     this.onPressedCancel,
   }) : super(key: key);
 
-  final Widget child;
-  final Widget title;
+  final Widget? child;
+  final Widget? title;
   final EdgeInsetsGeometry padding;
   final bool withButtons;
-  final Function onPressedSave;
-  final Function onPressedCancel;
+  final Function? onPressedSave;
+  final Function? onPressedCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +32,11 @@ class DollavuDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             RaisedButton(
-              onPressed: onPressedCancel ?? (){},
+              onPressed: onPressedCancel as void Function()? ?? (){},
               child: Text("Cancel"),
             ),
             RaisedButton(
-              onPressed: onPressedSave ?? (){},
+              onPressed: onPressedSave as void Function()? ?? (){},
               child: Text("Save"),
             ),
           ],

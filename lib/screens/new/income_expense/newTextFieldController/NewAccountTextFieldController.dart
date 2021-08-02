@@ -8,8 +8,8 @@ import 'package:project_ez_finance/models/Account.dart';
 class NewAccountTextFieldController extends TextEditingController {
   NewAccountTextFieldController() : super(text: "Privatkonto");
 
-  Future<Account> chooseAccount(BuildContext context) async {
-    Account chosenAccount = await showDialog<Account>(
+  Future<Account?> chooseAccount(BuildContext context) async {
+    Account? chosenAccount = await showDialog<Account>(
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(

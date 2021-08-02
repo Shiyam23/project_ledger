@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'ViewFilterBarTimeDialog.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
@@ -7,7 +9,7 @@ import 'ViewFilterBarIcon.dart';
 import 'ViewFilterBarSearch.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
-  ViewFilterBarSection({Key key}) : super(key: key);
+  ViewFilterBarSection({Key? key}) : super(key: key);
 
   _ViewFilterBarSectionState createState() => _ViewFilterBarSectionState();
 }
@@ -16,9 +18,9 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   bool _openSearchBar = false;
   bool _openFilterBar = false;
 
-  ViewFilterBarTimeOptions _timeOption;
-  ViewFilterBarViewOptions _viewOption;
-  ViewFilterBarSortOptions _sortOption;
+  ViewFilterBarTimeOptions? _timeOption;
+  ViewFilterBarViewOptions? _viewOption;
+  ViewFilterBarSortOptions? _sortOption;
 
   @override
   void initState() {
@@ -40,7 +42,10 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               width: _width,
               canOpen: false,
               icon: Icons.file_upload,
-              onTap: (open) => print("exporting ..."),
+              onTap: (open) => {
+                BlocProvider.of<DatabaseBloc>(context).add(DeleteAll()),
+                print("exporting ...")
+              },
             ),
             ViewFilterBarIcon(
               width: _width,
@@ -50,7 +55,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 dynamic viewOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return ViewFilterBarViewDialog(initialOption: _viewOption);
+                      return ViewFilterBarViewDialog(
+                          initialOption: _viewOption);
                     });
                 if (viewOption is ViewFilterBarViewOptions) {
                   setState(() {
@@ -67,7 +73,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 dynamic timeOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return ViewFilterBarTimeDialog(initialOption: _timeOption);
+                      return ViewFilterBarTimeDialog(
+                          initialOption: _timeOption);
                     });
                 if (timeOption is ViewFilterBarTimeOptions) {
                   setState(() {
@@ -84,7 +91,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 dynamic sortOption = await showDialog(
                     context: context,
                     builder: (context) {
-                      return ViewFilterBarSortDialog(initialOption: _sortOption);
+                      return ViewFilterBarSortDialog(
+                          initialOption: _sortOption);
                     });
                 if (sortOption is ViewFilterBarSortOptions) {
                   setState(() {
@@ -99,7 +107,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               icon: Icons.monetization_on,
               onTap: (open) {
                 setState(() {
-                  _openFilterBar = open;
+                  _openFilterBar = open ?? false;
                 });
               },
             ),
@@ -109,7 +117,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               icon: Icons.search,
               onTap: (open) {
                 setState(() {
-                  _openSearchBar = open;
+                  _openSearchBar = open ?? false;
                 });
               },
             ),

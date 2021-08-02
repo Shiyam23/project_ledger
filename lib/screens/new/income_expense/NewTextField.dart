@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 
 class NewTextField extends StatefulWidget {
   final String labelText;
-  final void Function() onTap;
-  final TextEditingController controller;
+  final void Function()? onTap;
+  final TextEditingController? controller;
   final double fontSize;
   final bool enabled;
 
   NewTextField(
-      {@required this.labelText,
+      {required this.labelText,
       this.enabled = true,
       this.fontSize = 20,
       this.controller,

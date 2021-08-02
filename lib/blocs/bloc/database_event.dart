@@ -1,12 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
-import 'package:project_ez_finance/models/filters/Filter.dart';
 
 abstract class DatabaseEvent extends Equatable {
   const DatabaseEvent();
 }
 
 class GetTransaction extends DatabaseEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class DeleteAll extends DatabaseEvent {
   @override
   List<Object> get props => [];
 }

@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 class FormatHelper {
-  String thousandSeparator;
-  String decimalSeparator;
+  String? thousandSeparator;
+  String? decimalSeparator;
 
   FormatHelper({this.thousandSeparator, this.decimalSeparator});
 
@@ -16,24 +16,24 @@ class FormatHelper {
   }
 
   String addThousandsPoint(String number) {
-    number = number.replaceAll(thousandSeparator, "");
+    number = number.replaceAll(thousandSeparator!, "");
     List<String> numberParts = number.split(",").toList();
 
     String wholeAmount = numberParts[0];
 
-    List<String> digits = wholeAmount.split("").reversed.toList(growable: true);
+    List<String?> digits = wholeAmount.split("").reversed.toList(growable: true);
     for (int i = 3; i < digits.length; i += 4)
       digits.insert(i, thousandSeparator);
-    return digits.reversed.join("") + decimalSeparator + numberParts[1];
+    return digits.reversed.join("") + decimalSeparator! + numberParts[1];
   }
 }
 
 class NewMoneyAmountFormatter extends TextInputFormatter {
   final String decimalSeparator;
-  final String thousandSeparator;
+  final String? thousandSeparator;
   final int precision;
   final FormatHelper helper;
-  final String symbol;
+  final String? symbol;
 
   final RegExp zeroSwapper;
   final RegExp zeroDeleter;
@@ -42,9 +42,9 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
   final RegExp zeroGenerator;
 
   NewMoneyAmountFormatter(
-      {this.decimalSeparator,
+      {required this.decimalSeparator,
       this.thousandSeparator,
-      this.precision,
+      required this.precision,
       this.symbol})
       : helper = new FormatHelper(
             decimalSeparator: decimalSeparator,
@@ -80,14 +80,14 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
     }
 
     //  delete not-allowed thousandOperators
-    if (!newText.contains(thousandSeparator + decimalSeparator) &&
-        newText.allMatches(thousandSeparator).length !=
-            oldText.allMatches(thousandSeparator).length) {
+    if (!newText.contains(thousandSeparator! + decimalSeparator) &&
+        newText.allMatches(thousandSeparator!).length !=
+            oldText.allMatches(thousandSeparator!).length) {
       return oldValue;
     }
 
     // Switch to decimals
-    if (newText.contains(thousandSeparator + decimalSeparator)) {
+    if (newText.contains(thousandSeparator! + decimalSeparator)) {
       return TextEditingValue(
           text: oldText,
           selection: TextSelection(
@@ -138,7 +138,7 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
           selection: newValue.selection);
     }
 
-    if (newText.length > 20 || !newText.endsWith(" " + symbol)) return oldValue;
+    if (newText.length > 20 || !newText.endsWith(" " + symbol!)) return oldValue;
 
     // Update thousands separator
     String withThousandPoints = helper.addThousandsPoint(newText);

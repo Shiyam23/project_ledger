@@ -20,8 +20,8 @@ class Layout extends StatefulWidget {
 
 class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   //
-  LayoutController lController;
-  DatabaseBloc databaseBloc = DatabaseBloc();
+  LayoutController? lController;
+  DatabaseBloc databaseBloc = DatabaseBloc(TransactionInitial());
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: getTopBar(lController.currentPage),
+        appBar: getTopBar(lController!.currentPage!) as PreferredSizeWidget?,
         body: buildPageView(),
         bottomNavigationBar: MainBottomNaviationBar(
           layoutController: lController,
@@ -50,9 +50,9 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
 
   Widget buildPageView() {
     return BlocProvider(
-      builder: (_) => databaseBloc,
+      create: (_) => databaseBloc,
       child: PageView(
-        controller: lController.pageController,
+        controller: lController!.pageController,
         onPageChanged: (index) => pageChanged(index),
         children: <Widget>[
           ViewStandingOrderScreen(),
@@ -67,32 +67,32 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   }
 
   void pageChanged(int index) {
-    lController.currentPage = index;
-    if (lController.pageController.page + index < 2) {
-      lController.overViewTabController
+    lController!.currentPage = index;
+    if (lController!.pageController.page! + index < 2) {
+      lController!.overViewTabController
           .animateTo(index, duration: Duration(milliseconds: 500));
       return;
     }
-    if (lController.pageController.page + index > 6) {
-      lController.newTabController
+    if (lController!.pageController.page! + index > 6) {
+      lController!.newTabController
           .animateTo(index - 3, duration: Duration(milliseconds: 500));
       return;
     }
     setState(() {
-      lController.bottomSelectedIndex = index - 1;
+      lController!.bottomSelectedIndex = index - 1;
     });
   }
 
   void setPage(index) {
-    if ((lController.currentPage - (index + 1)).abs() > 1)
-      lController.pageController.jumpToPage(index + 1);
+    if ((lController!.currentPage! - (index + 1)).abs() > 1)
+      lController!.pageController.jumpToPage(index + 1);
     else
-      lController.pageController.animateToPage(index + 1,
+      lController!.pageController.animateToPage(index + 1,
           duration: Duration(milliseconds: 300), curve: Curves.ease);
-    lController.currentPage = index + 1;
+    lController!.currentPage = index + 1;
   }
 
-  Widget getTopBar(int index) {
+  Widget? getTopBar(int index) {
     if (index < 2)
       return ViewTabBar(
         layoutController: lController,
@@ -109,7 +109,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    databaseBloc.dispose();
+    databaseBloc.close();
     super.dispose();
   }
 }

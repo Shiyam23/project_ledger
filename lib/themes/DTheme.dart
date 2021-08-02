@@ -11,25 +11,24 @@ abstract class DTheme {
 
   ////////////////////////////////////////////////////////////////
 
-  static DTheme of(BuildContext context) {
+  static DTheme? of(BuildContext context) {
     return _getInheritedDTheme(context)?.dTheme;
   }
 
   static void switchTheme(
-      {@required BuildContext context, @required DTheme newDTheme}) {
+      {required BuildContext context, required DTheme newDTheme}) {
     _getInheritedDTheme(context)?.onDThemeChanged(newDTheme);
   }
 
-  static _InheritedDTheme _getInheritedDTheme(BuildContext context) =>
-      context.inheritFromWidgetOfExactType(_InheritedDTheme)
-          as _InheritedDTheme;
+  static _InheritedDTheme? _getInheritedDTheme(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_InheritedDTheme>();
 }
 
 class DThemeContainer extends StatefulWidget {
   DThemeContainer({
-    Key key,
-    @required this.initialDTheme,
-    @required this.child,
+    Key? key,
+    required this.initialDTheme,
+    required this.child,
   }) : super(key: key);
 
   final DTheme initialDTheme;
@@ -39,7 +38,7 @@ class DThemeContainer extends StatefulWidget {
 }
 
 class _DThemeContainerState extends State<DThemeContainer> {
-  DTheme _dTheme;
+  DTheme? _dTheme;
 
   @override
   void initState() {
@@ -65,13 +64,13 @@ class _DThemeContainerState extends State<DThemeContainer> {
 
 class _InheritedDTheme extends InheritedWidget {
   _InheritedDTheme({
-    Key key,
-    @required this.dTheme,
-    @required this.onDThemeChanged,
-    @required Widget child,
+    Key? key,
+    required this.dTheme,
+    required this.onDThemeChanged,
+    required Widget child,
   }) : super(key: key, child: child);
 
-  final DTheme dTheme;
+  final DTheme? dTheme;
   final ValueChanged<DTheme> onDThemeChanged;
 
   @override

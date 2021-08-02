@@ -8,18 +8,18 @@ enum ViewFilterBarViewOptions {
 
 class ViewFilterBarViewDialog extends StatefulWidget {
   ViewFilterBarViewDialog({
-    Key key,
+    Key? key,
     this.initialOption = ViewFilterBarViewOptions.list,
   }) : super(key: key);
 
-  final ViewFilterBarViewOptions initialOption;
+  final ViewFilterBarViewOptions? initialOption;
 
   _ViewFilterBarViewDialogState createState() =>
       _ViewFilterBarViewDialogState();
 }
 
 class _ViewFilterBarViewDialogState extends State<ViewFilterBarViewDialog> {
-  ViewFilterBarViewOptions _option;
+  ViewFilterBarViewOptions? _option;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _ViewFilterBarViewDialogState extends State<ViewFilterBarViewDialog> {
             title: Text("List"),
             value: ViewFilterBarViewOptions.list,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -49,7 +49,7 @@ class _ViewFilterBarViewDialogState extends State<ViewFilterBarViewDialog> {
             title: Text("Graph"),
             value: ViewFilterBarViewOptions.graph,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });

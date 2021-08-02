@@ -6,9 +6,9 @@ part 'Category.g.dart';
 @HiveType(typeId: 2)
 class Category {
   @HiveField(0)
-  String name;
+  String? name;
   @HiveField(1)
-  CategoryIcon icon;
+  CategoryIcon? icon;
 
   Category({this.name, this.icon});
 }

@@ -8,7 +8,7 @@ part of 'Repetition.dart';
 
 class CalenderUnitAdapter extends TypeAdapter<CalenderUnit> {
   @override
-  final typeId = 5;
+  final int typeId = 5;
 
   @override
   CalenderUnit read(BinaryReader reader) {
@@ -20,7 +20,7 @@ class CalenderUnitAdapter extends TypeAdapter<CalenderUnit> {
       case 2:
         return CalenderUnit.yearly;
       default:
-        return null;
+        return CalenderUnit.dayly;
     }
   }
 
@@ -38,22 +38,32 @@ class CalenderUnitAdapter extends TypeAdapter<CalenderUnit> {
         break;
     }
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CalenderUnitAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 class RepetitionAdapter extends TypeAdapter<Repetition> {
   @override
-  final typeId = 4;
+  final int typeId = 4;
 
   @override
   Repetition read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Repetition(
-      amount: fields[0] as int,
-      time: fields[1] as CalenderUnit,
-      endDate: fields[2] as DateTime,
+      amount: fields[0] as int?,
+      time: fields[1] as CalenderUnit?,
+      endDate: fields[2] as DateTime?,
     );
   }
 
@@ -68,4 +78,14 @@ class RepetitionAdapter extends TypeAdapter<Repetition> {
       ..writeByte(2)
       ..write(obj.endDate);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RepetitionAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

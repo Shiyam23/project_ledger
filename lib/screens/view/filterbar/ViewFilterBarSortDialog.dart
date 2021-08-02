@@ -14,18 +14,18 @@ enum ViewFilterBarSortOptions {
 
 class ViewFilterBarSortDialog extends StatefulWidget {
   ViewFilterBarSortDialog({
-    Key key,
+    Key? key,
     this.initialOption = ViewFilterBarSortOptions.dateUp,
   }) : super(key: key);
 
-  final ViewFilterBarSortOptions initialOption;
+  final ViewFilterBarSortOptions? initialOption;
 
   _ViewFilterBarSortDialogState createState() =>
       _ViewFilterBarSortDialogState();
 }
 
 class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
-  ViewFilterBarSortOptions _option;
+  ViewFilterBarSortOptions? _option;
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
             title: Text("Date descending"),
             value: ViewFilterBarSortOptions.dateDown,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -55,7 +55,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
             title: Text("Date ascending"),
             value: ViewFilterBarSortOptions.dateUp,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -65,7 +65,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
             title: Text("Amount descending"),
             value: ViewFilterBarSortOptions.amountDown,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -75,7 +75,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
             title: Text("Amount ascending"),
             value: ViewFilterBarSortOptions.amountUp,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -85,7 +85,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
             title: Text("Name descending"),
             value: ViewFilterBarSortOptions.nameDown,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -95,7 +95,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
             title: Text("Name ascending"),
             value: ViewFilterBarSortOptions.nameUp,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -105,7 +105,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
             title: Text("Category descending"),
             value: ViewFilterBarSortOptions.categoryDown,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -115,7 +115,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
             title: Text("Category ascending"),
             value: ViewFilterBarSortOptions.categoryUp,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });

@@ -5,12 +5,12 @@ class LayoutController {
   final TabController overViewTabController;
   final TabController newTabController;
   final PageController pageController;
-  int currentPage;
+  int? currentPage;
 
   LayoutController(
-      {@required this.bottomSelectedIndex,
-      @required this.newTabController,
-      @required this.overViewTabController,
-      @required this.pageController,
-      @required this.currentPage});
+      {required this.bottomSelectedIndex,
+      required this.newTabController,
+      required this.overViewTabController,
+      required this.pageController,
+      required this.currentPage});
 }

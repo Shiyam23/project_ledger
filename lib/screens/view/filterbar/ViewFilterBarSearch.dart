@@ -6,7 +6,7 @@ import 'package:project_ez_finance/blocs/bloc/database_event.dart';
 import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 
 class ViewFilterBarSearch extends StatelessWidget {
-  const ViewFilterBarSearch({Key key}) : super(key: key);
+  const ViewFilterBarSearch({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ViewFilterBarSearch extends StatelessWidget {
               onSubmitted: (string) {
                 DatabaseBloc bloc = BlocProvider.of<DatabaseBloc>(context);
                 bloc.filter.searchText = string;
-                bloc.dispatch(GetTransaction());
+                bloc.add(GetTransaction());
               },
             ),
           ),

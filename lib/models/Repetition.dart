@@ -1,4 +1,3 @@
-import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
@@ -7,17 +6,17 @@ part 'Repetition.g.dart';
 @HiveType(typeId: 4)
 class Repetition {
   @HiveField(0)
-  final int amount;
+  final int? amount;
   @HiveField(1)
-  final CalenderUnit time;
+  final CalenderUnit? time;
   @HiveField(2)
-  final DateTime endDate;
+  final DateTime? endDate;
 
   static const Repetition none =
       Repetition(amount: null, time: null, endDate: null);
 
   const Repetition(
-      {@required this.amount, @required this.time, @required this.endDate});
+      {required this.amount, required this.time, required this.endDate});
 
   @override
   String toString() {
@@ -26,7 +25,7 @@ class Repetition {
     if (this == none) return "Einmalig";
 
     if (amount == 1) {
-      switch (time) {
+      switch (time!) {
         case CalenderUnit.dayly:
           buffer.write("Jeden Tag");
           break;
@@ -41,7 +40,7 @@ class Repetition {
       }
     } else {
       buffer.write("Alle $amount ");
-      switch (time) {
+      switch (time!) {
         case CalenderUnit.dayly:
           buffer.write("Tage");
           break;
@@ -56,7 +55,7 @@ class Repetition {
       }
     }
     if (this.endDate != null)
-      buffer.write(" bis ${DateFormat("dd.MM.yyyy").format(this.endDate)}");
+      buffer.write(" bis ${DateFormat("dd.MM.yyyy").format(this.endDate!)}");
     return buffer.toString();
   }
 }

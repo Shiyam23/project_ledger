@@ -8,20 +8,20 @@ import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarSection.dart';
 
 class ViewTransactionScreen extends StatefulWidget {
-  ViewTransactionScreen({Key key}) : super(key: key);
+  ViewTransactionScreen({Key? key}) : super(key: key);
 
   _ViewScreenState createState() => _ViewScreenState();
 }
 
 class _ViewScreenState extends State<ViewTransactionScreen> {
-  TransactionFilter transactionFilter;
-  DatabaseBloc databaseBloc;
+  TransactionFilter? transactionFilter;
+  DatabaseBloc? databaseBloc;
   int listKey = 0;
   @override
   void initState() {
     super.initState();
     databaseBloc = BlocProvider.of<DatabaseBloc>(context);
-    databaseBloc.dispatch(GetTransaction());
+    databaseBloc!.add(GetTransaction());
   }
 
   @override

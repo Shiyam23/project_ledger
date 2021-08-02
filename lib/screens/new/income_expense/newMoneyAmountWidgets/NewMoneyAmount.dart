@@ -1,17 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:project_ez_finance/models/Transaction.dart';
 import 'NewMoneyAmountController.dart';
 import 'NewMoneyAmountFormatter.dart';
 
 class NewMoneyAmount extends StatefulWidget {
-  const NewMoneyAmount(
-      {Key key, @required this.currency, @required this.transaction})
-      : super(key: key);
+  NewMoneyAmount(
+      {Key? key,
+      required this.currency,
+      this.precision = 2,
+      this.decimalSeparator = ",",
+      this.thousandSeparator = "."})
+      : controller = NewMoneyAmountController(
+            symbol: currency,
+            decimalSeparator: decimalSeparator,
+            thousandSeparator: thousandSeparator,
+            precision: precision),
+        super(key: key);
 
-  final Transaction transaction;
   final String currency;
+  final int precision;
+  final String decimalSeparator;
+  final String thousandSeparator;
+  final NewMoneyAmountController controller;
 
   @override
   _NewMoneyAmountState createState() => _NewMoneyAmountState();
@@ -19,20 +30,11 @@ class NewMoneyAmount extends StatefulWidget {
 
 class _NewMoneyAmountState extends State<NewMoneyAmount> {
   double fontSizeFactor = 0.15;
-  NewMoneyAmountController controller;
-
-  int precision = 2;
-  String symbol = "€";
-  String decimalSeparator = ",";
-  String thousandSeparator = ".";
+  NewMoneyAmountController? controller;
 
   @override
   initState() {
-    controller = NewMoneyAmountController(
-        symbol: symbol,
-        decimalSeparator: decimalSeparator,
-        thousandSeparator: thousandSeparator,
-        precision: precision);
+    controller = widget.controller;
     super.initState();
   }
 
@@ -62,14 +64,15 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
       child: TextFormField(
         inputFormatters: [
           NewMoneyAmountFormatter(
-              decimalSeparator: decimalSeparator,
-              thousandSeparator: thousandSeparator,
-              precision: precision,
-              symbol: symbol),
+              decimalSeparator: widget.decimalSeparator,
+              thousandSeparator: widget.thousandSeparator,
+              precision: widget.precision,
+              symbol: widget.currency),
         ],
-        onChanged: (text) => setState(() => updateFontSize(text.length)),
+        onChanged: (text) => {
+          setState(() => updateFontSize(text.length)),
+        },
         controller: controller,
-        onEditingComplete: () => widget.transaction.amount = controller.text,
         toolbarOptions: ToolbarOptions(
             copy: true, cut: false, paste: false, selectAll: true),
         keyboardType: TextInputType.numberWithOptions(
@@ -90,7 +93,7 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
 
   @override
   void dispose() {
-    controller.dispose();
+    controller!.dispose();
     super.dispose();
   }
 }

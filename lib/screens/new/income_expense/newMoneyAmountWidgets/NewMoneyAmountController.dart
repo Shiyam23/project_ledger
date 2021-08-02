@@ -8,7 +8,7 @@ class NewMoneyAmountController extends TextEditingController {
   final bool symbolIsRight;
   final int precision;
   final double initialValue;
-  String lastValue;
+  String? lastValue;
 
   NewMoneyAmountController(
       {this.initialValue = 0.0,

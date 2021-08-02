@@ -8,16 +8,16 @@ part of 'CategoryIcon.dart';
 
 class CategoryIconAdapter extends TypeAdapter<CategoryIcon> {
   @override
-  final typeId = 0;
+  final int typeId = 0;
 
   @override
   CategoryIcon read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CategoryIcon(
-      iconData: fields[0] as CategoryIconData,
+      iconData: fields[0] as CategoryIconData?,
     );
   }
 
@@ -28,4 +28,14 @@ class CategoryIconAdapter extends TypeAdapter<CategoryIcon> {
       ..writeByte(0)
       ..write(obj.iconData);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CategoryIconAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

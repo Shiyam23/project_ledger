@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class NewBottonButtons extends StatelessWidget {
-  final Function onSave;
-  final Function onReset;
+  final Function? onSave;
+  final Function? onReset;
 
   NewBottonButtons({this.onSave, this.onReset});
 
@@ -17,7 +17,7 @@ class NewBottonButtons extends StatelessWidget {
             "Zurücksetzen",
             style: TextStyle(fontSize: 15),
           ),
-          onPressed: onReset,
+          onPressed: onReset as void Function()?,
           color: Theme.of(context).colorScheme.primary,
           textColor: Colors.white,
           minWidth: MediaQuery.of(context).size.width / 3,
@@ -28,7 +28,7 @@ class NewBottonButtons extends StatelessWidget {
             "Speichern",
             style: TextStyle(fontSize: 15),
           ),
-          onPressed: onSave,
+          onPressed: onSave as void Function()?,
           color: Theme.of(context).colorScheme.primary,
           textColor: Colors.white,
           minWidth: MediaQuery.of(context).size.width / 3,

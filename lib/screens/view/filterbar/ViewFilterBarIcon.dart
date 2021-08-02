@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class ViewFilterBarIcon extends StatefulWidget {
   ViewFilterBarIcon({
-    Key key,
-    @required this.width,
-    @required this.icon,
+    Key? key,
+    required this.width,
+    required this.icon,
     this.onTap,
     this.canOpen = true,
     this.isOpen = false,
@@ -13,14 +13,14 @@ class ViewFilterBarIcon extends StatefulWidget {
   final double width;
   final IconData icon;
   final bool canOpen;
-  final ValueChanged<bool> onTap;
+  final ValueChanged<bool?>? onTap;
   final bool isOpen;
 
   _ViewFilterBarIconState createState() => _ViewFilterBarIconState();
 }
 
 class _ViewFilterBarIconState extends State<ViewFilterBarIcon> {
-  bool _open;
+  bool? _open;
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _ViewFilterBarIconState extends State<ViewFilterBarIcon> {
               widget.canOpen
                   ? Center(
                       child: Icon(
-                          _open ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                          _open! ? Icons.arrow_drop_up : Icons.arrow_drop_down,
                           size: widget.width / 3))
                   : Container(),
             ],
@@ -48,9 +48,9 @@ class _ViewFilterBarIconState extends State<ViewFilterBarIcon> {
           onTap: () {
             if (widget.canOpen)
               setState(() {
-                _open = !_open;
+                _open = !_open!;
               });
-            if (widget.onTap != null) widget.onTap(_open);
+            if (widget.onTap != null) widget.onTap!(_open);
           }),
     );
   }

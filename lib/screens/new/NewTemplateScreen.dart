@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NewTemplateScreen extends StatefulWidget {
-  NewTemplateScreen({Key key}) : super(key: key);
+  NewTemplateScreen({Key? key}) : super(key: key);
 
   _NewTemplateScreenState createState() => _NewTemplateScreenState();
 }

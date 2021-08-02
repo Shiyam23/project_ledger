@@ -1,5 +1,4 @@
-import 'package:flushbar/flushbar.dart';
-import 'package:flushbar/flushbar_helper.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -10,28 +9,28 @@ import 'package:project_ez_finance/screens/new/income_expense/newTextFieldContro
 import '../NewTextField.dart';
 
 class NewRepetitionTextFieldController extends TextEditingController {
-  Repetition initialRepetition = Repetition.none;
+  Repetition? initialRepetition = Repetition.none;
 
   NewRepetitionTextFieldController({this.initialRepetition}) {
     this.text = initialRepetition.toString();
   }
 
-  Future<Repetition> chooseRepetition(BuildContext contextS) async {
+  Future<Repetition?> chooseRepetition(BuildContext contextS) async {
     //
-    CalenderUnit _selectedUnit = initialRepetition?.time ?? CalenderUnit.dayly;
+    CalenderUnit? _selectedUnit = initialRepetition?.time ?? CalenderUnit.dayly;
     DateTime _selectedEndDate = DateTime.now().add(Duration(days: 30));
 
-    bool isEnabled = initialRepetition != Repetition.none;
+    bool? isEnabled = initialRepetition != Repetition.none;
 
     NewDateTextFieldController dateController = NewDateTextFieldController(
         initialValue: initialRepetition?.endDate ?? _selectedEndDate,
         startValue: DateTime.now().add(Duration(days: 1)),
         endValue: DateTime.now().add(Duration(days: 365 * 30)));
 
-    int _selectedAmount = initialRepetition?.amount ?? 1;
+    int? _selectedAmount = initialRepetition?.amount ?? 1;
     bool endDateEnabled = initialRepetition?.endDate != null;
 
-    Repetition rep = await showDialog<Repetition>(
+    Repetition? rep = await showDialog<Repetition>(
         context: contextS,
         builder: (BuildContext context) {
           return StatefulBuilder(
@@ -56,7 +55,7 @@ class NewRepetitionTextFieldController extends TextEditingController {
                               isDense: true,
                               isExpanded: true,
                               value: isEnabled,
-                              onChanged: (enabled) =>
+                              onChanged: (dynamic enabled) =>
                                   setDialogState(() => isEnabled = enabled),
                               items: [
                                 DropdownMenuItem(
@@ -96,10 +95,11 @@ class NewRepetitionTextFieldController extends TextEditingController {
                                 value: _selectedUnit,
                                 isDense: true,
                                 isExpanded: true,
-                                onChanged: (unit) => setDropDownState(
+                                onChanged: (dynamic unit) => setDropDownState(
                                     () => _selectedUnit = unit),
-                                decoration: InputDecoration(enabled: isEnabled),
-                                items: !isEnabled
+                                decoration:
+                                    InputDecoration(enabled: isEnabled!),
+                                items: !isEnabled!
                                     ? null
                                     : [
                                         DropdownMenuItem(
@@ -130,7 +130,7 @@ class NewRepetitionTextFieldController extends TextEditingController {
                       children: <Widget>[
                         Checkbox(
                           activeColor: Theme.of(context).colorScheme.primary,
-                          onChanged: !isEnabled
+                          onChanged: !isEnabled!
                               ? null
                               : (_) => setRowState(
                                   () => endDateEnabled = !endDateEnabled),
@@ -139,13 +139,13 @@ class NewRepetitionTextFieldController extends TextEditingController {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: NewTextField(
-                              enabled: isEnabled && endDateEnabled,
+                              enabled: isEnabled! && endDateEnabled,
                               labelText: "Enddatum",
                               fontSize: 17,
                               controller: dateController,
                               onTap: () async {
-                                DateTime temp =
-                                    await (dateController).selectDate(context);
+                                DateTime? temp = await ((dateController)
+                                    .selectDate(context) as Future<DateTime?>);
                                 if (temp != null) {
                                   setRowState(() => dateController.text =
                                       DateFormat("dd.MM.yyyy")
@@ -177,12 +177,12 @@ class NewRepetitionTextFieldController extends TextEditingController {
                       ),
                       onPressed: () {
                         if ((_selectedAmount == null || _selectedAmount == 0) &&
-                            isEnabled) {
+                            isEnabled!) {
                           showError(contextS);
                         } else
                           Navigator.pop(
                               context,
-                              isEnabled
+                              isEnabled!
                                   ? Repetition(
                                       amount: _selectedAmount,
                                       time: _selectedUnit,

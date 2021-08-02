@@ -13,18 +13,18 @@ enum ViewFilterBarTimeOptions {
 
 class ViewFilterBarTimeDialog extends StatefulWidget {
   ViewFilterBarTimeDialog({
-    Key key,
+    Key? key,
     this.initialOption = ViewFilterBarTimeOptions.individual,
   }) : super(key: key);
 
-  final ViewFilterBarTimeOptions initialOption;
+  final ViewFilterBarTimeOptions? initialOption;
 
   _ViewFilterBarTimeDialogState createState() =>
       _ViewFilterBarTimeDialogState();
 }
 
 class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
-  ViewFilterBarTimeOptions _option;
+  ViewFilterBarTimeOptions? _option;
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
             title: Text("Individual"),
             value: ViewFilterBarTimeOptions.individual,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -54,7 +54,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
             title: Text("Days"),
             value: ViewFilterBarTimeOptions.days,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -64,7 +64,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
             title: Text("Weeks"),
             value: ViewFilterBarTimeOptions.weeks,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -74,7 +74,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
             title: Text("Months"),
             value: ViewFilterBarTimeOptions.months,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -84,7 +84,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
             title: Text("Years"),
             value: ViewFilterBarTimeOptions.years,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -94,7 +94,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
             title: Text("Decades"),
             value: ViewFilterBarTimeOptions.decades,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });
@@ -104,7 +104,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
             title: Text("All"),
             value: ViewFilterBarTimeOptions.all,
             groupValue: _option,
-            onChanged: (option) {
+            onChanged: (dynamic option) {
               setState(() {
                 _option = option;
               });

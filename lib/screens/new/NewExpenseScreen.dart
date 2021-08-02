@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/models/Repetition.dart';
+import 'package:project_ez_finance/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
 import './income_expense/newTextFieldController/NewAccountTextFieldController.dart';
 import './income_expense/newTextFieldController/NewDateTextFieldController.dart';
 import './income_expense/NewCategoryIcon.dart';
@@ -26,21 +27,21 @@ class NewExpenseScreen extends StatefulWidget {
 
 class _NewExpenseScreenState extends State<NewExpenseScreen> {
   // Selections and Settings
-  final Transaction transaction = Transaction();
-  static String currency = " €";
+  static String currency = "€";
   static DateTime _selectedDate = DateTime.now();
-  Account _selectedAccount;
-  Repetition _selectedRepetition;
+  Account? _selectedAccount;
+  Repetition? _selectedRepetition;
   CalenderUnit chosenTimeUnit = CalenderUnit.monthly;
 
   //Controllers
-  NewAccountTextFieldController accountController;
-  NewDateTextFieldController dateController;
-  NewRepetitionTextFieldController repeatController;
+  NewAccountTextFieldController? accountController;
+  NewDateTextFieldController? dateController;
+  NewRepetitionTextFieldController? repeatController;
+  NewMoneyAmountController? moneyAmountController;
 
   //Input fields
   NewTitleTextField titleField = NewTitleTextField();
-  NewMoneyAmount moneyField;
+  late NewMoneyAmount moneyField;
 
   _NewExpenseScreenState() {
     dateController = NewDateTextFieldController(
@@ -50,7 +51,8 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
     accountController = NewAccountTextFieldController();
     repeatController =
         NewRepetitionTextFieldController(initialRepetition: Repetition.none);
-    moneyField = NewMoneyAmount(transaction: transaction, currency: currency);
+    moneyField = NewMoneyAmount(currency: currency);
+    moneyAmountController = moneyField.controller;
   }
 
   @override
@@ -85,9 +87,10 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
             labelText: "Datum",
             controller: dateController,
             onTap: () async {
-              DateTime temp = await (dateController).selectDate(context);
+              DateTime? temp = await (dateController!.selectDate(context)
+                  as Future<DateTime?>);
               if (temp != null) {
-                setState(() => dateController.text =
+                setState(() => dateController!.text =
                     DateFormat("dd.MM.yyyy").format(temp).toString());
                 _selectedDate = temp;
               }
@@ -97,9 +100,9 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
             labelText: "Konto",
             controller: accountController,
             onTap: () async {
-              Account temp = await accountController.chooseAccount(context);
+              Account? temp = await accountController!.chooseAccount(context);
               if (temp != null) {
-                setState(() => accountController.text = temp.toString());
+                setState(() => accountController!.text = temp.toString());
                 _selectedAccount = temp;
               }
             }),
@@ -108,10 +111,10 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
             labelText: "Dauerauftrag",
             controller: repeatController,
             onTap: () async {
-              Repetition temp =
-                  await repeatController.chooseRepetition(context);
+              Repetition? temp =
+                  await repeatController!.chooseRepetition(context);
               if (temp != null) {
-                setState(() => repeatController.text = temp.toString());
+                setState(() => repeatController!.text = temp.toString());
                 _selectedRepetition = temp;
               }
             }),
@@ -128,33 +131,33 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
 
   @override
   void dispose() {
-    dateController.dispose();
-    accountController.dispose();
-    repeatController.dispose();
+    dateController!.dispose();
+    accountController!.dispose();
+    repeatController!.dispose();
     super.dispose();
   }
 
   void saveTransaction() {
-    transaction.date = _selectedDate;
-    transaction.account = Account(
-        icon: CategoryIcon(
-      iconData: CategoryIconData(
-          backgroundColorInt: Theme.of(context).backgroundColor.value,
-          iconName: "suitcaseRolling"),
-    ));
-    transaction.isExpense = true;
-    transaction.repetition = _selectedRepetition;
-    transaction.category = Category(
-        name: "Testkategorie",
-        icon: CategoryIcon(
+    Transaction transaction = Transaction(
+        account: Account(
+            icon: CategoryIcon(
           iconData: CategoryIconData(
               backgroundColorInt: Theme.of(context).backgroundColor.value,
               iconName: "suitcaseRolling"),
-        ));
-    transaction.name = titleField.getText();
-
-    BlocProvider.of<DatabaseBloc>(context)
-        .dispatch(AddTransaction(transaction));
+        )),
+        amount: moneyAmountController?.text ?? "0,75 €",
+        category: Category(
+            name: "Testkategorie",
+            icon: CategoryIcon(
+              iconData: CategoryIconData(
+                  backgroundColorInt: Theme.of(context).backgroundColor.value,
+                  iconName: "suitcaseRolling"),
+            )),
+        isExpense: true,
+        name: titleField.getText(),
+        repetition: _selectedRepetition,
+        date: _selectedDate);
+    BlocProvider.of<DatabaseBloc>(context).add(AddTransaction(transaction));
   }
 
   void resetInput() {}

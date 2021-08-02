@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
 
 class ViewTabBar extends StatelessWidget implements PreferredSizeWidget {
-  final void Function(int index) setPage;
-  final LayoutController layoutController;
+  final void Function(int index)? setPage;
+  final LayoutController? layoutController;
 
-  const ViewTabBar({this.layoutController, this.setPage, Key key})
+  const ViewTabBar({this.layoutController, this.setPage, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: TabBar(
-        onTap: (index) => setPage(index - 1),
+        onTap: (index) => setPage!(index - 1),
         indicatorColor: Colors.white,
-        controller: layoutController.overViewTabController,
+        controller: layoutController!.overViewTabController,
         tabs: <Widget>[
           Text(
             "Standing orders",

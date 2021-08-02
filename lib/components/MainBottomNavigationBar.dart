@@ -5,11 +5,11 @@ import 'package:project_ez_finance/themes/DTheme.dart';
 
 class MainBottomNaviationBar extends StatefulWidget {
   //
-  final LayoutController layoutController;
+  final LayoutController? layoutController;
   final void Function(int index) setPage;
 
   MainBottomNaviationBar(
-      {@required this.layoutController, @required this.setPage, key})
+      {required this.layoutController, required this.setPage, key})
       : super(key: key);
 
   _MainBottomNaviationBarState createState() =>
@@ -17,7 +17,7 @@ class MainBottomNaviationBar extends StatefulWidget {
 }
 
 class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
-  final LayoutController lController;
+  final LayoutController? lController;
   final void Function(int index) setPage;
 
   final List<BottomNavigationBarItem> bottomNavBarItems = [
@@ -46,16 +46,16 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        backgroundColor: DTheme.of(context).themeData.bottomAppBarColor,
-        currentIndex: lController.bottomSelectedIndex,
+        backgroundColor: DTheme.of(context)!.themeData.bottomAppBarColor,
+        currentIndex: lController!.bottomSelectedIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white38,
         items: bottomNavBarItems,
         onTap: (index) {
-          lController.bottomSelectedIndex = index;
+          lController!.bottomSelectedIndex = index;
           setPage(index);
-          lController.overViewTabController.index = 1;
-          lController.newTabController.index = 0;
+          lController!.overViewTabController.index = 1;
+          lController!.newTabController.index = 0;
         });
   }
 }

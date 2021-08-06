@@ -17,14 +17,15 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Transaction(
-      name: fields[0] as String?,
-      category: fields[2] as Dollavu.Category?,
-      date: fields[1] as DateTime?,
-      amount: fields[3] as String?,
-      isExpense: fields[4] as bool?,
-      repetition: fields[5] as Repetition?,
-      account: fields[6] as Account?,
-    )..addDateTime = fields[7] as DateTime?;
+      name: fields[0] as dynamic,
+      category: fields[2] as dynamic,
+      date: fields[1] as dynamic,
+      amount: fields[3] as dynamic,
+      isExpense: fields[4] as dynamic,
+      repetition: fields[5] as dynamic,
+      account: fields[6] as dynamic,
+      addDateTime: fields[7] as dynamic,
+    );
   }
 
   @override

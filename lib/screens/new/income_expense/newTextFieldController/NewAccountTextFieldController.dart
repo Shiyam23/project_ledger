@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import 'package:project_ez_finance/models/Account.dart';
@@ -8,53 +7,40 @@ import 'package:project_ez_finance/models/Account.dart';
 class NewAccountTextFieldController extends TextEditingController {
   NewAccountTextFieldController() : super(text: "Privatkonto");
 
-  Future<Account?> chooseAccount(BuildContext context) async {
+  Future<Account?> chooseAccount(BuildContext context, String initialText, List<Account> accounts) async {
     Account? chosenAccount = await showDialog<Account>(
         context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            title: const Text('Wähle Konto aus'),
-            children: <Widget>[
-              ListTile(
-                leading: CategoryIcon(
-                  iconData: CategoryIconData(
-                    backgroundColorInt:
-                        Theme.of(context).colorScheme.primary.value,
-                    iconName: "home",
-                    iconColorInt: Colors.white.value,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context, Account(name: "Privatkonto"));
-                },
-                title: const Text('Privatkonto'),
-                subtitle: const Text("aktualisiert: 04.10.2019"),
-                trailing: Text("235,00€"),
-                isThreeLine: false,
-                dense: true,
-              ),
-              Divider(),
-              ListTile(
-                leading: CategoryIcon(
-                  iconData: CategoryIconData(
-                    backgroundColorInt:
-                        Theme.of(context).colorScheme.primary.value,
-                    iconName: "suitcaseRolling",
-                    iconColorInt: Colors.white.value,
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context, Account(name: "Geschäftskonto"));
-                },
-                title: const Text('Geschäftskonto'),
-                subtitle: const Text("aktualisiert: 04.10.2019 assdad"),
-                isThreeLine: false,
-                dense: true,
-              ),
-            ],
-          );
-        });
-
+        builder: (BuildContext context) =>
+            SimpleDialog(title: const Text('Select Account'), 
+            children: getAccountTiles(accounts, context),
+            //titlePadding: EdgeInsets.only(top:24, left: 24, right: 24,  bottom: 30),
+        )
+    );
     return chosenAccount;
+  }
+
+  List<Widget> getAccountTiles(List<Account> accounts, BuildContext context) {
+    return accounts.map<List<Widget>>((e) {
+      CategoryIconData iconData = e.icon.iconData;
+      List<Widget> widgets = 
+        [Divider(thickness: 2),
+          ListTile(
+            title: Text(e.name),
+            subtitle: const Text("updated: 04.10.2019"),
+            isThreeLine: false,
+            dense: true,
+            leading: CategoryIcon(
+              iconData: CategoryIconData(
+                backgroundColorInt: 
+                  iconData.backgroundColorInt ??
+                  Theme.of(context).colorScheme.primary.value,
+                iconColorInt: iconData.iconColorInt,
+                iconName: iconData.iconName,
+              ),
+            ),
+            onTap: () => Navigator.pop<Account>(context, e)),
+        ];
+        return widgets;
+    }).expand((e) => e).toList();
   }
 }

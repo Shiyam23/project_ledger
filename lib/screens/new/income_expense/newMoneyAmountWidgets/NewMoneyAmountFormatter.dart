@@ -9,9 +9,6 @@ class FormatHelper {
   FormatHelper({this.thousandSeparator, this.decimalSeparator});
 
   bool isNumeric(String str) {
-    if (str == null) {
-      return false;
-    }
     return double.tryParse(str) != null;
   }
 
@@ -21,7 +18,8 @@ class FormatHelper {
 
     String wholeAmount = numberParts[0];
 
-    List<String?> digits = wholeAmount.split("").reversed.toList(growable: true);
+    List<String?> digits =
+        wholeAmount.split("").reversed.toList(growable: true);
     for (int i = 3; i < digits.length; i += 4)
       digits.insert(i, thousandSeparator);
     return digits.reversed.join("") + decimalSeparator! + numberParts[1];
@@ -138,7 +136,8 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
           selection: newValue.selection);
     }
 
-    if (newText.length > 20 || !newText.endsWith(" " + symbol!)) return oldValue;
+    if (newText.length > 20 || !newText.endsWith(" " + symbol!))
+      return oldValue;
 
     // Update thousands separator
     String withThousandPoints = helper.addThousandsPoint(newText);

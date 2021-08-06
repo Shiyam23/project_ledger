@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
 
@@ -12,6 +13,7 @@ class ViewTabBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: TabBar(
+        dragStartBehavior: DragStartBehavior.down,
         onTap: (index) => setPage!(index - 1),
         indicatorColor: Colors.white,
         controller: layoutController!.overViewTabController,

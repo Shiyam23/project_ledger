@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/DollavuDialog.dart';
-
-enum ViewFilterBarTimeOptions {
-  individual,
-  days,
-  weeks,
-  months,
-  years,
-  decades,
-  all,
-}
+import 'package:project_ez_finance/models/Modes.dart' show TimeMode;
 
 class ViewFilterBarTimeDialog extends StatefulWidget {
   ViewFilterBarTimeDialog({
     Key? key,
-    this.initialOption = ViewFilterBarTimeOptions.individual,
+    this.initialOption = TimeMode.Individual,
   }) : super(key: key);
 
-  final ViewFilterBarTimeOptions? initialOption;
+  final TimeMode? initialOption;
 
   _ViewFilterBarTimeDialogState createState() =>
       _ViewFilterBarTimeDialogState();
 }
 
 class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
-  ViewFilterBarTimeOptions? _option;
+  TimeMode? _option;
 
   @override
   void initState() {
@@ -42,7 +33,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
         children: <Widget>[
           RadioListTile(
             title: Text("Individual"),
-            value: ViewFilterBarTimeOptions.individual,
+            value: TimeMode.Individual,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -52,7 +43,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
           ),
           RadioListTile(
             title: Text("Days"),
-            value: ViewFilterBarTimeOptions.days,
+            value: TimeMode.Days,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -62,7 +53,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
           ),
           RadioListTile(
             title: Text("Weeks"),
-            value: ViewFilterBarTimeOptions.weeks,
+            value: TimeMode.Weeks,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -72,7 +63,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
           ),
           RadioListTile(
             title: Text("Months"),
-            value: ViewFilterBarTimeOptions.months,
+            value: TimeMode.Months,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -82,17 +73,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
           ),
           RadioListTile(
             title: Text("Years"),
-            value: ViewFilterBarTimeOptions.years,
-            groupValue: _option,
-            onChanged: (dynamic option) {
-              setState(() {
-                _option = option;
-              });
-            },
-          ),
-          RadioListTile(
-            title: Text("Decades"),
-            value: ViewFilterBarTimeOptions.decades,
+            value: TimeMode.Years,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -102,7 +83,7 @@ class _ViewFilterBarTimeDialogState extends State<ViewFilterBarTimeDialog> {
           ),
           RadioListTile(
             title: Text("All"),
-            value: ViewFilterBarTimeOptions.all,
+            value: TimeMode.Overall,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {

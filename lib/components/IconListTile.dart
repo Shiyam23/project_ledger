@@ -33,9 +33,9 @@ class _IconListTileState extends State<IconListTile>
 
     icon = CategoryIcon(
       iconData: CategoryIconData(
-        backgroundColorInt: oldIcon.iconData!.backgroundColorInt,
-        iconName: oldIcon.iconData!.iconName,
-        iconColorInt: oldIcon.iconData!.iconColorInt,
+        backgroundColorInt: oldIcon.iconData.backgroundColorInt,
+        iconName: oldIcon.iconData.iconName,
+        iconColorInt: oldIcon.iconData.iconColorInt,
       ),
       selectable: true,
       selected: false,
@@ -49,11 +49,6 @@ class _IconListTileState extends State<IconListTile>
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Divider(
-          height: 0,
-          color: Theme.of(context).colorScheme.primary,
-          thickness: 0.15,
-        ),
         ListTile(
           onLongPress: () {
             flipController!.forward();

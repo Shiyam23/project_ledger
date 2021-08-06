@@ -16,12 +16,20 @@ class AccountAdapter extends TypeAdapter<Account> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Account();
+    return Account(
+      name: fields[0] as String,
+      icon: fields[1] as CategoryIcon,
+    );
   }
 
   @override
   void write(BinaryWriter writer, Account obj) {
-    writer..writeByte(0);
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.icon);
   }
 
   @override

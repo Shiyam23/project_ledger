@@ -10,7 +10,6 @@ import './income_expense/NewBottomButtons.dart';
 import './income_expense/NewSaveAsTemplate.dart';
 import './income_expense/NewTextField.dart';
 import './income_expense/NewTitleTextField.dart';
-import './income_expense/./newMoneyAmountWidgets/NewMoneyAmount.dart';
 import './income_expense/newTextFieldController/NewRepetitionTextFieldController.dart';
 
 class NewIncomeScreen extends StatefulWidget {
@@ -87,7 +86,8 @@ class _NewIncomeScreenState extends State<NewIncomeScreen> {
             labelText: "Konto",
             controller: accountController,
             onTap: () async {
-              Account? temp = await accountController!.chooseAccount(context);
+              Account?
+                  temp; // = await accountController!.chooseAccount(context);
               if (temp != null) {
                 setState(() => accountController!.text = temp.toString());
                 _selectedAccount = temp;

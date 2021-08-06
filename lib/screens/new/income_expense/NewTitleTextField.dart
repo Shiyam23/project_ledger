@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class NewTitleTextField extends StatelessWidget {
-  TextEditingController controller = TextEditingController();
+  final TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SizedBox(

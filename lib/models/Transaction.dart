@@ -12,48 +12,58 @@ import 'Repetition.dart';
 part 'Transaction.g.dart';
 
 @HiveType(typeId: 3)
-class Transaction implements SelectableTile {
+// ignore: must_be_immutable
+class Transaction extends Equatable implements SelectableTile {
   @HiveField(0)
-  String? name;
+  String name;
   @HiveField(1)
-  DateTime? date;
+  DateTime date;
   @HiveField(2)
   Dollavu.Category? category;
   @HiveField(3)
-  String? amount;
+  String amount;
   @HiveField(4)
-  bool? isExpense;
+  bool isExpense;
   @HiveField(5)
   Repetition? repetition;
   @HiveField(6)
-  Account? account;
+  Account account;
   @HiveField(7)
-  DateTime? addDateTime;
+  DateTime addDateTime;
 
   Transaction(
-      {required this.name,
-      required this.category,
-      required this.date,
-      required this.amount,
-      required this.isExpense,
-      required this.repetition,
-      required this.account});
+      {required name,
+      required category,
+      required date,
+      required amount,
+      required isExpense,
+      required repetition,
+      required account,
+      required addDateTime})
+      : name = name,
+        category = category,
+        date = date,
+        amount = amount,
+        isExpense = isExpense,
+        repetition = repetition,
+        account = account,
+        addDateTime = addDateTime;
 
   @override
   Text get rightText => Text(amount.toString(),
       style: TextStyle(
           fontSize: 18,
-          color: isExpense! ? Colors.red : Colors.green,
+          color: isExpense ? Colors.red : Colors.green,
           fontWeight: FontWeight.w500));
 
   @override
   Text get secondaryTitle => Text(
-        "${this.category!.name}\n" + DateFormat("dd.MM.yyyy").format(date!),
+        "${this.category!.name}\n" + DateFormat("dd.MM.yyyy").format(date),
         style: TextStyle(fontSize: 13),
       );
 
   @override
-  Text get title => Text(name!);
+  Text get title => Text(name);
 
   @override
   List<Object?> get props => [

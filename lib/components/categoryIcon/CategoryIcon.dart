@@ -10,14 +10,14 @@ part 'CategoryIcon.g.dart';
 @HiveType(typeId: 0)
 class CategoryIcon extends StatefulWidget {
   @HiveField(0)
-  final CategoryIconData? iconData;
+  final CategoryIconData iconData;
   final bool selectable;
   final bool selected;
   final void Function()? onTap;
   final AnimationController? flipController;
 
   CategoryIcon({
-    this.iconData,
+    required this.iconData,
     this.selectable = false,
     this.selected = false,
     this.onTap,
@@ -44,8 +44,8 @@ class _CategoryIconState extends State<CategoryIcon>
     _flipController ??=
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
 
-    _animation =
-        Tween<double>(begin: 0, end: (1 / 2) * math.pi).animate(_flipController!)
+    _animation = Tween<double>(begin: 0, end: (1 / 2) * math.pi)
+        .animate(_flipController!)
           ..addListener(() {
             setState(() {});
           })
@@ -59,11 +59,9 @@ class _CategoryIconState extends State<CategoryIcon>
 
   @override
   Widget build(BuildContext context) {
-    //
-
     final Icon frontSideIcon = Icon(
-      widget.iconData!.icon,
-      color: Color(widget.iconData!.iconColorInt!),
+      widget.iconData.icon,
+      color: Color(widget.iconData.iconColorInt!),
     );
 
     final Container frontSideContainer = Container(
@@ -72,7 +70,7 @@ class _CategoryIconState extends State<CategoryIcon>
       width: MediaQuery.of(context).size.width / 7.5,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Color(widget.iconData!.backgroundColorInt!),
+        color: Color(widget.iconData.backgroundColorInt!),
       ),
       child: frontSideIcon,
     );

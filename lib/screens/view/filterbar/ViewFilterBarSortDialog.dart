@@ -1,31 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/DollavuDialog.dart';
-
-enum ViewFilterBarSortOptions {
-  dateDown,
-  dateUp,
-  amountDown,
-  amountUp,
-  nameDown,
-  nameUp,
-  categoryDown,
-  categoryUp,
-}
+import 'package:project_ez_finance/models/Modes.dart' show SortMode;
 
 class ViewFilterBarSortDialog extends StatefulWidget {
   ViewFilterBarSortDialog({
     Key? key,
-    this.initialOption = ViewFilterBarSortOptions.dateUp,
+    this.initialOption = SortMode.DateAsc,
   }) : super(key: key);
 
-  final ViewFilterBarSortOptions? initialOption;
+  final SortMode? initialOption;
 
   _ViewFilterBarSortDialogState createState() =>
       _ViewFilterBarSortDialogState();
 }
 
 class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
-  ViewFilterBarSortOptions? _option;
+  SortMode? _option;
 
   @override
   void initState() {
@@ -43,7 +33,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
         children: <Widget>[
           RadioListTile(
             title: Text("Date descending"),
-            value: ViewFilterBarSortOptions.dateDown,
+            value: SortMode.DateDesc,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -53,7 +43,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
           ),
           RadioListTile(
             title: Text("Date ascending"),
-            value: ViewFilterBarSortOptions.dateUp,
+            value: SortMode.DateAsc,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -63,7 +53,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
           ),
           RadioListTile(
             title: Text("Amount descending"),
-            value: ViewFilterBarSortOptions.amountDown,
+            value: SortMode.AmountDesc,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -73,7 +63,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
           ),
           RadioListTile(
             title: Text("Amount ascending"),
-            value: ViewFilterBarSortOptions.amountUp,
+            value: SortMode.AmountAsc,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -83,7 +73,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
           ),
           RadioListTile(
             title: Text("Name descending"),
-            value: ViewFilterBarSortOptions.nameDown,
+            value: SortMode.NameDesc,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -93,7 +83,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
           ),
           RadioListTile(
             title: Text("Name ascending"),
-            value: ViewFilterBarSortOptions.nameUp,
+            value: SortMode.NameAsc,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -103,7 +93,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
           ),
           RadioListTile(
             title: Text("Category descending"),
-            value: ViewFilterBarSortOptions.categoryDown,
+            value: SortMode.CategoryDesc,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -113,7 +103,7 @@ class _ViewFilterBarSortDialogState extends State<ViewFilterBarSortDialog> {
           ),
           RadioListTile(
             title: Text("Category ascending"),
-            value: ViewFilterBarSortOptions.categoryUp,
+            value: SortMode.CategoryAsc,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {

@@ -1,5 +1,9 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/account_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/account_event.dart';
+import 'package:project_ez_finance/blocs/bloc/account_state.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
@@ -31,13 +35,17 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
   static DateTime _selectedDate = DateTime.now();
   Account? _selectedAccount;
   Repetition? _selectedRepetition;
-  CalenderUnit chosenTimeUnit = CalenderUnit.monthly;
+  CalenderUnit? chosenTimeUnit = CalenderUnit.monthly;
 
   //Controllers
   NewAccountTextFieldController? accountController;
   NewDateTextFieldController? dateController;
   NewRepetitionTextFieldController? repeatController;
   NewMoneyAmountController? moneyAmountController;
+
+  //Accounts
+  List<Account>? allAccounts;
+  String? mainAccountName;
 
   //Input fields
   NewTitleTextField titleField = NewTitleTextField();
@@ -57,6 +65,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<AccountBloc>(context).add(GetAccount());
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
@@ -87,8 +96,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
             labelText: "Datum",
             controller: dateController,
             onTap: () async {
-              DateTime? temp = await (dateController!.selectDate(context)
-                  as Future<DateTime?>);
+              DateTime? temp = await (dateController!.selectDate(context));
               if (temp != null) {
                 setState(() => dateController!.text =
                     DateFormat("dd.MM.yyyy").format(temp).toString());
@@ -96,16 +104,29 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
               }
             }),
         Spacer(),
-        NewTextField(
-            labelText: "Konto",
-            controller: accountController,
-            onTap: () async {
-              Account? temp = await accountController!.chooseAccount(context);
-              if (temp != null) {
-                setState(() => accountController!.text = temp.toString());
-                _selectedAccount = temp;
-              }
-            }),
+        BlocListener<AccountBloc, AccountState>(
+          listener: (context, state) {
+            if (state is AccountLoaded) {
+              allAccounts = state.accountList;
+              if (allAccounts == null) return;
+              _selectedAccount =
+                  allAccounts!.isNotEmpty ? allAccounts![0] : null;
+              mainAccountName = _selectedAccount?.name;
+            }
+          },
+          child: NewTextField(
+              labelText: "Konto",
+              controller: accountController,
+              onTap: () async {
+                if (mainAccountName == null) return;
+                Account? temp = await accountController!
+                    .chooseAccount(context, mainAccountName!, allAccounts!);
+                if (temp != null) {
+                  setState(() => accountController!.text = temp.toString());
+                  _selectedAccount = temp;
+                }
+              }),
+        ),
         Spacer(),
         NewTextField(
             labelText: "Dauerauftrag",
@@ -138,13 +159,13 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
   }
 
   void saveTransaction() {
+    if (_selectedAccount == null) {
+      showError(context);
+      return;
+    }
     Transaction transaction = Transaction(
-        account: Account(
-            icon: CategoryIcon(
-          iconData: CategoryIconData(
-              backgroundColorInt: Theme.of(context).backgroundColor.value,
-              iconName: "suitcaseRolling"),
-        )),
+        addDateTime: DateTime.now(),
+        account: _selectedAccount,
         amount: moneyAmountController?.text ?? "0,75 €",
         category: Category(
             name: "Testkategorie",
@@ -157,8 +178,31 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
         name: titleField.getText(),
         repetition: _selectedRepetition,
         date: _selectedDate);
-    BlocProvider.of<DatabaseBloc>(context).add(AddTransaction(transaction));
+    BlocProvider.of<TransactionBloc>(context)
+        .add(AddTransaction(transaction, _selectedAccount!));
+    this.resetInput();
   }
 
-  void resetInput() {}
+  void resetInput() {
+    this.moneyAmountController?.text = "0,00 €";
+    this.titleField.controller.clear();
+    this.accountController?.text = mainAccountName ?? "";
+    this._selectedAccount = allAccounts != null ? allAccounts![0] : null;
+    this.dateController?.initialValue = DateTime.now();
+  }
+
+  Future showError(context) {
+    return Flushbar(
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      icon: Icon(
+        Icons.warning,
+        size: 28.0,
+        color: Colors.red[300],
+      ),
+      leftBarIndicatorColor: Colors.red[300],
+      duration: const Duration(seconds: 3),
+      title: 'Invalid Input!',
+      message: 'Account must be selected',
+    ).show(context);
+  }
 }

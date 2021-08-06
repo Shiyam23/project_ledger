@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/models/Modes.dart';
 import 'ViewFilterBarTimeDialog.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
@@ -9,7 +10,10 @@ import 'ViewFilterBarIcon.dart';
 import 'ViewFilterBarSearch.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
-  ViewFilterBarSection({Key? key}) : super(key: key);
+  final TransactionRequest request;
+  ViewFilterBarSection({Key? key, required TransactionRequest request})
+      : request = request,
+        super(key: key);
 
   _ViewFilterBarSectionState createState() => _ViewFilterBarSectionState();
 }
@@ -18,33 +22,62 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   bool _openSearchBar = false;
   bool _openFilterBar = false;
 
-  ViewFilterBarTimeOptions? _timeOption;
-  ViewFilterBarViewOptions? _viewOption;
-  ViewFilterBarSortOptions? _sortOption;
+  TimeMode? _timeOption;
+  ViewMode? _viewOption;
+  SortMode? _sortOption;
+  DateTimeRange? _dateRange;
 
   @override
   void initState() {
     super.initState();
-    _timeOption = ViewFilterBarTimeOptions.individual;
-    _viewOption = ViewFilterBarViewOptions.list;
-    _sortOption = ViewFilterBarSortOptions.dateDown;
+    _timeOption = widget.request.timeMode;
+    _viewOption = widget.request.viewMode;
+    _sortOption = widget.request.sortMode;
+    _dateRange = widget.request.dateRange;
   }
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width / 6;
+    double _paddingWidth = 20;
+    double _width = (MediaQuery.of(context).size.width - _paddingWidth * 2) / 6;
 
     return Column(
       children: <Widget>[
         AppBar(
           actions: <Widget>[
+            SizedBox(width: _paddingWidth),
             ViewFilterBarIcon(
               width: _width,
+              isOpen: _openSearchBar,
+              icon: Icons.search,
+              onTap: (open) {
+                setState(() {
+                  _openSearchBar = open ?? false;
+                });
+              },
+            ),
+            ViewFilterBarIcon(
+              width: _width,
+              icon: Icons.calendar_today,
               canOpen: false,
-              icon: Icons.file_upload,
-              onTap: (open) => {
-                BlocProvider.of<DatabaseBloc>(context).add(DeleteAll()),
-                print("exporting ...")
+              onTap: (open) async {
+                DateTime start = DateTime.now().subtract(Duration(days: 365));
+                DateTime end = DateTime.now().add(Duration(days: 365));
+                _dateRange = await showDateRangePicker(
+                    context: context,
+                    firstDate: start,
+                    lastDate: end,
+                    initialDateRange: widget.request.dateRange);
+                if (_dateRange != null) {
+                  _dateRange = DateTimeRange(
+                      start: _dateRange!.start,
+                      end: _dateRange!.end
+                          .add(Duration(days: 1))
+                          .subtract(Duration(microseconds: 1)));
+                  widget.request.dateRange = _dateRange!;
+                }
+                BlocProvider.of<TransactionBloc>(context)
+                    .add(GetTransaction(widget.request));
               },
             ),
             ViewFilterBarIcon(
@@ -58,7 +91,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                       return ViewFilterBarViewDialog(
                           initialOption: _viewOption);
                     });
-                if (viewOption is ViewFilterBarViewOptions) {
+                if (viewOption is ViewMode) {
                   setState(() {
                     _viewOption = viewOption;
                   });
@@ -68,7 +101,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ViewFilterBarIcon(
               width: _width,
               canOpen: false,
-              icon: Icons.calendar_today,
+              icon: Icons.compress,
               onTap: (open) async {
                 dynamic timeOption = await showDialog(
                     context: context,
@@ -76,7 +109,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                       return ViewFilterBarTimeDialog(
                           initialOption: _timeOption);
                     });
-                if (timeOption is ViewFilterBarTimeOptions) {
+                if (timeOption is TimeMode) {
                   setState(() {
                     _timeOption = timeOption;
                   });
@@ -94,7 +127,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                       return ViewFilterBarSortDialog(
                           initialOption: _sortOption);
                     });
-                if (sortOption is ViewFilterBarSortOptions) {
+                if (sortOption is SortMode) {
                   setState(() {
                     _sortOption = sortOption;
                   });
@@ -103,27 +136,18 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewFilterBarIcon(
               width: _width,
-              isOpen: _openFilterBar,
-              icon: Icons.monetization_on,
-              onTap: (open) {
-                setState(() {
-                  _openFilterBar = open ?? false;
-                });
+              canOpen: false,
+              icon: Icons.file_upload,
+              onTap: (open) => {
+                BlocProvider.of<TransactionBloc>(context).add(DeleteAll()),
               },
             ),
-            ViewFilterBarIcon(
-              width: _width,
-              isOpen: _openSearchBar,
-              icon: Icons.search,
-              onTap: (open) {
-                setState(() {
-                  _openSearchBar = open ?? false;
-                });
-              },
-            ),
+            SizedBox(width: _paddingWidth),
           ],
         ),
-        _openSearchBar ? ViewFilterBarSearch() : Container(),
+        _openSearchBar
+            ? ViewFilterBarSearch(request: widget.request)
+            : Container(),
         _openFilterBar ? ViewFilterBarFilter() : Container(),
       ],
     );

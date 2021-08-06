@@ -17,7 +17,7 @@ class CategoryIconAdapter extends TypeAdapter<CategoryIcon> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CategoryIcon(
-      iconData: fields[0] as CategoryIconData?,
+      iconData: fields[0] as CategoryIconData,
     );
   }
 

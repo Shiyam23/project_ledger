@@ -31,12 +31,12 @@ class DollavuDialog extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            RaisedButton(
-              onPressed: onPressedCancel as void Function()? ?? (){},
+            TextButton(
+              onPressed: onPressedCancel as void Function()? ?? () {},
               child: Text("Cancel"),
             ),
-            RaisedButton(
-              onPressed: onPressedSave as void Function()? ?? (){},
+            TextButton(
+              onPressed: onPressedSave as void Function()? ?? () {},
               child: Text("Save"),
             ),
           ],

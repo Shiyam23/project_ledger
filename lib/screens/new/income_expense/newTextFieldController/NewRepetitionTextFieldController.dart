@@ -79,10 +79,10 @@ class NewRepetitionTextFieldController extends TextEditingController {
                               counterText: "",
                             ),
                             inputFormatters: [
-                              WhitelistingTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.digitsOnly
                             ],
                             maxLength: 2,
-                            maxLengthEnforced: true,
+                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             textAlign: TextAlign.center,
                             keyboardType: TextInputType.number,
                           ),
@@ -161,7 +161,7 @@ class NewRepetitionTextFieldController extends TextEditingController {
                 ),
                 ButtonBar(
                   children: <Widget>[
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         "Zurück",
                         style: TextStyle(
@@ -169,7 +169,7 @@ class NewRepetitionTextFieldController extends TextEditingController {
                       ),
                       onPressed: () => Navigator.pop(context),
                     ),
-                    FlatButton(
+                    TextButton(
                       child: Text(
                         "Speichern",
                         style: TextStyle(

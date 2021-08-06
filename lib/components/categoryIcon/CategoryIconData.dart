@@ -17,6 +17,7 @@ class CategoryIconData {
   final int? iconColorInt;
 
   static const Map<String, IconData> iconList = {
+    "home": FontAwesomeIcons.home,
     "shopping": FontAwesomeIcons.shoppingBag,
     "food": FontAwesomeIcons.utensils,
     "hobby": FontAwesomeIcons.running,

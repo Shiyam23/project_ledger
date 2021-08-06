@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/DollavuDialog.dart';
-
-enum ViewFilterBarViewOptions {
-  list,
-  graph,
-}
+import 'package:project_ez_finance/models/Modes.dart' show ViewMode;
 
 class ViewFilterBarViewDialog extends StatefulWidget {
   ViewFilterBarViewDialog({
     Key? key,
-    this.initialOption = ViewFilterBarViewOptions.list,
+    this.initialOption = ViewMode.List,
   }) : super(key: key);
 
-  final ViewFilterBarViewOptions? initialOption;
+  final ViewMode? initialOption;
 
   _ViewFilterBarViewDialogState createState() =>
       _ViewFilterBarViewDialogState();
 }
 
 class _ViewFilterBarViewDialogState extends State<ViewFilterBarViewDialog> {
-  ViewFilterBarViewOptions? _option;
+  ViewMode? _option;
 
   @override
   void initState() {
@@ -37,7 +33,7 @@ class _ViewFilterBarViewDialogState extends State<ViewFilterBarViewDialog> {
         children: <Widget>[
           RadioListTile(
             title: Text("List"),
-            value: ViewFilterBarViewOptions.list,
+            value: ViewMode.List,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {
@@ -47,7 +43,7 @@ class _ViewFilterBarViewDialogState extends State<ViewFilterBarViewDialog> {
           ),
           RadioListTile(
             title: Text("Graph"),
-            value: ViewFilterBarViewOptions.graph,
+            value: ViewMode.Graph,
             groupValue: _option,
             onChanged: (dynamic option) {
               setState(() {

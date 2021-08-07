@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class NewBottonButtons extends StatelessWidget {
-  final Function? onSave;
-  final Function? onReset;
+  final void Function()? onSave;
+  final void Function()? onReset;
 
   NewBottonButtons({this.onSave, this.onReset});
 
@@ -12,27 +12,20 @@ class NewBottonButtons extends StatelessWidget {
     return ButtonBar(
       alignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        MaterialButton(
+        ElevatedButton(
           child: Text(
             "Zurücksetzen",
             style: TextStyle(fontSize: 15),
           ),
-          onPressed: onReset as void Function()?,
-          color: Theme.of(context).colorScheme.primary,
-          textColor: Colors.white,
-          minWidth: MediaQuery.of(context).size.width / 3,
-          height: 45,
+          onPressed: onReset ,
         ),
-        MaterialButton(
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(),
           child: Text(
             "Speichern",
             style: TextStyle(fontSize: 15),
           ),
-          onPressed: onSave as void Function()?,
-          color: Theme.of(context).colorScheme.primary,
-          textColor: Colors.white,
-          minWidth: MediaQuery.of(context).size.width / 3,
-          height: 45,
+          onPressed: onSave,
         ),
       ],
     );

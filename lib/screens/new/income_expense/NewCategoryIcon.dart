@@ -15,7 +15,7 @@ class NewCategoryIcon extends StatelessWidget {
               color: Colors.black,
               strokeWidth: 1,
               dashPattern: [6, 6],
-              padding: EdgeInsets.all(1),
+              padding: const EdgeInsets.all(1),
               borderType: BorderType.Circle,
               child: CategoryIcon(
                 iconData: CategoryIconData(
@@ -29,7 +29,7 @@ class NewCategoryIcon extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8.0),
           child: Text(
             "Kategorie",
-            style: TextStyle(fontSize: 10),
+            style: const TextStyle(fontSize: 10),
           ),
         )
       ],

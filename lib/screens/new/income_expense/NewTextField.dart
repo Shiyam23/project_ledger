@@ -25,6 +25,7 @@ class _NewTextFieldState extends State<NewTextField> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,
       child: TextFormField(
+        enableInteractiveSelection: false,
         onTap: widget.onTap,
         readOnly: true,
         enabled: widget.enabled,
@@ -33,7 +34,8 @@ class _NewTextFieldState extends State<NewTextField> {
             fontSize: widget.fontSize,
             color: Theme.of(context).colorScheme.primary),
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.all(5),
+          filled: true,
+          contentPadding: const EdgeInsets.all(5),
           enabled: widget.enabled,
           labelText: widget.labelText,
           labelStyle: TextStyle(fontSize: 15),

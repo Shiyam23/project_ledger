@@ -13,6 +13,7 @@ class NewTitleTextField extends StatelessWidget {
             fontSize: 20, color: Theme.of(context).colorScheme.primary),
         cursorColor: Theme.of(context).colorScheme.primary,
         decoration: InputDecoration(
+          filled: true,
             contentPadding: EdgeInsets.all(5),
             labelText: "Name",
             labelStyle: TextStyle(fontSize: 15)),

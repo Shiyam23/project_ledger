@@ -109,7 +109,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
             if (state is AccountLoaded) {
               allAccounts = state.accountList;
               if (allAccounts == null) return;
-              _selectedAccount =
+              _selectedAccount ??=
                   allAccounts!.isNotEmpty ? allAccounts![0] : null;
               mainAccountName = _selectedAccount?.name;
             }

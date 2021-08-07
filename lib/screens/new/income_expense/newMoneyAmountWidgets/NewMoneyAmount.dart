@@ -73,8 +73,7 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
           setState(() => updateFontSize(text.length)),
         },
         controller: controller,
-        toolbarOptions: ToolbarOptions(
-            copy: true, cut: false, paste: false, selectAll: true),
+        enableInteractiveSelection: false,
         keyboardType: TextInputType.numberWithOptions(
           decimal: true,
           signed: false,

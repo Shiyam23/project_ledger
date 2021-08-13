@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class NewTextField extends StatefulWidget {
+  final double widthRatio;
   final String labelText;
   final void Function()? onTap;
   final TextEditingController? controller;
@@ -9,7 +10,8 @@ class NewTextField extends StatefulWidget {
   final bool enabled;
 
   NewTextField(
-      {required this.labelText,
+      {this.widthRatio = 0.85,
+      required this.labelText,
       this.enabled = true,
       this.fontSize = 20,
       this.controller,
@@ -23,14 +25,16 @@ class _NewTextFieldState extends State<NewTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.75,
+      width: MediaQuery.of(context).size.width * widget.widthRatio,
       child: TextFormField(
+        key: Key(widget.labelText),
         enableInteractiveSelection: false,
         onTap: widget.onTap,
         readOnly: true,
         enabled: widget.enabled,
         controller: widget.controller,
         style: TextStyle(
+          height: 1.5,
             fontSize: widget.fontSize,
             color: Theme.of(context).colorScheme.primary),
         decoration: InputDecoration(

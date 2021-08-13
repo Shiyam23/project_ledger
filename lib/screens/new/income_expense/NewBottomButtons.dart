@@ -13,6 +13,12 @@ class NewBottonButtons extends StatelessWidget {
       alignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(
+              MediaQuery.of(context).size.width * 0.3, 
+              MediaQuery.of(context).size.width * 0.1, 
+            )
+          ),
           child: Text(
             "Zurücksetzen",
             style: TextStyle(fontSize: 15),
@@ -20,10 +26,17 @@ class NewBottonButtons extends StatelessWidget {
           onPressed: onReset ,
         ),
         ElevatedButton(
-          style: ElevatedButton.styleFrom(),
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(
+              MediaQuery.of(context).size.width * 0.3, 
+              MediaQuery.of(context).size.width * 0.1, 
+            )
+          ),
           child: Text(
             "Speichern",
-            style: TextStyle(fontSize: 15),
+            style: TextStyle(
+              fontSize: 15,
+            ),
           ),
           onPressed: onSave,
         ),

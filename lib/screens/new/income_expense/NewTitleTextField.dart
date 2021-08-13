@@ -6,10 +6,11 @@ class NewTitleTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.of(context).size.width * 0.65,
       child: TextFormField(
         controller: controller,
         style: TextStyle(
+          height: 1.5,
             fontSize: 20, color: Theme.of(context).colorScheme.primary),
         cursorColor: Theme.of(context).colorScheme.primary,
         decoration: InputDecoration(

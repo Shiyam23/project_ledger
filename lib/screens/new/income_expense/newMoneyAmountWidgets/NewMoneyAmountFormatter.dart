@@ -70,6 +70,10 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
           selection: TextSelection(baseOffset: 0, extentOffset: 0));
     }
 
+    if (newText.startsWith(RegExp(r"^\" + "$thousandSeparator"))) {
+      return oldValue;
+    }
+
     // if cursor left of zero, swap it with input number
     if (oldValue.selection.baseOffset == 0 && zeroSwapper.hasMatch(oldText)) {
       return TextEditingValue(

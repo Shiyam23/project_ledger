@@ -27,7 +27,6 @@ class _NewTextFieldState extends State<NewTextField> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * widget.widthRatio,
       child: TextFormField(
-        key: Key(widget.labelText),
         enableInteractiveSelection: false,
         onTap: widget.onTap,
         readOnly: true,

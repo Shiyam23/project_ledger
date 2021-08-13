@@ -103,7 +103,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   Future<bool> _refreshTransactions(TransactionRequest request) async {
     _transactions.clear();
     Set<DateTime> neededBoxesAsDateTime =
-        getIntermediateMonthNames(request.dateRange);
+        _getIntermediateMonth(request.dateRange);
     Set<Box?> neededBoxes = (await Future.wait(
             neededBoxesAsDateTime.map((e) => _getBoxFromDate(e))))
         .toSet();
@@ -123,7 +123,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   }
 
   // Get all box names, which are needed (in DateTimeRange).
-  Set<DateTime> getIntermediateMonthNames(DateTimeRange dateRange) {
+  Set<DateTime> _getIntermediateMonth(DateTimeRange dateRange) {
     Set<DateTime> neededBoxNames = {};
     DateTime dateTimei = DateTime(dateRange.start.year, dateRange.start.month);
     do {
@@ -133,4 +133,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         dateTimei.isAtSameMomentAs(dateRange.end));
     return neededBoxNames;
   }
+
+ 
 }

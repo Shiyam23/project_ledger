@@ -34,6 +34,6 @@ class CategoryIconData {
   };
 
   CategoryIconData(
-      {this.backgroundColorInt, this.iconName, this.iconColorInt = 0xFFFFFFFF})
+      {this.backgroundColorInt, this.iconName, this.iconColorInt})
       : this.icon = iconList[iconName!];
 }

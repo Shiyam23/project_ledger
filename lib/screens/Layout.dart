@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/account_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/account_state.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
 import 'package:project_ez_finance/components/MainBottomNavigationBar.dart';
 import 'package:project_ez_finance/screens/home/HomeAppBar.dart';
 import 'package:project_ez_finance/screens/home/HomeScreen.dart';
-import 'package:project_ez_finance/screens/new/NewExpenseScreen.dart';
-import 'package:project_ez_finance/screens/new/NewIncomeScreen.dart';
+import 'package:project_ez_finance/screens/new/NewTransactionScreen.dart';
 import 'package:project_ez_finance/screens/new/NewTabBar.dart';
 import 'package:project_ez_finance/screens/new/NewTemplateScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewStandingOrderScreen.dart';
@@ -24,7 +21,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   //
   LayoutController? lController;
   TransactionBloc transactionBloc = TransactionBloc(TransactionLoading());
-  AccountBloc accountBloc = AccountBloc(AccountLoaded());
+
 
   @override
   void initState() {
@@ -52,13 +49,8 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   }
 
   Widget buildPageView() {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => transactionBloc),
-        BlocProvider(
-          create: (_) => accountBloc),
-      ],
+    return BlocProvider(
+      create: (_) => transactionBloc,
         child: PageView(
           controller: lController!.pageController,
           onPageChanged: (index) => pageChanged(index),
@@ -66,8 +58,8 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
             ViewStandingOrderScreen(),
             ViewTransactionScreen(),
             HomeScreen(),
-            NewExpenseScreen(),
-            NewIncomeScreen(),
+            NewTransactionScreen(true),
+            NewTransactionScreen(false),
             NewTemplateScreen()
           ],
         ),
@@ -118,7 +110,6 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   @override
   void dispose() {
     transactionBloc.close();
-    accountBloc.close();
     super.dispose();
   }
 }

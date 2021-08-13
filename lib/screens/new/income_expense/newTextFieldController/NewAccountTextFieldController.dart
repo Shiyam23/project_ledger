@@ -5,7 +5,7 @@ import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart
 import 'package:project_ez_finance/models/Account.dart';
 
 class NewAccountTextFieldController extends TextEditingController {
-  NewAccountTextFieldController() : super(text: "Privatkonto");
+  NewAccountTextFieldController() : super(text: "No account available");
 
   Future<Account?> chooseAccount(BuildContext context, String initialText, List<Account> accounts) async {
     Account? chosenAccount = await showDialog<Account>(
@@ -30,6 +30,7 @@ class NewAccountTextFieldController extends TextEditingController {
             isThreeLine: false,
             dense: true,
             leading: CategoryIcon(
+              onTap: () => Navigator.pop<Account>(context, e),
               iconData: CategoryIconData(
                 backgroundColorInt: 
                   iconData.backgroundColorInt ??

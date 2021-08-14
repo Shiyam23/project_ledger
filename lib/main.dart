@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:project_ez_finance/screens/Layout.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
@@ -24,6 +25,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
+      ],
+      supportedLocales: [
+        Locale("de"),
+        Locale("en"),
+      ],
       title: 'Dollavu',
       theme: DTheme.of(context)?.themeData,
       home: Layout(),

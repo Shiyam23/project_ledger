@@ -92,7 +92,7 @@ void onTap() async {
                     )
                   }
                   return Container(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    padding: const EdgeInsets.only(top: 20),
                     alignment: Alignment.center,
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.9,
@@ -103,30 +103,7 @@ void onTap() async {
                         alignment: WrapAlignment.start,
                         spacing: 20,
                         runSpacing: 20,
-                        children: (snapshot.data as List<Category>).map<Widget>(
-                          (category) => Column(
-                              children: [
-                                CategoryIcon(
-                                  iconData: category.icon!.iconData,
-                                  onTap: () => Navigator.pop<Category>(context, category)
-                                ,),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5.0),
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      width: 50,
-                                      child: Text(
-                                        category.name!, 
-                                        softWrap: true,
-                                        style: const TextStyle(
-                                        fontSize: 10,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                        ).toList()
+                        children: getCategoryWidgetList(snapshot.data as List<Category>)
                       ),
                     ),
                   );
@@ -140,6 +117,38 @@ void onTap() async {
       _selectedCategory = selectedCategory
     });
 
+  }
+
+  List<Widget> getCategoryWidgetList(List<Category> list) {
+    List<Widget> result = list.map<Widget>(
+      (category) => Column(
+        children: [
+          CategoryIcon(
+            iconData: category.icon!.iconData,
+            onTap: () => Navigator.pop<Category>(context, category)
+          ,),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: Container(
+              alignment: Alignment.center,
+              width: 50,
+              child: Text(
+                category.name!, 
+                softWrap: true,
+                style: const TextStyle(
+                fontSize: 10,
+                ),
+              ),
+            ),
+          ),
+        ],
+      )
+    ).toList();
+    result.add(Divider(
+      thickness: 2,
+      height: 2,
+    ));
+    return result;
   }
 }
 

@@ -5,6 +5,8 @@ import 'package:project_ez_finance/screens/Layout.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeLight.dart';
 
+import 'components/routes/AccountPage.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setupDatabase();
@@ -37,6 +39,9 @@ class _MyAppState extends State<MyApp> {
       title: 'Dollavu',
       theme: DTheme.of(context)?.themeData,
       home: Layout(),
+      routes: {
+        "account": (context) => AccountPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }

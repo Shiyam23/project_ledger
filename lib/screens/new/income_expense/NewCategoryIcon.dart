@@ -8,7 +8,7 @@ import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
 class NewCategoryIcon extends StatefulWidget {
-  static const Database _database = HiveDatabase();
+  final Database _database = HiveDatabase();
   final void Function(Category? category) onSelection;
 
   NewCategoryIcon(this.onSelection);
@@ -20,7 +20,6 @@ class NewCategoryIcon extends StatefulWidget {
 }
 
 class NewCategoryIconState extends State<NewCategoryIcon> {
-  static const Database _database = HiveDatabase();
   Category? _selectedCategory;
 
   NewCategoryIconState(_database);
@@ -80,7 +79,7 @@ void onTap() async {
           thickness: 20,
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: _database.getAllCategories(),
+              future: widget._database.getAllCategories(),
               builder: (context, snapshot) { 
                 if (snapshot.hasData) {
                   if ((snapshot.data as List<Category>).isEmpty) {

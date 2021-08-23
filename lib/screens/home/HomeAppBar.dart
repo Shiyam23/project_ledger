@@ -13,7 +13,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(titleSpacing: 20, title: titleDollavuText, actions: [
       PopupMenuButton<String>(
-        onSelected: choiceAction,
+        onSelected: (choice) =>  choiceAction(choice, context),
         itemBuilder: (BuildContext context) {
           return PopUpMenuButtonChoices.choices.map((String choice) {
             return PopupMenuItem<String>(
@@ -26,9 +26,10 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     ]);
   }
 
-  choiceAction(String choice) {
+  choiceAction(String choice, BuildContext context) {
     if (choice == PopUpMenuButtonChoices.Accounts) {
       print('This Konten Page is to do.');
+      Navigator.of(context).pushNamed("account");
     }
     if (choice == PopUpMenuButtonChoices.Categories) {
       print('This Kategorien Page is to do.');

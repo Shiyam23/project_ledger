@@ -32,11 +32,10 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       bool accountChanged = _selectedAccount != _database.selectedAccount;
       if (event.request != _lastRequest || _added || accountChanged) {
         yield TransactionLoading();
-        if (await _refreshTransactions(event.request)) {
-          yield TransactionLoaded(_transactions);
-          _added = false;
-          _selectedAccount = _database.selectedAccount;
-        }
+        await _refreshTransactions(event.request);
+        yield TransactionLoaded(_transactions);
+        _added = false;
+        _selectedAccount = _database.selectedAccount;
       }
     } else if (event is AddTransaction) {
       _database.saveTransaction(event.transaction);
@@ -49,14 +48,13 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     } 
   }
 
-  Future<bool> _refreshTransactions(TransactionRequest request) async {
+  Future<void> _refreshTransactions(TransactionRequest request) async {
     _transactions.clear();
     Set<DateTime> months = _getIntermediateMonth(request.dateRange);
     List<Transaction> listOfTransaction = await _database.getTransactions(months);
     _filter.request = request;
     _transactions = _filter.filterList(listOfTransaction);
     _lastRequest = TransactionRequest.clone(request: request);
-    return Future.value(true);
   }
 
   // Get all months, which are needed (in DateTimeRange).

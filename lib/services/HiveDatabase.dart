@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
@@ -61,7 +61,7 @@ class HiveDatabase implements Database {
   }
 
   @override
-  void addAccount(Account newAccount) async {
+  Future<void> addAccount(Account newAccount) async {
     Box? accountBox = await Hive.openBox("accounts");
     if (accountBox.containsKey(newAccount.name)) {
       throw Exception("Account with this name already exists!");
@@ -87,13 +87,14 @@ class HiveDatabase implements Database {
   }
 
   @override
-  void deleteAccount(Account newAccount) async {
-    int i = accountList.indexWhere((account) => account.name == newAccount.name);
+  void deleteAccount(Account deletedAccount) async {
+    int i = accountList.indexWhere((account) => account.name == deletedAccount.name);
     accountList.removeAt(i);
     Box? accountBox = await Hive.openBox("accounts");
     accountBox.deleteAt(i);
+    _deleteTransactionsOfAccount(deletedAccount);
     Box? accountBoxMap = await Hive.openBox("accountBoxMap");
-    accountBoxMap.delete(newAccount.name);
+    accountBoxMap.delete(deletedAccount.name);
   }
 
   @override
@@ -131,29 +132,54 @@ class HiveDatabase implements Database {
           ),
         )
       );
-      addAccount(firstAccount);
+      await addAccount(firstAccount);
     }
 
     // Initialize selected account
     _selectedAccount = accounts.firstWhere((account) => account.selected);
+
+    /* Box? categoryBox = await Hive.openBox("categories");
+    await categoryBox.clear();
+    await categoryBox.addAll([
+      Category(
+        name: "Haus",
+        icon: CategoryIcon(
+          iconData: CategoryIconData(
+            iconName: "home"
+          )
+        ),
+      ),
+      Category(
+        name: "Shopping",
+        icon: CategoryIcon(
+          iconData: CategoryIconData(
+            iconName: "shopping"
+          )
+        ),
+      )
+    ]); */
   }
 
   @override
   void deleteAllTransactions() async {
     _transactions.clear();
     if (_selectedAccount != null) {
-      Box? accountBoxMap = await Hive.openBox("accountBoxMap");
-      String prefix = accountBoxMap.get(_selectedAccount!.name).toString();
-      Box? nameBoxes = await Hive.openBox("boxes");
-      nameBoxes.values.forEach((name) async {
-        if ((name as String).split("_")[0] == prefix) {
-          Hive.deleteBoxFromDisk(name);
-          int index = nameBoxes.values.toList().indexOf(name);
-          nameBoxes.deleteAt(index);
-          _boxes.remove(name);
-        }
-      });
+      _deleteTransactionsOfAccount(_selectedAccount!);
     }
+  }
+
+  void _deleteTransactionsOfAccount(Account account) async {
+    Box? accountBoxMap = await Hive.openBox("accountBoxMap");
+    String prefix = accountBoxMap.get(account.name).toString();
+    Box? nameBoxes = await Hive.openBox("boxes");
+    nameBoxes.values.forEach((name) async {
+      if ((name as String).split("_")[0] == prefix) {
+        Hive.deleteBoxFromDisk(name);
+        int index = nameBoxes.values.toList().indexOf(name);
+        nameBoxes.deleteAt(index);
+        _boxes.remove(name);
+      }
+    });
   }
 
   Future<Box?> _getBoxFromDate({ 
@@ -186,6 +212,7 @@ class HiveDatabase implements Database {
       currentBox.add(transaction);
       print("Saving into Box:" + currentBox.name);
       _transactions.add(transaction);
+      currentBox.close();
     }
   }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:currency_picker/currency_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +13,13 @@ import '../TextInputDialog.dart';
 
 class AccountPage extends StatefulWidget {
 
-  AccountPage({Key? key}) : super(key: key);  
-
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
 
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Account> _accountList = [];
   final TextEditingController _controller = TextEditingController();
   final Database _database = HiveDatabase();
@@ -27,86 +28,83 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Accounts"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            _controller.dispose();
-            Navigator.of(context).pop();
-          },
-        ),
+        title: const Text("Accounts"),
       ),
       body: FutureBuilder(
-        future: (HiveDatabase()).getAllAccounts(),
+        future: _database.getAllAccounts(),
         builder: (_, snapshot) {
           if (snapshot.hasData) {
             _accountList.clear();
             _accountList.addAll(snapshot.data as List<Account>);
-            return ListView.builder(
-              key: ValueKey(_accountList.length),
-              itemBuilder: (_, i) {
-                if (i < _accountList.length) {
-                  return Card(
-                    child: StatefulBuilder(
-                      builder: (context, listSetState) => ListTile(
-                        key: ObjectKey(_accountList[i]),
-                        contentPadding: EdgeInsets.all(10),
-                        title: Text(_accountList[i].name),
-                        subtitle: Text(_getCurrencyText(_accountList[i].currencyCode)),
-                        onLongPress: () {
-                          showAccountMenu(context, _accountList[i], listSetState);
-                        },
-                        onTap: () => selectAccount(context, _accountList[i]),
-                        leading: _accountList[i].icon,
-                        trailing: _accountList[i].selected ? 
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15.0),
-                            child: Text("Selected"),
-                          ) : null,
-                      ),
-                    ),
-                  );
-                }
-                else {
-                  return Card(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(15),
-                      title: Text("Add new account"),
-                      onTap: () => addAccount(context),
-                      leading: DottedBorder(
-                        color: Colors.black,
-                        strokeWidth: 1,
-                        dashPattern: [6, 6],
-                        padding: const EdgeInsets.all(1),
-                        borderType: BorderType.Circle,
-                        child: Icon(
-                          Icons.add,
-                          color: Theme.of(context).primaryColor,
-                          size: 50,
-                        ))
-                    ),
-                  );
-                }
-              },
-              itemCount: _accountList.length + 1,
+            return AnimatedList(
+              initialItemCount: _accountList.length + 1,
+              key: _listKey,
+              itemBuilder: (context, index, animation) => 
+                index < _accountList.length ? 
+                _listbuilder(context, _accountList[index], animation):
+                Card(
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(15),
+                    title: const Text("Add new account"),
+                    onTap: () => addAccount(context),
+                    leading: DottedBorder(
+                      color: Colors.black,
+                      strokeWidth: 1,
+                      dashPattern: [6, 6],
+                      padding: const EdgeInsets.all(1),
+                      borderType: BorderType.Circle,
+                      child: Icon(
+                        Icons.add,
+                        color: Theme.of(context).primaryColor,
+                        size: 50,
+                      )
+                    )
+                  ),
+                ),
             );
           }
           else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         }
       ),
     );
   }
 
-  bool showAccountMenu(BuildContext context, Account account, StateSetter listSetState) {
+  Widget _listbuilder(BuildContext context, Account account, Animation<double> animation) {
+    return SizeTransition(
+      sizeFactor: animation,
+      child: Card(
+        child: StatefulBuilder(
+          builder: (context, listSetState) => ListTile(
+            key: ObjectKey(account),
+            contentPadding: const EdgeInsets.all(10),
+            title: Text(account.name),
+            subtitle: Text(_getCurrencyText(account.currencyCode)),
+            onLongPress: () {
+              showAccountMenu(context, account, listSetState);
+            },
+            onTap: () => selectAccount(context, account),
+            leading: account.icon,
+            trailing: account.selected ? 
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: const Text("Selected"),
+              ) : null,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showAccountMenu(BuildContext context, Account account, StateSetter listSetState) {
     showModalBottomSheet(context: context, builder: (sheetContext) {
       return Wrap(
         children: [
           ListTile(
-            contentPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
             title: const Text("Edit name"),
-            leading: Icon(Icons.edit),
+            leading: const Icon(Icons.edit),
             onTap: () => saveNewName(context, account, listSetState)
           ),
           const Divider(
@@ -114,9 +112,9 @@ class _AccountPageState extends State<AccountPage> {
             height: 1,
           ),
           ListTile(
-            contentPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: Text("Change Icon"),
-            leading: Icon(Icons.circle),
+            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+            title: const Text("Change Icon"),
+            leading: const Icon(Icons.circle),
             onTap: () => saveNewIcon(context, account, listSetState)
           ),
           const Divider(
@@ -124,9 +122,9 @@ class _AccountPageState extends State<AccountPage> {
             height: 1,
           ),
           ListTile(
-            contentPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: Text("Change currency"),
-            leading: Icon(Icons.attach_money),
+            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+            title: const Text("Change currency"),
+            leading: const Icon(Icons.attach_money),
             onTap: () => saveNewCurrency(context, account, listSetState)
           ),
           const Divider(
@@ -134,20 +132,19 @@ class _AccountPageState extends State<AccountPage> {
             height: 1,
           ),
           ListTile(
-            contentPadding: EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: Text("Delete account"),
-            leading: Icon(Icons.delete),
+            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+            title: const Text("Delete account"),
+            leading: const Icon(Icons.delete),
             onTap: () => deleteAccount(context, account)
           ),
         ]
       );
     });    
-    return true;
   }
 
   void selectAccount(BuildContext context, Account selectedAccount) {
     _database.selectAccount(selectedAccount);
-    setState(() {});
+    _listKey.currentState!.setState(() {});
   }
 
   void deleteAccount(BuildContext context, Account account) async {
@@ -159,32 +156,39 @@ class _AccountPageState extends State<AccountPage> {
     bool? sureToDelete = await showDialog<bool>(
       context: context, 
       builder: (context) => AlertDialog(
-        title: Text("Delete account?"),
-        content: Text("Are you sure that you want to delete this account? " + 
+        title: const Text("Delete account?"),
+        content: const Text("Are you sure that you want to delete this account? " + 
         "All transactions associated with this account will be deleted permanently!"),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: Text("Cancel")
+            child: const Text("Cancel")
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: Text("Delete")
+            child: const Text("Delete")
           ),
         ],
       ));
     if (sureToDelete ?? false) {
+      int index = _accountList.indexOf(account);
+      Account deletedAccount = _accountList[index];
+      _listKey.currentState!.removeItem(
+        index, 
+        (context, animation) => _listbuilder(context, deletedAccount, animation), 
+      );
+      _accountList.removeAt(index);
       _database.deleteAccount(account);
-      setState(() => _accountList.remove(account));};
+    }
   } 
 
-  Future<String?> getSelectedName(BuildContext context) async{
+  Future<String?> getSelectedName(BuildContext context) async {
     String? name = await showDialog<String>(
       context: context, 
       builder: (context) => TextInputDialog(
         title: const Text("Enter a name"),
         controller: _controller,
-        prefixIcon: Icon(Icons.edit),
+        prefixIcon: const Icon(Icons.edit),
         )
     );
     return Future.value(name);
@@ -205,7 +209,7 @@ class _AccountPageState extends State<AccountPage> {
       showDialog(
         context: context, 
         builder: (context) => AlertDialog(
-          title: Text("Account with this name already exists"),
+          title: const Text("Account with this name already exists"),
           content: Text("You already have an account with the name \"$newName\"." + 
             "You can not have two accounts with the same name."),
         )
@@ -265,7 +269,10 @@ class _AccountPageState extends State<AccountPage> {
                   ))   
               );
               _database.addAccount(newAccount);
-              setState(() => _accountList.add(newAccount));
+              _accountList.add(newAccount);
+              Timer(
+                const Duration(milliseconds: 300),
+                () => _listKey.currentState!.insertItem(_accountList.length-1));
             }
           );
         }
@@ -329,14 +336,14 @@ class _AccountPageState extends State<AccountPage> {
               padding: const EdgeInsets.only(top: 10.0),
               child: Text(
                 showOnlyColor ? "Select background color" : "Select icon",
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20
                 ),
               ),
             ),
-            Divider(),
+            const Divider(),
             Scrollbar(
-              radius: Radius.circular(20),
+              radius: const Radius.circular(20),
               thickness: 20,
               child: SingleChildScrollView(
                 child: Container(
@@ -381,6 +388,10 @@ class _AccountPageState extends State<AccountPage> {
     return "Currency: $code";
   }
 
-
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
 

@@ -28,7 +28,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   choiceAction(String choice, BuildContext context) {
     if (choice == PopUpMenuButtonChoices.Accounts) {
-      print('This Konten Page is to do.');
       Navigator.of(context).pushNamed("account");
     }
     if (choice == PopUpMenuButtonChoices.Categories) {

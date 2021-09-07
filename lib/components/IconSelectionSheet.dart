@@ -1,67 +1,72 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'categoryIcon/CategoryIcon.dart';
+import 'categoryIcon/CategoryIconData.dart';
 
-class TextInputDialog extends StatelessWidget {
-  const TextInputDialog({
-    Key? key,
-    required this.controller,
-    required this.prefixIcon,
-    required this.title,
-  }) : super(key: key);
-
-  final TextEditingController controller;
-  final Icon prefixIcon;
-  final Text title;
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleDialog(
-      contentPadding: const EdgeInsets.all(20),
-      title: title,
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: TextField(
-            autofocus: true,
-            controller: controller,
-            maxLength: 30,
-            maxLengthEnforcement: MaxLengthEnforcement.enforced,
-            style: const TextStyle(
-              fontSize: 20 
+  
+  Future<dynamic> showIconSheet(BuildContext context, bool showOnlyColor) async {
+    dynamic result = await showModalBottomSheet<dynamic>(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: const Radius.circular(10)),
+      ),
+      enableDrag: true,
+      isDismissible: true,
+      context: context, 
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                showOnlyColor ? "Select background color" : "Select icon",
+                style: const TextStyle(
+                  fontSize: 20
+                ),
+              ),
             ),
-            decoration: InputDecoration(
-              prefixIcon: prefixIcon,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20)
-              )
-            )
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: Column(
-            children: [
-              const Divider(
-                thickness: 2,
-                height: 2,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: Navigator.of(context).pop,
-                    child: const Text("Cancel"),
+            const Divider(
+              height: 1,
+              thickness: 1,
+            ),
+            Scrollbar(
+              radius: const Radius.circular(20),
+              thickness: 20,
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Wrap(
+                      direction: Axis.horizontal,
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      runAlignment: WrapAlignment.spaceEvenly,
+                      alignment: WrapAlignment.start,
+                      spacing: 20,
+                      runSpacing: 20,
+                      children: _getSheetElementList(context, showOnlyColor)
+                    ),
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(controller.text),
-                    child: const Text("Save"),
-                  ),
-                ],
+                )
               ),
-            ],
-          ),
-        )
-      ],
-    );
+            ),
+          ],
+        );
+      });
+      return Future.value(result);
   }
+
+  List<Widget> _getSheetElementList(context, bool showOnlyColor) {
+    return showOnlyColor ?
+    CategoryIconData.colorList.map((colorInt) => CategoryIcon(
+        onTap: () => Navigator.of(context).pop(colorInt),
+        iconData: CategoryIconData(
+          backgroundColorInt: colorInt
+    ))).toList() :
+    CategoryIconData.iconList.keys.map((name) => CategoryIcon(
+        onTap: () => Navigator.of(context).pop(name),
+        iconData: CategoryIconData(
+          iconName: name,
+    ))).toList(); 
+  
 }

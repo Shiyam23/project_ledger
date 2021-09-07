@@ -22,6 +22,7 @@ class TextInputDialog extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,
           child: TextField(
+            onSubmitted: (text) => Navigator.of(context).pop(text),
             autofocus: true,
             controller: controller,
             maxLength: 30,

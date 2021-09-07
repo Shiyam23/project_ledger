@@ -31,7 +31,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       Navigator.of(context).pushNamed("account");
     }
     if (choice == PopUpMenuButtonChoices.Categories) {
-      print('This Kategorien Page is to do.');
+      Navigator.of(context).pushNamed("category");
     }
     if (choice == PopUpMenuButtonChoices.Backup) {
       print('This Backup Page is to do.');

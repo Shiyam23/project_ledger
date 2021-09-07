@@ -4,6 +4,7 @@ import 'package:currency_picker/currency_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:project_ez_finance/components/IconSelectionSheet.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import 'package:project_ez_finance/models/Account.dart';
@@ -172,10 +173,9 @@ class _AccountPageState extends State<AccountPage> {
       ));
     if (sureToDelete ?? false) {
       int index = _accountList.indexOf(account);
-      Account deletedAccount = _accountList[index];
       _listKey.currentState!.removeItem(
         index, 
-        (context, animation) => _listbuilder(context, deletedAccount, animation), 
+        (context, animation) => _listbuilder(context, account, animation), 
       );
       _accountList.removeAt(index);
       _database.deleteAccount(account);
@@ -186,7 +186,7 @@ class _AccountPageState extends State<AccountPage> {
     String? name = await showDialog<String>(
       context: context, 
       builder: (context) => TextInputDialog(
-        title: const Text("Enter a name"),
+        title: const Text("Enter a new name for this account"),
         controller: _controller,
         prefixIcon: const Icon(Icons.edit),
         )
@@ -216,12 +216,10 @@ class _AccountPageState extends State<AccountPage> {
       );
       return;
     }
-    if (
+    else if (
       newName != null &&
-      newName != oldAccount.name &&
-      !_accountList
-      .map((Account account) => account.name.toLowerCase())
-      .contains(newName.toLowerCase())
+      newName != oldAccount.name && 
+      newName.isNotEmpty
     ){
       Account newAccount = Account(
       name: newName,
@@ -241,7 +239,7 @@ class _AccountPageState extends State<AccountPage> {
     String? name = await showDialog<String>(
       context: context, 
       builder: (context) => TextInputDialog(
-        title: const Text("Enter a name"),
+        title: const Text("Enter a name for the new account"),
         controller: _controller,
         prefixIcon: const Icon(Icons.edit),
         )
@@ -251,9 +249,9 @@ class _AccountPageState extends State<AccountPage> {
       return;      
     }
     if (name != null) {
-      iconName = await _showIconSheet(context, false);
+      iconName = await showIconSheet(context, false);
       if (iconName != null) {
-        colorInt = await _showIconSheet(context, true);
+        colorInt = await showIconSheet(context, true);
         if (colorInt != null) {
           showCurrencyPicker(
             context: context, 
@@ -283,9 +281,9 @@ class _AccountPageState extends State<AccountPage> {
   void saveNewIcon(BuildContext context, Account oldAccount, StateSetter listSetState) async {
     Navigator.of(context).pop();
     int? colorInt;
-    String? iconName = await _showIconSheet(context, false);
+    String? iconName = await showIconSheet(context, false);
     if (iconName != null) {
-      colorInt = await _showIconSheet(context, true);
+      colorInt = await showIconSheet(context, true);
       if (colorInt != null) {
         Account newAccount = Account(
           name: oldAccount.name,
@@ -320,69 +318,7 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Future<dynamic> _showIconSheet(BuildContext context, bool showOnlyColor) async {
-    dynamic result = await showModalBottomSheet<dynamic>(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      ),
-      enableDrag: true,
-      isDismissible: true,
-      context: context, 
-      builder: (context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Text(
-                showOnlyColor ? "Select background color" : "Select icon",
-                style: const TextStyle(
-                  fontSize: 20
-                ),
-              ),
-            ),
-            const Divider(),
-            Scrollbar(
-              radius: const Radius.circular(20),
-              thickness: 20,
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Wrap(
-                      direction: Axis.horizontal,
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      runAlignment: WrapAlignment.spaceEvenly,
-                      alignment: WrapAlignment.start,
-                      spacing: 20,
-                      runSpacing: 20,
-                      children: _getSheetElementList(context, showOnlyColor)
-                    ),
-                  ),
-                )
-              ),
-            ),
-          ],
-        );
-      });
-      return Future.value(result);
-  }
-
-  List<Widget> _getSheetElementList(context, bool showOnlyColor) {
-    return showOnlyColor ?
-    CategoryIconData.colorList.map((colorInt) => CategoryIcon(
-        onTap: () => Navigator.of(context).pop(colorInt),
-        iconData: CategoryIconData(
-          backgroundColorInt: colorInt
-    ))).toList() :
-    CategoryIconData.iconList.keys.map((name) => CategoryIcon(
-        onTap: () => Navigator.of(context).pop(name),
-        iconData: CategoryIconData(
-          iconName: name,
-    ))).toList(); 
-  }
+  
 
   String _getCurrencyText(String code) {
     return "Currency: $code";

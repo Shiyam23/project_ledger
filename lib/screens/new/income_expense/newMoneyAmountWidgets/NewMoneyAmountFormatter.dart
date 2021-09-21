@@ -13,20 +13,24 @@ class FormatHelper {
   }
 
   String addThousandsPoint(String number) {
-    number = number.replaceAll(thousandSeparator!, "");
     List<String> numberParts = number.split(",").toList();
 
     String wholeAmount = numberParts[0];
+    String cleanWholeAmount = wholeAmount.replaceAll(thousandSeparator!, "");
 
     List<String?> digits =
-        wholeAmount.split("").reversed.toList(growable: true);
+        cleanWholeAmount.split("").reversed.toList(growable: true);
     for (int i = 3; i < digits.length; i += 4)
       digits.insert(i, thousandSeparator);
     return digits.reversed.join("") + decimalSeparator! + numberParts[1];
   }
+
+  int count(String string, String symbol) {
+    return string.split("").where((subString) => subString == symbol).length;
+  }
 }
 
-class NewMoneyAmountFormatter extends TextInputFormatter {
+class RightSpaceFormatter extends TextInputFormatter {
   final String decimalSeparator;
   final String? thousandSeparator;
   final int precision;
@@ -39,23 +43,21 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
   final RegExp inputDecimalSwapper;
   final RegExp zeroGenerator;
 
-  NewMoneyAmountFormatter(
-      {required this.decimalSeparator,
-      this.thousandSeparator,
-      required this.precision,
-      this.symbol})
-      : helper = new FormatHelper(
-            decimalSeparator: decimalSeparator,
-            thousandSeparator: thousandSeparator),
-        zeroSwapper = RegExp(
-            r"^0" + "$decimalSeparator" + r"\d" * precision + " $symbol"),
-        zeroDeleter = RegExp(
-            r"^0\d" "$decimalSeparator" + r"\d" * precision + " $symbol"),
-        decimalSwapper = RegExp(decimalSeparator + r"\d" * (precision + 1)),
-        inputDecimalSwapper =
-            RegExp(decimalSeparator + r"\d" * (precision - 1) + " $symbol"),
-        zeroGenerator =
-            RegExp("^$decimalSeparator" + r"\d" * precision + " $symbol");
+  RightSpaceFormatter({
+    required this.decimalSeparator,
+    required this.thousandSeparator,
+    required this.precision,
+    required this.symbol,
+  }) 
+  : helper = new FormatHelper(
+      decimalSeparator: decimalSeparator,
+      thousandSeparator: thousandSeparator
+    ),
+    zeroSwapper = RegExp(r"^0" + "$decimalSeparator" + r"\d" * precision + " $symbol"),
+    zeroDeleter = RegExp(r"^0\d" "$decimalSeparator" + r"\d" * precision + " $symbol"),
+    decimalSwapper = RegExp(decimalSeparator + r"\d" * (precision + 1) + " $symbol"),
+    inputDecimalSwapper = RegExp(decimalSeparator + r"\d" * (precision - 1) + " $symbol"),
+    zeroGenerator = RegExp("^$decimalSeparator" + r"\d" * precision + " $symbol");
 
   @override
   TextEditingValue formatEditUpdate(
@@ -70,9 +72,8 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
           selection: TextSelection(baseOffset: 0, extentOffset: 0));
     }
 
-    if (newText.startsWith(RegExp(r"^\" + "$thousandSeparator"))) {
-      return oldValue;
-    }
+    if (newText.startsWith(thousandSeparator!) 
+      || newText.startsWith(decimalSeparator)) return oldValue;
 
     // if cursor left of zero, swap it with input number
     if (oldValue.selection.baseOffset == 0 && zeroSwapper.hasMatch(oldText)) {
@@ -83,18 +84,21 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
 
     //  delete not-allowed thousandOperators
     if (!newText.contains(thousandSeparator! + decimalSeparator) &&
-        newText.allMatches(thousandSeparator!).length !=
-            oldText.allMatches(thousandSeparator!).length) {
+        helper.count(newText, thousandSeparator!) !=
+            helper.count(oldText, thousandSeparator!)) {
       return oldValue;
     }
 
+
     // Switch to decimals
-    if (newText.contains(thousandSeparator! + decimalSeparator)) {
+    if (newText.contains(decimalSeparator * 2)) {
       return TextEditingValue(
-          text: oldText,
-          selection: TextSelection(
-              baseOffset: newText.indexOf(decimalSeparator),
-              extentOffset: newText.indexOf(decimalSeparator)));
+        text: oldText,
+        selection: TextSelection(
+          baseOffset: oldText.indexOf(decimalSeparator) + 1,
+          extentOffset: oldText.indexOf(decimalSeparator) + 1
+        )
+      );
     }
 
     // generate missing separator and switch back to integer
@@ -140,6 +144,8 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
           selection: newValue.selection);
     }
 
+    if (helper.count(newText, decimalSeparator) != 1) return oldValue;
+
     if (newText.length > 20 || !newText.endsWith(" " + symbol!))
       return oldValue;
 
@@ -147,15 +153,15 @@ class NewMoneyAmountFormatter extends TextInputFormatter {
     String withThousandPoints = helper.addThousandsPoint(newText);
 
     if (withThousandPoints != newText) {
-      String updatedThousandsValue = helper.addThousandsPoint(newText);
+      withThousandPoints = helper.addThousandsPoint(newText);
       int initialOffset =
           oldText.indexOf(decimalSeparator) - oldValue.selection.baseOffset;
       return TextEditingValue(
-          text: updatedThousandsValue,
+          text: withThousandPoints,
           selection: TextSelection(
-              baseOffset: updatedThousandsValue.indexOf(decimalSeparator) -
+              baseOffset: withThousandPoints.indexOf(decimalSeparator) -
                   initialOffset,
-              extentOffset: updatedThousandsValue.indexOf(decimalSeparator) -
+              extentOffset: withThousandPoints.indexOf(decimalSeparator) -
                   initialOffset));
     }
 

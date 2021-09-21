@@ -4,10 +4,9 @@ import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import 'package:project_ez_finance/models/Account.dart';
 
-class NewAccountTextFieldController extends TextEditingController {
-  NewAccountTextFieldController() : super(text: "No account available");
+class NewAccountDialog {
 
-  Future<Account?> chooseAccount(BuildContext context, String initialText, List<Account> accounts) async {
+ static Future<Account?> chooseAccount(BuildContext context, List<Account> accounts) async {
     Account? chosenAccount = await showDialog<Account>(
         context: context,
         builder: (BuildContext context) =>
@@ -19,7 +18,7 @@ class NewAccountTextFieldController extends TextEditingController {
     return chosenAccount;
   }
 
-  List<Widget> getAccountTiles(List<Account> accounts, BuildContext context) {
+  static List<Widget> getAccountTiles(List<Account> accounts, BuildContext context) {
     return accounts.map<List<Widget>>((e) {
       CategoryIconData iconData = e.icon.iconData;
       List<Widget> widgets = 

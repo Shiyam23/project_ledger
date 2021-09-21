@@ -19,11 +19,7 @@ class NewTabBar extends StatelessWidget implements PreferredSizeWidget {
         controller: layoutController!.newTabController,
         tabs: <Widget>[
           Text(
-            "Expense",
-            style: TextStyle(fontSize: 18.0),
-          ),
-          Text(
-            "Income",
+            "Income / Expense",
             style: TextStyle(fontSize: 18.0),
           ),
           Text(

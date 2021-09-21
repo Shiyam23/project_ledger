@@ -21,40 +21,41 @@ class Transaction extends Equatable implements SelectableTile {
   @HiveField(2)
   Dollavu.Category? category;
   @HiveField(3)
-  String amount;
+  double amount;
   @HiveField(4)
   bool isExpense;
   @HiveField(5)
-  Repetition? repetition;
+  String amountString;
   @HiveField(6)
+  Repetition repetition;
+  @HiveField(9)
   Account account;
-  @HiveField(7)
+  @HiveField(10)
   DateTime addDateTime;
 
-  Transaction(
-      {required name,
-      required category,
-      required date,
-      required amount,
-      required isExpense,
-      required repetition,
-      required account,
-      required addDateTime})
-      : name = name,
-        category = category,
-        date = date,
-        amount = amount,
-        isExpense = isExpense,
-        repetition = repetition,
-        account = account,
-        addDateTime = addDateTime;
+  Transaction({
+    required this.name,
+    required this.category,
+    required this.date,
+    required this.amount,
+    required this.amountString,
+    required this.isExpense,
+    required this.repetition,
+    required this.account,
+    required this.addDateTime});
+    
 
   @override
-  Text get rightText => Text(amount.toString(),
+  Text get rightText {
+    return Text(
+      (isExpense ? "- " : "+ ") + amountString,
       style: TextStyle(
-          fontSize: 18,
-          color: isExpense ? Colors.red : Colors.green,
-          fontWeight: FontWeight.w500));
+        fontSize: 18,
+        color: isExpense ? Colors.red : Colors.green,
+        fontWeight: FontWeight.w500
+      )
+    );
+  }
 
   @override
   Text get secondaryTitle => Text(
@@ -79,6 +80,5 @@ class Transaction extends Equatable implements SelectableTile {
       ];
 
   @override
-  // TODO: implement icon
   CategoryIcon? get icon => category!.icon;
 }

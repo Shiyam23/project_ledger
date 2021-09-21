@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_event.dart';
+import 'package:project_ez_finance/blocs/bloc/transaction/transaction_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/transaction/transaction_event.dart';
 
 class ViewFilterBarSearch extends StatelessWidget {
   final TransactionRequest request;

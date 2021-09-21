@@ -17,21 +17,22 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Transaction(
-      name: fields[0] as dynamic,
-      category: fields[2] as dynamic,
-      date: fields[1] as dynamic,
-      amount: fields[3] as dynamic,
-      isExpense: fields[4] as dynamic,
-      repetition: fields[5] as dynamic,
-      account: fields[6] as dynamic,
-      addDateTime: fields[7] as dynamic,
+      name: fields[0] as String,
+      category: fields[2] as Dollavu.Category?,
+      date: fields[1] as DateTime,
+      amount: fields[3] as double,
+      amountString: fields[5] as String,
+      isExpense: fields[4] as bool,
+      repetition: fields[6] as Repetition,
+      account: fields[9] as Account,
+      addDateTime: fields[10] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Transaction obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -43,10 +44,12 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
       ..writeByte(4)
       ..write(obj.isExpense)
       ..writeByte(5)
-      ..write(obj.repetition)
+      ..write(obj.amountString)
       ..writeByte(6)
+      ..write(obj.repetition)
+      ..writeByte(9)
       ..write(obj.account)
-      ..writeByte(7)
+      ..writeByte(10)
       ..write(obj.addDateTime);
   }
 

@@ -22,11 +22,19 @@ class DeleteAll extends TransactionEvent {
   List<Object?> get props => throw UnimplementedError();
 }
 
+class LoadTemplate extends TransactionEvent {
+  final Transaction template;
+  LoadTemplate(this.template);
+  @override
+  List<Object?> get props => [template];
+}
+
 class AddTransaction extends TransactionEvent {
   final Transaction transaction;
   final Account account;
+  final bool templateChecked;
 
-  AddTransaction(this.transaction, this.account);
+  AddTransaction(this.transaction, this.account, this.templateChecked);
 
   @override
   List<Object?> get props => [transaction, account];

@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 
 part 'Repetition.g.dart';
 
 @HiveType(typeId: 4)
-class Repetition {
+class Repetition extends Equatable{
   @HiveField(0)
   final int? amount;
   @HiveField(1)
@@ -22,42 +23,45 @@ class Repetition {
   String toString() {
     StringBuffer buffer = StringBuffer();
 
-    if (this == none) return "Einmalig";
+    if (this == Repetition.none) return "No Repetition";
 
     if (amount == 1) {
       switch (time!) {
         case CalenderUnit.dayly:
-          buffer.write("Jeden Tag");
+          buffer.write("Every day");
           break;
 
         case CalenderUnit.monthly:
-          buffer.write("Jeden Monat");
+          buffer.write("Every month");
           break;
 
         case CalenderUnit.yearly:
-          buffer.write("Jedes Jahr");
+          buffer.write("Every year");
           break;
       }
     } else {
-      buffer.write("Alle $amount ");
+      buffer.write("Every $amount ");
       switch (time!) {
         case CalenderUnit.dayly:
-          buffer.write("Tage");
+          buffer.write("day(s)");
           break;
 
         case CalenderUnit.monthly:
-          buffer.write("Monate");
+          buffer.write("month(s)");
           break;
 
         case CalenderUnit.yearly:
-          buffer.write("Jahre");
+          buffer.write("year(s)");
           break;
       }
     }
     if (this.endDate != null)
-      buffer.write(" bis ${DateFormat("dd.MM.yyyy").format(this.endDate!)}");
+      buffer.write(" until ${DateFormat("dd.MM.yyyy").format(this.endDate!)}");
     return buffer.toString();
   }
+
+  @override
+  List<Object?> get props => [amount, time, endDate];
 }
 
 @HiveType(typeId: 5)

@@ -1,12 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_event.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_state.dart';
+import 'package:project_ez_finance/blocs/bloc/transaction/transaction_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/transaction/transaction_event.dart';
+import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:collection/collection.dart' show ListEquality;
+import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/screens/view/filterbar/ViewFilterBarSection.dart';
 
 class ViewTransactionScreen extends StatefulWidget {
@@ -36,7 +37,6 @@ class _ViewScreenState extends State<ViewTransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ValueKey key = ValueKey(DateTime.now());
     return Column(
       children: <Widget>[
         ViewFilterBarSection(
@@ -53,27 +53,27 @@ class _ViewScreenState extends State<ViewTransactionScreen> {
             if (state is TransactionLoaded) {
               return Flexible(
                 child: Scrollbar(
-                  key: key,
                   child: ListView.builder(
-                      key: key,
+                      key: ValueKey(state.transactionList.length),
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       itemCount: state.transactionList.length,
                       dragStartBehavior: DragStartBehavior.down,
                       itemBuilder: (BuildContext context, int index) {
+                        Transaction transaction = state.transactionList[index];
                         return Card(
                           elevation: 3.0,
                           child: IconListTile(
-                            key: Key(state.transactionList[index].addDateTime
-                                .toString()),
-                            tile: state.transactionList[index],
+                            selectable: true,
+                            key: ObjectKey(transaction),
+                            tile: transaction,
                           ),
                         );
                       }),
                 ),
               );
             }
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           },
         ),
       ],

@@ -1,6 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:project_ez_finance/components/Keyboard.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import 'package:project_ez_finance/models/Category.dart';
@@ -9,9 +12,12 @@ import 'package:project_ez_finance/services/HiveDatabase.dart';
 
 class NewCategoryIcon extends StatefulWidget {
   final Database _database = HiveDatabase();
-  final void Function(Category? category) onSelection;
+  final void Function(Category? category) onSelect;
 
-  NewCategoryIcon(this.onSelection);
+  NewCategoryIcon({
+    required this.onSelect,
+    key,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -19,53 +25,86 @@ class NewCategoryIcon extends StatefulWidget {
   }
 }
 
-class NewCategoryIconState extends State<NewCategoryIcon> {
+class NewCategoryIconState extends State<NewCategoryIcon> with SingleTickerProviderStateMixin{
   Category? _selectedCategory;
 
   NewCategoryIconState(_database);
+  late AnimationController _animationController = AnimationController(
+    vsync: this,
+  );
+
+  late final Animation<Offset> _offsetAnimation = Tween<Offset>(
+    begin: Offset(-0.02,0.02),
+    end: Offset(0.03,-0.03),
+  ).animate(CurvedAnimation(
+    parent: _animationController, 
+    curve: Curves.easeInOut)
+  );
+
+  @override
+  void initState() { 
+    _animationController.repeat(
+      reverse: true,
+      period: Duration(milliseconds: 500)
+    );
+    TransactionDetailsCubit cubit = TransactionDetailsCubit.of(context);
+    cubit.emit(cubit.state.copyWith(category: null));
+    super.initState();
+  }
 
 @override
 Widget build(BuildContext context) {
-  return Column(
-    children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(1.0),
-        child: _selectedCategory != null ?
-          CategoryIcon(
-            onTap: onTap,
-            iconData: _selectedCategory!.icon!.iconData)
-        : DottedBorder(
-            color: Colors.black,
-            strokeWidth: 1,
-            dashPattern: [6, 6],
-            padding: const EdgeInsets.all(1),
-            borderType: BorderType.Circle,
-            child: CategoryIcon(
+  return BlocConsumer<TransactionDetailsCubit, TransactionDetails>(
+    listener: (context, state) {
+      if (state.category != this._selectedCategory) {
+        updateCategory(state.category);
+      }
+    },
+    builder: (context, state) => Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(1.0),
+          child: _selectedCategory != null ?
+            CategoryIcon(
               onTap: onTap,
-              iconData: CategoryIconData(
-                backgroundColorInt: Colors.white.value,
-                iconName: "pen",
-                iconColorInt: Colors.black45.value,
-              ),
-            )),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: Container(
-          alignment: Alignment.center,
-          width: 50,
-          child: Text(
-            _selectedCategory?.name ?? "Kategorie",
-            style: const TextStyle(fontSize: 10),
-          ),
+              iconData: _selectedCategory!.icon!.iconData)
+          : DottedBorder(
+              color: Colors.black,
+              strokeWidth: 1,
+              dashPattern: [6, 6],
+              padding: const EdgeInsets.all(1),
+              borderType: BorderType.Circle,
+              child: SlideTransition(
+                position: _offsetAnimation,
+                child: CategoryIcon(
+                  onTap: onTap,
+                  iconData: CategoryIconData(
+                    backgroundColorInt: Colors.transparent.value,
+                    iconName: "pen",
+                    iconColorInt: Colors.black45.value,
+                  ),
+                ),
+              )),
         ),
-      )
-    ],
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Container(
+            alignment: Alignment.center,
+            width: 50,
+            child: Text(
+              _selectedCategory?.name ?? "Category",
+              style: const TextStyle(fontSize: 10),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        )
+      ],
+    )
   );
 }
 
-void onTap() async {
-  
+  void onTap() async {
+    KeyboardWidget.of(context)!.triggerKeyboard(false);
     Category? selectedCategory = await showModalBottomSheet<Category>(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
@@ -111,11 +150,7 @@ void onTap() async {
           ),
         );
       });
-    widget.onSelection(selectedCategory);
-    setState(() => {
-      _selectedCategory = selectedCategory
-    });
-
+    widget.onSelect(selectedCategory);
   }
 
   List<Widget> getCategoryWidgetList(List<Category> list) {
@@ -134,8 +169,9 @@ void onTap() async {
               child: Text(
                 category.name!, 
                 softWrap: true,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
-                fontSize: 10,
+                  fontSize: 10,
                 ),
               ),
             ),
@@ -148,6 +184,16 @@ void onTap() async {
       height: 2,
     ));
     return result;
+  }
+
+  void updateCategory(Category? category) {
+    setState(() => _selectedCategory = category);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 }
 

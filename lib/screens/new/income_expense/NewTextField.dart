@@ -1,27 +1,39 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:project_ez_finance/components/Keyboard.dart';
 
-class NewTextField extends StatefulWidget {
+class _NewTextField extends StatefulWidget {
   final double widthRatio;
   final String labelText;
+  final String? content;
   final void Function()? onTap;
-  final TextEditingController? controller;
   final double fontSize;
   final bool enabled;
+  final bool readOnly;
+  final TextEditingController? controller;
 
-  NewTextField(
-      {this.widthRatio = 0.85,
-      required this.labelText,
-      this.enabled = true,
-      this.fontSize = 20,
-      this.controller,
-      this.onTap});
+  _NewTextField({
+    this.widthRatio = 0.85,
+    required this.labelText,
+    this.content,
+    this.enabled = true,
+    this.fontSize = 20,
+    this.onTap,
+    this.readOnly = true,
+    this.controller,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _NewTextFieldState createState() => _NewTextFieldState();
 }
 
-class _NewTextFieldState extends State<NewTextField> {
+class _NewTextFieldState extends State<_NewTextField> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -29,9 +41,10 @@ class _NewTextFieldState extends State<NewTextField> {
       child: TextFormField(
         enableInteractiveSelection: false,
         onTap: widget.onTap,
-        readOnly: true,
-        enabled: widget.enabled,
         controller: widget.controller,
+        initialValue: widget.content,
+        readOnly: widget.readOnly,
+        enabled: widget.enabled,
         style: TextStyle(
           height: 1.5,
             fontSize: widget.fontSize,
@@ -47,3 +60,160 @@ class _NewTextFieldState extends State<NewTextField> {
     );
   }
 }
+
+class NewDateField extends StatefulWidget {
+
+  final void Function() onTap;
+  NewDateField({required this.onTap});
+
+  @override
+  _NewDateFieldState createState() => _NewDateFieldState();
+}
+
+class _NewDateFieldState extends State<NewDateField> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TransactionDetailsCubit, TransactionDetails>(
+      buildWhen: (previous, current) {
+        return previous.date != current.date;
+      },
+      builder: (context, state) {
+        return _NewTextField(
+          key: ObjectKey(state.date),
+          labelText: "Date",
+          widthRatio: 0.3,
+          onTap: widget.onTap,
+          content: _formatDate(state.date),
+        );
+      },
+    );
+  }
+
+  String? _formatDate(DateTime? dateTime) {
+    if (dateTime != null) {
+      return DateFormat("yMd", Platform.localeName).format(dateTime);
+    }
+    else return null;
+  }
+}
+
+class NewAccountField extends StatefulWidget {
+  
+  final void Function() onTap;
+  NewAccountField({required this.onTap, Key? key}) : super(key: key);
+
+  @override
+  _NewAccountFieldState createState() => _NewAccountFieldState();
+}
+
+class _NewAccountFieldState extends State<NewAccountField> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TransactionDetailsCubit, TransactionDetails>(
+      buildWhen: (previous, current) => previous.account != current.account,
+      builder: (context, state) {
+        return _NewTextField(
+          key: ObjectKey(state.account),
+          labelText: "Account",
+          onTap: widget.onTap,
+          widthRatio: 0.5,
+          content: state.account.toString(),
+        );
+      },
+    );
+  }
+}
+
+class NewRepetitionField extends StatefulWidget {
+  
+  final void Function() onTap;
+  NewRepetitionField({required this.onTap});
+
+  @override
+  _NewRepetitionFieldState createState() => _NewRepetitionFieldState();
+}
+
+class _NewRepetitionFieldState extends State<NewRepetitionField> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TransactionDetailsCubit, TransactionDetails>(
+      buildWhen: (previous, current) => previous.repetition != current.repetition,
+      builder: (context, state) {
+        return _NewTextField(
+          key: ObjectKey(state.repetition),
+          labelText: "Repetition",
+          onTap: widget.onTap,
+          content: state.repetition.toString(),
+        );
+      },
+    );
+  }
+}
+
+class NewTitleTextField extends StatefulWidget {
+
+  final void Function(TextEditingController controller) setTitleController;
+
+  const NewTitleTextField({
+    Key? key, 
+    required this.setTitleController}) : super(key: key);
+
+
+  @override
+  State<NewTitleTextField> createState() => _NewTitleTextFieldState();
+}
+
+class _NewTitleTextFieldState extends State<NewTitleTextField> {
+  
+  final TextEditingController controller = TextEditingController();
+  late final TransactionDetailsCubit cubit = TransactionDetailsCubit.of(context);
+
+  @override
+  void initState() { 
+    widget.setTitleController(controller);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<TransactionDetailsCubit, TransactionDetails>(
+      listener: (context, state) {
+        if (state.name != controller.text) {
+          if (state.name != null) controller.text = state.name!;
+          else controller.clear();
+        }
+      },
+      child : SizedBox(
+        width: MediaQuery.of(context).size.width * 0.65,
+        child: TextField(
+          enableInteractiveSelection: false,
+          controller: controller,
+          onTap: () {
+            KeyboardWidget.of(context)?.triggerKeyboard(false);
+          },
+          style: TextStyle(
+            height: 1.5,
+              fontSize: 20,
+              color: Theme.of(context).colorScheme.primary),
+          decoration: InputDecoration(
+            filled: true,
+            contentPadding: const EdgeInsets.all(5),
+            enabled: true,
+            labelText: "Name",
+            labelStyle: TextStyle(fontSize: 15),
+          ),
+        ),
+      )
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+
+}
+
+

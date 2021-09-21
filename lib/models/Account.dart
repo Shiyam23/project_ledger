@@ -1,20 +1,21 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
+
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 
 part 'Account.g.dart';
 
 @HiveType(typeId: 6)
-class Account extends Equatable{
+class Account extends Equatable {
   @HiveField(0)
-  String name;
+  final String name;
   @HiveField(1)
-  CategoryIcon icon;
+  final CategoryIcon icon;
   @HiveField(2)
-  bool selected;
+  final bool selected;
   @HiveField(3)
-  String currencyCode;
+  final String currencyCode;
 
   Account({
     required this.name, 
@@ -29,5 +30,19 @@ class Account extends Equatable{
   }
 
   @override
-  List<Object?> get props => [name, icon.iconData];
+  List<Object?> get props => [name, icon.iconData, currencyCode];
+
+  Account copyWith({
+    String? name,
+    CategoryIcon? icon,
+    bool? selected,
+    String? currencyCode,
+  }) {
+    return Account(
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      selected: selected ?? this.selected,
+      currencyCode: currencyCode ?? this.currencyCode,
+    );
+  }
 }

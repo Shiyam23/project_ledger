@@ -13,4 +13,8 @@ class TransactionLoaded extends TransactionState {
   TransactionLoaded(this.transactionList);
 }
 
+class TemplateLoaded extends TransactionState {
+  final Transaction template;
+  TemplateLoaded(this.template);
+}
 

@@ -1,18 +1,29 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
+
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 
 part 'Category.g.dart';
 
 @HiveType(typeId: 2)
-class Category extends Equatable{
+class Category extends Equatable {
   @HiveField(0)
-  String? name;
+  final String? name;
   @HiveField(1)
-  CategoryIcon? icon;
+  final CategoryIcon? icon;
 
   Category({this.name, this.icon});
 
   @override
   List<Object?> get props => [name, icon?.iconData];
+
+  Category copyWith({
+    String? name,
+    CategoryIcon? icon,
+  }) {
+    return Category(
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+    );
+  }
 }

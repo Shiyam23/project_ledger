@@ -4,39 +4,39 @@ import 'package:flutter/cupertino.dart';
 class NewBottonButtons extends StatelessWidget {
   final void Function()? onSave;
   final void Function()? onReset;
+  
 
   NewBottonButtons({this.onSave, this.onReset});
 
   @override
   Widget build(BuildContext context) {
     return ButtonBar(
-      alignment: MainAxisAlignment.spaceAround,
+      mainAxisSize: MainAxisSize.max,
+      alignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        ElevatedButton(
+        ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(
-              MediaQuery.of(context).size.width * 0.3, 
-              MediaQuery.of(context).size.width * 0.1, 
+            fixedSize: Size(
+              MediaQuery.of(context).size.width * 0.3,
+              MediaQuery.of(context).size.width * 0.1,
             )
           ),
-          child: Text(
-            "Zurücksetzen",
-            style: TextStyle(fontSize: 15),
+          icon: Icon(Icons.restore),
+          label: Text(
+            "RESET",
           ),
-          onPressed: onReset ,
+          onPressed: onReset,
         ),
-        ElevatedButton(
+        ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            minimumSize: Size(
-              MediaQuery.of(context).size.width * 0.3, 
-              MediaQuery.of(context).size.width * 0.1, 
+            fixedSize: Size(
+              MediaQuery.of(context).size.width * 0.3,
+              MediaQuery.of(context).size.width * 0.1,
             )
           ),
-          child: Text(
-            "Speichern",
-            style: TextStyle(
-              fontSize: 15,
-            ),
+          icon: Icon(Icons.save),
+          label: Text(
+            "SAVE",
           ),
           onPressed: onSave,
         ),

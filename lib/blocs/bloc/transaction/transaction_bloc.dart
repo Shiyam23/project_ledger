@@ -1,50 +1,41 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart' show DateTimeRange;
-import 'package:project_ez_finance/blocs/bloc/transaction_event.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction_state.dart';
-import 'package:project_ez_finance/models/Account.dart';
+import 'package:project_ez_finance/blocs/bloc/transaction/transaction_event.dart';
+import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
-import './bloc.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   
   Database _database = HiveDatabase();
-  bool _added = true;
-  Account? _selectedAccount;
   TransactionRequest? _lastRequest;
   List<Transaction> _transactions = [];
   final TransactionFilter _filter = TransactionFilter();
 
   TransactionBloc(TransactionState initialState) : super(initialState) {
     _database.setupDatabase();
-    _selectedAccount = _database.selectedAccount;
   }
 
   @override
-  Stream<TransactionState> mapEventToState(
-    TransactionEvent event,
-  ) async* {
+  Stream<TransactionState> mapEventToState(TransactionEvent event) async* {
     if (event is GetTransaction) {
-      bool accountChanged = _selectedAccount != _database.selectedAccount;
-      if (event.request != _lastRequest || _added || accountChanged) {
+      if (event.request != _lastRequest || _database.changed) {
         yield TransactionLoading();
         await _refreshTransactions(event.request);
         yield TransactionLoaded(_transactions);
-        _added = false;
-        _selectedAccount = _database.selectedAccount;
       }
     } else if (event is AddTransaction) {
-      _database.saveTransaction(event.transaction);
+      _database.saveTransaction(event.transaction, event.templateChecked);
       yield TransactionLoaded(_transactions);
-      _added = true;
     } else if (event is DeleteAll) {
       yield TransactionLoading();
       _database.deleteAllTransactions();
       yield TransactionLoaded([]);
+    } else if (event is LoadTemplate) {
+      yield TemplateLoaded(event.template);
     } 
   }
 

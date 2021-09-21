@@ -5,30 +5,29 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:project_ez_finance/models/Repetition.dart';
 import 'package:project_ez_finance/screens/new/income_expense/newTextFieldController/NewDateTextFieldController.dart';
-
 import '../NewTextField.dart';
 
-class NewRepetitionTextFieldController extends TextEditingController {
-  Repetition? initialRepetition = Repetition.none;
+class NewRepetitionDialog {
 
-  NewRepetitionTextFieldController({this.initialRepetition}) {
-    this.text = initialRepetition.toString();
-  }
+  Repetition initialRepetition = Repetition.none;
+
+  NewRepetitionDialog({
+    required this.initialRepetition
+  });
 
   Future<Repetition?> chooseRepetition(BuildContext contextS) async {
-    //
-    CalenderUnit? _selectedUnit = initialRepetition?.time ?? CalenderUnit.dayly;
-    DateTime _selectedEndDate = DateTime.now().add(Duration(days: 30));
 
+    CalenderUnit? _selectedUnit = initialRepetition.time ?? CalenderUnit.dayly;
+    DateTime _selectedEndDate = DateTime.now().add(Duration(days: 30));
     bool? isEnabled = initialRepetition != Repetition.none;
 
     NewDateTextFieldController dateController = NewDateTextFieldController(
-        initialValue: initialRepetition?.endDate ?? _selectedEndDate,
+        initialValue: initialRepetition.endDate ?? _selectedEndDate,
         startValue: DateTime.now().add(Duration(days: 1)),
         endValue: DateTime.now().add(Duration(days: 365 * 30)));
 
-    int? _selectedAmount = initialRepetition?.amount ?? 1;
-    bool endDateEnabled = initialRepetition?.endDate != null;
+    int? _selectedAmount = initialRepetition.amount ?? 1;
+    bool endDateEnabled = initialRepetition.endDate != null;
 
     Repetition? rep = await showDialog<Repetition>(
         context: contextS,
@@ -37,7 +36,7 @@ class NewRepetitionTextFieldController extends TextEditingController {
               builder: (context, StateSetter setDialogState) {
             return SimpleDialog(
               contentPadding: EdgeInsets.symmetric(horizontal: 0),
-              title: Text("Wähle Wiederholung"),
+              title: Text("Select Repetition"),
               children: <Widget>[
                 Divider(
                     color: Theme.of(context).colorScheme.primary, thickness: 2),
@@ -59,11 +58,11 @@ class NewRepetitionTextFieldController extends TextEditingController {
                                   setDialogState(() => isEnabled = enabled),
                               items: [
                                 DropdownMenuItem(
-                                  child: Center(child: Text("Nie")),
+                                  child: Center(child: Text("Never")),
                                   value: false,
                                 ),
                                 DropdownMenuItem(
-                                  child: Center(child: Text("Alle")),
+                                  child: Center(child: Text("Every")),
                                   value: true,
                                 ),
                               ],
@@ -103,15 +102,15 @@ class NewRepetitionTextFieldController extends TextEditingController {
                                     ? null
                                     : [
                                         DropdownMenuItem(
-                                          child: Text("Tag(e)"),
+                                          child: Text("Day(s)"),
                                           value: CalenderUnit.dayly,
                                         ),
                                         DropdownMenuItem(
-                                          child: Text("Monat(e)"),
+                                          child: Text("Month(s)"),
                                           value: CalenderUnit.monthly,
                                         ),
                                         DropdownMenuItem(
-                                          child: Text("Jahr(e)"),
+                                          child: Text("Year(s)"),
                                           value: CalenderUnit.yearly,
                                         ),
                                       ],
@@ -138,22 +137,23 @@ class NewRepetitionTextFieldController extends TextEditingController {
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.5,
-                          child: NewTextField(
-                              enabled: isEnabled! && endDateEnabled,
-                              labelText: "Enddatum",
-                              fontSize: 17,
-                              controller: dateController,
-                              onTap: () async {
-                                DateTime? temp = await ((dateController)
-                                    .selectDate(context) as Future<DateTime?>);
-                                if (temp != null) {
-                                  setRowState(() => dateController.text =
-                                      DateFormat("dd.MM.yyyy")
-                                          .format(temp)
-                                          .toString());
-                                  _selectedEndDate = temp;
-                                }
-                              }),
+                          child: null/* TextField(
+                            
+                            enabled: isEnabled! && endDateEnabled,
+                            labelText: "End date",
+                            fontSize: 17,
+                            onTap: () async {
+                              DateTime? temp = await ((dateController)
+                                  .selectDate(context) as Future<DateTime?>);
+                              if (temp != null) {
+                                setRowState(() => dateController.text =
+                                    DateFormat("dd.MM.yyyy")
+                                        .format(temp)
+                                        .toString());
+                                _selectedEndDate = temp;
+                              }
+                            }
+                          ), */
                         )
                       ],
                     );
@@ -163,7 +163,7 @@ class NewRepetitionTextFieldController extends TextEditingController {
                   children: <Widget>[
                     TextButton(
                       child: Text(
-                        "Zurück",
+                        "CANCEL",
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       ),
@@ -171,7 +171,7 @@ class NewRepetitionTextFieldController extends TextEditingController {
                     ),
                     TextButton(
                       child: Text(
-                        "Speichern",
+                        "OK",
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       ),
@@ -198,8 +198,6 @@ class NewRepetitionTextFieldController extends TextEditingController {
             );
           });
         });
-
-    initialRepetition = rep;
     return rep;
   }
 

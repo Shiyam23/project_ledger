@@ -193,12 +193,11 @@ class _CategoryPageState extends State<CategoryPage> {
       newName != oldCategory.name && 
       newName.isNotEmpty
     ){
-      Category newCategory = Category(
-      name: newName,
-      icon: oldCategory.icon,
+      Category newCategory = oldCategory.copyWith(
+        name: newName
       );
       bool noError = await _database.changeCategory(oldCategory, newCategory);
-      if (noError) listSetState(() => oldCategory.name = newCategory.name);
+      if (noError) setState(() => {});
     } 
   }
 
@@ -221,16 +220,15 @@ class _CategoryPageState extends State<CategoryPage> {
     if (iconName != null) {
       colorInt = await showIconSheet(context, true);
       if (colorInt != null) {
-        Category newCategory = Category(
-          name: oldCateogry.name,
+        Category newCategory = oldCateogry.copyWith(
           icon: CategoryIcon(
               iconData: CategoryIconData(
                 iconName: iconName,
                 backgroundColorInt: colorInt
-              ))   
+              ))
         );
         bool noError = await _database.changeCategory(oldCateogry, newCategory);
-        if (noError) listSetState(() => oldCateogry.icon = newCategory.icon);
+        if (noError) setState(() {});
       }
     }
   }

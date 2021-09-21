@@ -1,79 +1,67 @@
+import 'dart:async';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:project_ez_finance/components/Keyboard.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/models/Repetition.dart';
 import 'package:project_ez_finance/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 import './income_expense/newTextFieldController/NewAccountTextFieldController.dart';
-import './income_expense/newTextFieldController/NewDateTextFieldController.dart';
 import './income_expense/NewCategoryIcon.dart';
 import './income_expense/NewBottomButtons.dart';
 import './income_expense/NewSaveAsTemplate.dart';
 import './income_expense/NewTextField.dart';
-import './income_expense/NewTitleTextField.dart';
 import './income_expense/./newMoneyAmountWidgets/NewMoneyAmount.dart';
-import './income_expense/newTextFieldController/NewRepetitionTextFieldController.dart';
+import 'income_expense/newTextFieldController/NewRepetitionDialog.dart';
 
 class NewTransactionScreen extends StatefulWidget {
-  final bool _isExpense;
-
-  NewTransactionScreen(this._isExpense);
-
-  @override
+  
   _NewTransactionScreenState createState() => _NewTransactionScreenState();
 }
 
-class _NewTransactionScreenState extends State<NewTransactionScreen> {
-  // Selections and Settings
-  static String currency = "€";
-  static DateTime _selectedDate = DateTime.now();
-  Account? _selectedAccount;
-  Category? _selectedCategory;
-  Repetition? _selectedRepetition;
-  CalenderUnit? chosenTimeUnit = CalenderUnit.monthly;
+class _NewTransactionScreenState extends State<NewTransactionScreen>{
+  
+  bool _templateChecked = false;
+  
 
-  //Controllers
-  NewAccountTextFieldController? accountController;
-  NewDateTextFieldController? dateController;
-  NewRepetitionTextFieldController? repeatController;
-  NewMoneyAmountController? moneyAmountController;
-
-  //Accounts
   List<Account>? allAccounts;
-  String? mainAccountName;
+  Account? mainAccount;
+  NewMoneyAmountController? _amountController;
+  TextEditingController? _titleController;
+  TransactionDetails? previousDetails;
 
-  //Input fields
-  NewTitleTextField titleField = NewTitleTextField();
   late NewMoneyAmount moneyField;
   final _database = HiveDatabase();
 
-  _NewTransactionScreenState() {
-    dateController = NewDateTextFieldController(
-        initialValue: _selectedDate,
-        startValue: _selectedDate.subtract(Duration(days: 365 * 30)),
-        endValue: _selectedDate.add(Duration(days: 365 * 30)));
-    accountController = NewAccountTextFieldController();
-    repeatController =
-        NewRepetitionTextFieldController(initialRepetition: Repetition.none);
-    moneyField = NewMoneyAmount(currency: currency);
-    moneyAmountController = moneyField.controller;
+  @override
+  void initState() {
+   TransactionDetailsCubit cubit = TransactionDetailsCubit.of(context);
+    cubit.emit(cubit.state.reset(
+      name: true,
+      repetition: true,
+      isExpense: true,
+      category: true,
+      amount: true,
+    ));
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return Column(
-      mainAxisSize: MainAxisSize.max,
+    return  Column(
       children: <Widget>[
-        Spacer(),
-        moneyField,
-        Spacer(),
+        const Spacer(),
+        NewMoneyAmount(
+          setController: setAmountController,
+        ),
+        const Spacer(),
         Container(
           alignment: Alignment.centerLeft,
           width: MediaQuery.of(context).size.width * 0.85,
@@ -82,130 +70,181 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              NewCategoryIcon(setSelectedAccount),
+              NewCategoryIcon(
+                onSelect: (category) => setCategory(context, category)
+              ),
               Container(
-                  padding: EdgeInsets.only(left: 20),
-                  child: titleField)
+                padding: EdgeInsets.only(left: 20),
+                child: NewTitleTextField(
+                  setTitleController: (controller) => _titleController = controller,
+                )
+              )
             ],
           ),
         ),
-        Spacer(),
+        const Spacer(),
         Container(
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width * 0.85,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              NewTextField(
-                widthRatio: 0.3,
-                labelText: "Datum",
-                controller: dateController,
-                onTap: () async {
-                  DateTime? temp = await (dateController!.selectDate(context));
-                  if (temp != null) {
-                    setState(() => dateController!.text =
-                        DateFormat("dd.MM.yyyy").format(temp).toString());
-                    _selectedDate = temp;
-                  }
-                }
+              NewDateField(
+                onTap: () => selectDate(context)
               ),
-              Spacer(),
+              const Spacer(),
               FutureBuilder(
                 future: _database.getAllAccounts(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    allAccounts = snapshot.data as List<Account>;
-                    _selectedAccount ??=
-                    allAccounts!.isNotEmpty ? allAccounts![0] : null;
-                    if (_selectedAccount != null)
-                    accountController?.text = _selectedAccount!.name;
-                  return NewTextField(
-                    widthRatio: 0.5,
-                    labelText: "Konto",
-                    controller: accountController,
-                    onTap: () async {
-                      mainAccountName ??= _selectedAccount?.name;
-                      Account? temp = await accountController!
-                          .chooseAccount(context, mainAccountName! , allAccounts!);
-                      if (temp != null) {
-                        setState(() => _selectedAccount = temp);
-                      }
-                    });
-                  } else {
-                    return NewTextField(
-                      widthRatio: 0.5,
-                      labelText: "loading Accounts ...",
-                      enabled: false,
-                    );
-                  }
+                    refreshAccounts(context, snapshot.data as List<Account>);
+                  } 
+                  return NewAccountField(
+                    onTap: () => selectAccount(context),
+                  );
                 },
               ),
             ],
           ),
         ),
-        Spacer(),
-        NewTextField(
-            labelText: "Dauerauftrag",
-            controller: repeatController,
-            onTap: () async {
-              Repetition? temp =
-                  await repeatController!.chooseRepetition(context);
-              if (temp != null) {
-                setState(() => repeatController!.text = temp.toString());
-                _selectedRepetition = temp;
-              }
-            }),
-        Spacer(),
+        const Spacer(),
+        NewRepetitionField(
+          onTap: () => selectRepetition(context)
+        ),
+        const Spacer(),
         Container(
-          margin: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.075),
           alignment: Alignment.centerLeft,
           width: MediaQuery.of(context).size.width * 0.85,
-          child: NewSaveAsTemplate()),
-        Spacer(
-          flex: 2,
-        ),
-        NewBottonButtons(onSave: saveTransaction, onReset: resetInput),
-        Spacer(flex: 2),
+          child: NewSaveAsTemplate(
+            (bool checked) => _templateChecked = checked, 
+            _templateChecked)),
+        const Spacer(flex: 2),
+        NewBottonButtons(
+          onSave: () => saveTransaction(context), 
+          onReset: () => resetInput(context)),
+        const Spacer(flex: 2),
       ],
     );
   }
 
-  @override
-  void dispose() {
-    dateController!.dispose();
-    accountController!.dispose();
-    repeatController!.dispose();
-    super.dispose();
+  void setAmountController(NewMoneyAmountController controller) {
+    _amountController = controller;
   }
 
-  void saveTransaction() {
-    if (
-      _selectedAccount == null ||
-      _selectedCategory == null
-      ) {
-      showError(context);
-      return;
+  void selectDate(BuildContext context) async {
+    TransactionDetails details = TransactionDetailsCubit.of(context).state;
+    FocusScope.of(context).unfocus();
+    KeyboardWidget.of(context)?.triggerKeyboard(false);
+    DateTime initialDate = details.date ?? DateTime.now();
+    DateTime? pickedDateTime = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: initialDate.subtract(Duration(days: 365)),
+      lastDate: initialDate.add(Duration(days: 365)),
+    );
+    details = details.copyWith(
+      date: pickedDateTime ?? details.date,
+      name: _titleController!.text,
+      amount: _amountController!.getAmount()
+    );
+    TransactionDetailsCubit.of(context).emit(details);
+  }
+
+  void selectRepetition(BuildContext context) async {
+    TransactionDetails details = TransactionDetailsCubit.of(context).state;
+    FocusScope.of(context).unfocus();
+    KeyboardWidget.of(context)?.triggerKeyboard(false);
+    NewRepetitionDialog dialog = NewRepetitionDialog(
+      initialRepetition: details.repetition ?? Repetition.none);
+    Repetition? selectedRepetition = await dialog.chooseRepetition(context);
+    details = details.copyWith(
+      repetition: selectedRepetition ?? details.repetition,
+      name: _titleController!.text,
+      amount: _amountController!.getAmount()
+    );
+    TransactionDetailsCubit.of(context).emit(details);
+  }
+
+  void selectAccount(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+    KeyboardWidget.of(context)?.triggerKeyboard(false);
+    TransactionDetails details = TransactionDetailsCubit.of(context).state;
+    Account? account = await NewAccountDialog
+        .chooseAccount(context, allAccounts!);
+    if (account != details.account) {
+      details = details.copyWith(
+        account: account,
+        name: _titleController!.text,
+        amount: _amountController!.getAmount()
+      );
+      TransactionDetailsCubit.of(context).emit(details);
     }
-    Transaction transaction = Transaction(
-        addDateTime: DateTime.now(),
-        account: _selectedAccount,
-        amount: moneyAmountController?.text ?? "0,75 €",
-        category: _selectedCategory,
-        isExpense: widget._isExpense,
-        name: titleField.getText(),
-        repetition: _selectedRepetition,
-        date: _selectedDate);
-    BlocProvider.of<TransactionBloc>(context)
-        .add(AddTransaction(transaction, _selectedAccount!));
-    this.resetInput();
   }
 
-  void resetInput() {
-    this.moneyAmountController?.text = "0,00 €";
-    this.titleField.controller.clear();
-    this.accountController?.text = mainAccountName ?? "";
-    this._selectedAccount = allAccounts != null ? allAccounts![0] : null;
-    this.dateController?.initialValue = DateTime.now();
+  void saveTransaction(BuildContext context) {
+    TransactionDetails details = TransactionDetailsCubit.of(context).state;
+
+    if (
+      _titleController?.text != null &&
+      _titleController?.text != "" &&
+      details.category != null && 
+      details.date != null &&
+      details.account != null &&
+      details.repetition != null &&
+      _amountController != null
+      ) 
+    {
+      Transaction transaction = Transaction(
+        addDateTime: DateTime.now(),
+        account: details.account!,
+        amount: _amountController!.getAmount(),
+        amountString: _amountController!.getAmountString(),
+        category: details.category,
+        isExpense: _amountController!.isExpense,
+        name: _titleController!.text,
+        repetition: details.repetition!,
+        date: details.date!
+      );
+      BlocProvider.of<TransactionBloc>(context).add(AddTransaction(
+          transaction, 
+          details.account!,
+          _templateChecked
+        ));
+      this.resetInput(context);
+    } 
+    else {
+      showError(context);
+    }
+  }
+
+  void refreshAccounts(BuildContext context, List<Account> loadedAccounts) {
+    TransactionDetails details = TransactionDetailsCubit.of(context).state;
+    allAccounts = loadedAccounts;
+    if (allAccounts != null && mainAccount == null) {
+      mainAccount ??= allAccounts!.firstWhere((account) => account.selected);
+      details = details.copyWith(
+        account : mainAccount,
+      );
+      previousDetails = details;
+      TransactionDetailsCubit.of(context).emit(details);
+    }
+  }
+
+  
+
+  void resetInput(BuildContext context) {
+
+    TransactionDetails details = TransactionDetailsCubit.of(context).state;
+    details = TransactionDetails(
+      account : mainAccount,
+      category : null,
+      name: null,
+      date : DateTime.now(),
+      repetition : Repetition.none,
+      isExpense: true
+    );
+    _amountController!.buildInitialText(null);
+    TransactionDetailsCubit.of(context).emit(details);
   }
 
   Future showError(context) {
@@ -222,8 +261,15 @@ class _NewTransactionScreenState extends State<NewTransactionScreen> {
       message: 'Account and Category must be selected',
     ).show(context);
   }
-
-  void setSelectedAccount(Category? category) {
-    this._selectedCategory = category;
-  }
+  
+  void setCategory(BuildContext context, Category? category) {
+    FocusScope.of(context).unfocus();
+    TransactionDetails details = TransactionDetailsCubit.of(context).state;
+    details = details.copyWith(
+      category: category,
+      name: _titleController!.text,
+      amount: _amountController!.getAmount()
+    ); 
+    BlocProvider.of<TransactionDetailsCubit>(context).emit(details);
+  }  
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
 import 'package:project_ez_finance/components/MainBottomNavigationBar.dart';
+import 'package:project_ez_finance/models/Repetition.dart';
 import 'package:project_ez_finance/screens/home/HomeAppBar.dart';
 import 'package:project_ez_finance/screens/home/HomeScreen.dart';
 import 'package:project_ez_finance/screens/new/NewTransactionScreen.dart';
@@ -11,6 +13,7 @@ import 'package:project_ez_finance/screens/new/NewTemplateScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewStandingOrderScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewTransactionScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewTabBar.dart';
+import 'package:project_ez_finance/components/Keyboard.dart';
 
 class Layout extends StatefulWidget {
   @override
@@ -21,7 +24,11 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   //
   LayoutController? lController;
   TransactionBloc transactionBloc = TransactionBloc(TransactionLoading());
-
+  
+  bool keyboardOpen = false;
+  late KeyBoard keyboard = KeyBoard(
+    triggerKeyboard: triggerKeyboard,
+  );
 
   @override
   void initState() {
@@ -29,7 +36,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
         bottomSelectedIndex: 1,
         currentPage: 2,
         newTabController:
-            TabController(length: 3, initialIndex: 0, vsync: this),
+            TabController(length: 2, initialIndex: 0, vsync: this),
         overViewTabController:
             TabController(length: 2, initialIndex: 1, vsync: this),
         pageController: PageController(initialPage: 2, keepPage: true));
@@ -38,35 +45,59 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return KeyboardWidget(
+      keyboard: keyboard,
+      triggerKeyboard: triggerKeyboard,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: builder()
+      ),
+    );
+  }
+
+  List<Widget> builder() {
+    List<Widget> stackList = [
+      Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: getTopBar(lController!.currentPage!) as PreferredSizeWidget?,
         body: buildPageView(),
         bottomNavigationBar: MainBottomNaviationBar(
           layoutController: lController,
           setPage: setPage,
-        ));
+        )
+      ),
+    ];
+    if (keyboardOpen) stackList.add(keyboard);
+    return stackList;
   }
 
   Widget buildPageView() {
-    return BlocProvider(
-      create: (_) => transactionBloc,
-        child: PageView(
-          controller: lController!.pageController,
-          onPageChanged: (index) => pageChanged(index),
-          children: <Widget>[
-            ViewStandingOrderScreen(),
-            ViewTransactionScreen(),
-            HomeScreen(),
-            NewTransactionScreen(true),
-            NewTransactionScreen(false),
-            NewTemplateScreen()
-          ],
-        ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => transactionBloc),
+        BlocProvider(create: (_) => TransactionDetailsCubit()),
+      ],
+      child: PageView(
+        controller: lController!.pageController,
+        onPageChanged: pageChanged,
+        children: <Widget>[
+          ViewStandingOrderScreen(),
+          ViewTransactionScreen(),
+          HomeScreen(),
+          NewTransactionScreen(),
+          NewTemplateScreen(setPage)
+        ],
+      ),
     );
   }
 
   void pageChanged(int index) {
+
+    if (index != 3 && keyboardOpen) {
+      FocusScope.of(context).unfocus();
+      triggerKeyboard(false); 
+    }
+
     lController!.currentPage = index;
     if (lController!.pageController.page! + index < 2) {
       lController!.overViewTabController
@@ -83,11 +114,11 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
     });
   }
 
-  void setPage(index) {
+  Future<void> setPage(index) async {
     if ((lController!.currentPage! - (index + 1)).abs() > 1)
       lController!.pageController.jumpToPage(index + 1);
     else
-      lController!.pageController.animateToPage(index + 1,
+      await lController!.pageController.animateToPage(index + 1,
           duration: Duration(milliseconds: 300), curve: Curves.ease);
     lController!.currentPage = index + 1;
   }
@@ -112,4 +143,9 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
     transactionBloc.close();
     super.dispose();
   }
+
+  void triggerKeyboard(bool open) {
+    if (keyboardOpen != open) setState(() => keyboardOpen = open);
+  }
+
 }

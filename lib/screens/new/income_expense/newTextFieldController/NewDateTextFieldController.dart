@@ -14,13 +14,6 @@ class NewDateTextFieldController extends TextEditingController {
       : super(text: DateFormat("dd.MM.yyyy").format(initialValue));
 
   Future selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: initialValue,
-      firstDate: startValue,
-      lastDate: endValue,
-    );
-    if (picked != null) initialValue = picked;
-    return picked;
+    
   }
 }

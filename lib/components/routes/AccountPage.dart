@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:currency_picker/currency_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +105,7 @@ class _AccountPageState extends State<AccountPage> {
             contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
             title: const Text("Edit name"),
             leading: const Icon(Icons.edit),
-            onTap: () => saveNewName(context, account, listSetState)
+            onTap: () => saveNewName(context, account)
           ),
           const Divider(
             thickness: 1,
@@ -116,7 +115,7 @@ class _AccountPageState extends State<AccountPage> {
             contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
             title: const Text("Change Icon"),
             leading: const Icon(Icons.circle),
-            onTap: () => saveNewIcon(context, account, listSetState)
+            onTap: () => saveNewIcon(context, account)
           ),
           const Divider(
             thickness: 1,
@@ -126,7 +125,7 @@ class _AccountPageState extends State<AccountPage> {
             contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
             title: const Text("Change currency"),
             leading: const Icon(Icons.attach_money),
-            onTap: () => saveNewCurrency(context, account, listSetState)
+            onTap: () => saveNewCurrency(context, account)
           ),
           const Divider(
             thickness: 1,
@@ -143,9 +142,19 @@ class _AccountPageState extends State<AccountPage> {
     });    
   }
 
-  void selectAccount(BuildContext context, Account selectedAccount) {
-    _database.selectAccount(selectedAccount);
-    _listKey.currentState!.setState(() {});
+  void selectAccount(BuildContext context, Account selectedAccount) async {
+    bool saved = await _database.selectAccount(selectedAccount);
+    if (saved) {
+      Account oldAccount = _accountList.firstWhere((account) => account.selected);
+      int oldIndex = _accountList.indexOf(oldAccount);
+      Account modifiedOldAccount = oldAccount.copyWith(selected: false);
+      int newIndex = _accountList.indexOf(selectedAccount);
+      Account modifiedSelectedAccount = selectedAccount.copyWith(selected: true);
+      setState(() {
+        _accountList[oldIndex] = modifiedOldAccount;
+        _accountList[newIndex] = modifiedSelectedAccount;
+      });
+    }
   }
 
   void deleteAccount(BuildContext context, Account account) async {
@@ -194,7 +203,7 @@ class _AccountPageState extends State<AccountPage> {
     return Future.value(name);
   }
 
-  void saveNewName(BuildContext context, Account oldAccount, StateSetter listSetState) async {
+  void saveNewName(BuildContext context, Account oldAccount) async {
     _controller.text = oldAccount.name;
     _controller.selection = TextSelection(
       baseOffset: 0, 
@@ -221,14 +230,11 @@ class _AccountPageState extends State<AccountPage> {
       newName != oldAccount.name && 
       newName.isNotEmpty
     ){
-      Account newAccount = Account(
-      name: newName,
-      currencyCode: oldAccount.currencyCode,
-      selected: oldAccount.selected,
-      icon: oldAccount.icon,
+      Account newAccount = oldAccount.copyWith(
+        name: newName
       );
       _database.changeAccount(oldAccount, newAccount);
-      listSetState(() => oldAccount.name = newAccount.name);
+      setState(() => oldAccount = newAccount);
     } 
   }
 
@@ -244,7 +250,7 @@ class _AccountPageState extends State<AccountPage> {
         prefixIcon: const Icon(Icons.edit),
         )
     );
-    if (_accountList.contains((account) => account.name == name)) {
+    if (_accountList.any((account) => account.name == name)) {
       // TODO: show proper error message
       return;      
     }
@@ -264,7 +270,8 @@ class _AccountPageState extends State<AccountPage> {
                   iconData: CategoryIconData(
                     iconName: iconName,
                     backgroundColorInt: colorInt
-                  ))   
+                  )
+                )
               );
               _database.addAccount(newAccount);
               _accountList.add(newAccount);
@@ -278,7 +285,7 @@ class _AccountPageState extends State<AccountPage> {
     }
   }
 
-  void saveNewIcon(BuildContext context, Account oldAccount, StateSetter listSetState) async {
+  void saveNewIcon(BuildContext context, Account oldAccount) async {
     Navigator.of(context).pop();
     int? colorInt;
     String? iconName = await showIconSheet(context, false);
@@ -296,24 +303,21 @@ class _AccountPageState extends State<AccountPage> {
               ))   
         );
         _database.changeAccount(oldAccount, newAccount);
-        listSetState(() => oldAccount.icon = newAccount.icon);
+        setState(() => oldAccount = newAccount);
       }
     }
   }
 
-  void saveNewCurrency(BuildContext context, Account oldAccount, StateSetter listSetState) {
+  void saveNewCurrency(BuildContext context, Account oldAccount) {
     Navigator.of(context).pop();
     showCurrencyPicker(
       context: context, 
       onSelect: (currency) {
-        Account newAccount = Account(
-          name: oldAccount.name,
-          selected: oldAccount.selected,
-          currencyCode: currency.code,
-          icon: oldAccount.icon
+        Account newAccount = oldAccount.copyWith(
+          currencyCode: currency.code
         );
         _database.changeAccount(oldAccount, newAccount);
-        listSetState(() => oldAccount.currencyCode = newAccount.currencyCode);
+        setState(() => oldAccount = newAccount);
       }
     );
   }

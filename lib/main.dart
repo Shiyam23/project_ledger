@@ -6,6 +6,7 @@ import 'package:project_ez_finance/screens/Layout.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeLight.dart';
 import 'package:project_ez_finance/components/routes/AccountPage.dart';
+import 'package:project_ez_finance/components/Keyboard.dart';
 
 
 void main() {
@@ -42,7 +43,7 @@ class _MyAppState extends State<MyApp> {
       home: Layout(),
       routes: {
         "account": (context) => AccountPage(),
-        "category": (context) => CategoryPage()
+        "category": (context) => CategoryPage(),
       },
       debugShowCheckedModeBanner: false,
     );

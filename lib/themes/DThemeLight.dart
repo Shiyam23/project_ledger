@@ -8,7 +8,6 @@ class DThemeLight implements DTheme {
 
   final ThemeData _themeData = ThemeData(
     appBarTheme: AppBarTheme(
-        backwardsCompatibility: false,
         systemOverlayStyle: SystemUiOverlayStyle.light,
         backgroundColor: primaryColor),
     brightness: Brightness.light,

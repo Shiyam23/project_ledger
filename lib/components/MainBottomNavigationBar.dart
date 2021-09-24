@@ -22,23 +22,26 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
 
   final List<BottomNavigationBarItem> bottomNavBarItems = [
     BottomNavigationBarItem(
-        icon: new Icon(FontAwesomeIcons.book),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Text('Overview'),
-        )),
+      icon: Padding(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: new Icon(FontAwesomeIcons.book),
+      ),
+      label: 'Overview'
+    ),
     BottomNavigationBarItem(
-        icon: new Icon(FontAwesomeIcons.home),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Text('Home'),
-        )),
+      icon: Padding(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: Icon(FontAwesomeIcons.home),
+      ),
+      label: 'Home'
+    ),
     BottomNavigationBarItem(
-        icon: Icon(FontAwesomeIcons.plusCircle),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Text('New'),
-        ))
+      icon: Padding(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: Icon(FontAwesomeIcons.plusCircle),
+      ),
+      label: 'New',
+    )
   ];
 
   _MainBottomNaviationBarState(this.lController, this.setPage);

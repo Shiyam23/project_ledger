@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:project_ez_finance/components/routes/CategoryPage.dart';
@@ -6,12 +7,13 @@ import 'package:project_ez_finance/screens/Layout.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeLight.dart';
 import 'package:project_ez_finance/components/routes/AccountPage.dart';
-import 'package:project_ez_finance/components/Keyboard.dart';
 
 
-void main() {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupDatabase();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(DThemeContainer(
     initialDTheme: DThemeLight(),
     child: MyApp(),

@@ -4,27 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:project_ez_finance/models/Repetition.dart';
-import 'package:project_ez_finance/screens/new/income_expense/newTextFieldController/NewDateTextFieldController.dart';
+
 import '../NewTextField.dart';
 
 class NewRepetitionDialog {
 
-  Repetition initialRepetition = Repetition.none;
+  final Repetition initialRepetition;
 
   NewRepetitionDialog({
-    required this.initialRepetition
+    this.initialRepetition = Repetition.none
   });
 
   Future<Repetition?> chooseRepetition(BuildContext contextS) async {
 
     CalenderUnit? _selectedUnit = initialRepetition.time ?? CalenderUnit.dayly;
-    DateTime _selectedEndDate = DateTime.now().add(Duration(days: 30));
+    DateTime _selectedEndDate = initialRepetition.endDate ?? DateTime.now().add(Duration(days: 30));
     bool? isEnabled = initialRepetition != Repetition.none;
-
-    NewDateTextFieldController dateController = NewDateTextFieldController(
-        initialValue: initialRepetition.endDate ?? _selectedEndDate,
-        startValue: DateTime.now().add(Duration(days: 1)),
-        endValue: DateTime.now().add(Duration(days: 365 * 30)));
 
     int? _selectedAmount = initialRepetition.amount ?? 1;
     bool endDateEnabled = initialRepetition.endDate != null;
@@ -121,7 +116,6 @@ class NewRepetitionDialog {
                   ),
                 ),
                 SizedBox(
-                  // width: MediaQuery.of(context).size.width * 0.5,
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: StatefulBuilder(
                       builder: (context, StateSetter setRowState) {
@@ -137,23 +131,21 @@ class NewRepetitionDialog {
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.5,
-                          child: null/* TextField(
-                            
-                            enabled: isEnabled! && endDateEnabled,
-                            labelText: "End date",
-                            fontSize: 17,
+                          child: NewRepetitionDateField(
+                            enabled: endDateEnabled && isEnabled!
+                            content: DateFormat("yMd").format(_selectedEndDate),
                             onTap: () async {
-                              DateTime? temp = await ((dateController)
-                                  .selectDate(context) as Future<DateTime?>);
+                              DateTime? temp = await showDatePicker(
+                                context: context, 
+                                initialDate: _selectedEndDate,
+                                firstDate: _selectedEndDate,
+                                lastDate: _selectedEndDate.add(Duration(days: 365))
+                              )
                               if (temp != null) {
-                                setRowState(() => dateController.text =
-                                    DateFormat("dd.MM.yyyy")
-                                        .format(temp)
-                                        .toString());
-                                _selectedEndDate = temp;
+                                setRowState(() => _selectedEndDate = temp);
                               }
                             }
-                          ), */
+                          )
                         )
                       ],
                     );

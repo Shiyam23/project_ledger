@@ -97,6 +97,31 @@ class _NewDateFieldState extends State<NewDateField> {
   }
 }
 
+class NewRepetitionDateField extends StatelessWidget {
+
+  final void Function() onTap;
+  final String content ;
+  final bool enabled ;
+
+  NewRepetitionDateField({
+    required this.content,
+    required this.onTap,
+    required this.enabled
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _NewTextField(
+      key: ValueKey(content),
+      enabled: enabled,
+      labelText: "End date",
+      widthRatio: 0.5,
+      onTap: onTap,
+      content: content,
+    );
+  }
+}
+
 class NewAccountField extends StatefulWidget {
   
   final void Function() onTap;

@@ -4,51 +4,35 @@ import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart
 import 'package:project_ez_finance/models/SelectableTile.dart';
 import 'package:flutter/cupertino.dart';
 
-class IconListTile extends StatefulWidget {
+class IconListTile extends StatelessWidget {
+  
   final SelectableTile tile;
-  final bool? selectable;
   final void Function()? onTap;
   final void Function()? onSelect;
+  late final void Function() flip;
+  final ValueNotifier<bool>? selectedNotifier;
+  late final CategoryIcon? icon = CategoryIcon(
+    selectedNotifier: selectedNotifier,
+    iconData: CategoryIconData(
+      backgroundColorInt: tile.icon!.iconData.backgroundColorInt,
+      iconName: tile.icon!.iconData.iconName,
+      iconColorInt: tile.icon!.iconData.iconColorInt,
+    ),
+    onTap: onSelect,
+  );
 
-  const IconListTile({
+
+  IconListTile({
     required this.tile,
-    required this.selectable,
-    this.onTap, 
-    this.onSelect, 
+    bool selectable = false,
+    this.onTap,
+    this.onSelect,
+    bool selected = false,
     Key? key
-    }): super(key: key);
+  }): 
+  selectedNotifier = selectable ? ValueNotifier<bool>(selected) : null,
+  super(key: key);
 
-  @override
-  _IconListTileState createState() => _IconListTileState();
-}
-
-class _IconListTileState extends State<IconListTile>
-    with SingleTickerProviderStateMixin {
-  AnimationController? flipController;
-  CategoryIcon? icon;
-  late SelectableTile tile;
-
-  @override
-  void initState() {
-    super.initState();
-    tile = widget.tile;
-    CategoryIcon oldIcon = tile.icon!;
-
-    flipController =
-        AnimationController(duration: Duration(milliseconds: 100), vsync: this);
-
-    icon = CategoryIcon(
-      iconData: CategoryIconData(
-        backgroundColorInt: oldIcon.iconData.backgroundColorInt,
-        iconName: oldIcon.iconData.iconName,
-        iconColorInt: oldIcon.iconData.iconColorInt,
-      ),
-      selectable: widget.selectable ?? false,
-      selected: false,
-      onTap: widget.onSelect,
-      flipController: flipController,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +41,8 @@ class _IconListTileState extends State<IconListTile>
       children: <Widget>[
         ListTile(
           onLongPress: () {
-            if (widget.selectable ?? false) flipController!.forward();
-            widget.onSelect?.call();
+            if (selectedNotifier != null) selectedNotifier!.value = !selectedNotifier!.value;
+            onSelect?.call();
           },
           contentPadding: EdgeInsets.only(left: 20, right: 40),
           title: tile.title,
@@ -66,8 +50,8 @@ class _IconListTileState extends State<IconListTile>
           isThreeLine: true,
           leading: icon,
           onTap: () {
-            if (widget.selectable ?? false) flipController!.forward();
-            widget.onTap?.call();
+            if (selectedNotifier != null) selectedNotifier!.value = !selectedNotifier!.value;
+            onTap?.call();
           },
           trailing: Center(widthFactor: 1, child: tile.rightText),
         ),

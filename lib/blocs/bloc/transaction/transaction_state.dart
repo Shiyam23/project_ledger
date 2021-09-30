@@ -4,17 +4,16 @@ abstract class TransactionState {
   const TransactionState();
 }
 
-class TransactionInitial extends TransactionState {}
+class TransactionInitial extends TransactionState {
+  const TransactionInitial();
+}
 
-class TransactionLoading extends TransactionState {}
+class TransactionLoading extends TransactionState {
+  const TransactionLoading();
+}
 
 class TransactionLoaded extends TransactionState {
   final List<Transaction> transactionList;
   TransactionLoaded(this.transactionList);
-}
-
-class TemplateLoaded extends TransactionState {
-  final Transaction template;
-  TemplateLoaded(this.template);
 }
 

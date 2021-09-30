@@ -14,8 +14,8 @@ abstract class Database {
   Future<bool> changeCategory(Category oldCategory, Category newCategory);
   void deleteCategory(Category category);
   void setupDatabase();
-  void deleteAllTransactions();
-  void saveTransaction(Transaction transaction, bool templateChecked);
+  Future<bool> deleteTransactions(List<Transaction> transactions);
+  Future<void> saveTransaction(Transaction transaction, bool templateChecked);
   Future<List<Transaction>> getTransactions(Set<DateTime> months);
   Future<List<Transaction>> getTemplates();
   Future<bool> deleteTemplate(Transaction template); 

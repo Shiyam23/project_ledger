@@ -23,19 +23,23 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   Stream<TransactionState> mapEventToState(TransactionEvent event) async* {
     if (event is GetTransaction) {
       if (event.request != _lastRequest || _database.changed) {
-        yield TransactionLoading();
+        yield const TransactionLoading();
         await _refreshTransactions(event.request);
         yield TransactionLoaded(_transactions);
       }
     } else if (event is AddTransaction) {
       _database.saveTransaction(event.transaction, event.templateChecked);
       yield TransactionLoaded(_transactions);
-    } else if (event is DeleteAll) {
-      yield TransactionLoading();
-      _database.deleteAllTransactions();
-      yield TransactionLoaded([]);
-    } else if (event is LoadTemplate) {
-      yield TemplateLoaded(event.template);
+    } else if (event is DeleteTransaction) {
+      yield const TransactionLoading();
+      await _database.deleteTransactions(event.transactions);
+      await _refreshTransactions(_lastRequest!);
+      yield TransactionLoaded(_transactions);
+    } else if (event is DeleteAllShownTransactions) {
+      yield const TransactionLoading();
+      await _database.deleteTransactions(_transactions);
+      await _refreshTransactions(_lastRequest!);
+      yield TransactionLoaded(_transactions);
     } 
   }
 

@@ -42,6 +42,5 @@ class CategoryIconData extends Equatable{
       : this.icon = iconList[iconName];
 
   @override
-  // TODO: implement props
   List<Object?> get props => [iconName, backgroundColorInt, iconColorInt];
 }

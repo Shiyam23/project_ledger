@@ -162,15 +162,6 @@ class HiveDatabase implements Database {
     _selectedAccount = _accountList.firstWhere((account) => account.selected);
   }
 
-  @override
-  void deleteAllTransactions() async {
-     _transactions.clear();
-    if (_selectedAccount != null) {
-      _deleteTransactionsOfAccount(_selectedAccount!);
-    } 
-    _changed = true;
-  }
-
   void _deleteTransactionsOfAccount(Account account) async {
     Box? accountBoxMap = await Hive.openBox(accountBoxMapBoxName);
     String prefix = accountBoxMap.get(account.name).toString();
@@ -183,9 +174,34 @@ class HiveDatabase implements Database {
         _boxes.remove(name);
       }
     });
+    _changed = true;
+  }
+
+  @override
+  Future<bool> deleteTransactions(List<Transaction> transactions) async {
+    bool noError = false;
+    transactions.forEach((transaction) async {
+      Box? relevantBox = await _getBoxFromDate(
+        date: transaction.date, 
+        account: transaction.account
+      );
+      int index = relevantBox!.values.toList().indexOf(transaction);
+      if (index > - 1) {
+        try {
+          relevantBox.deleteAt(index);
+        }
+        on HiveError {
+          noError = false;
+        }
+        noError = true;
+      }
+      noError = false;
+    });
+    _changed = true;
+    return noError;
   }
   
-  void _deleteTemplates(DeleteIf deleteIf) async{
+  void _deleteTemplates(DeleteIf deleteIf) async {
     Box? templateBox = await Hive.openBox(templateBoxName);
     int i = 0;
     while (i < templateBox.values.toList().length) {

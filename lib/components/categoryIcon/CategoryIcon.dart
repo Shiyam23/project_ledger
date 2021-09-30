@@ -11,54 +11,31 @@ part 'CategoryIcon.g.dart';
 class CategoryIcon extends StatefulWidget {
   @HiveField(0)
   final CategoryIconData iconData;
-  final bool selectable;
-  final bool selected;
   final void Function()? onTap;
-  final AnimationController? flipController;
+  final ValueNotifier<bool>? selectedNotifier;
 
   CategoryIcon({
     required this.iconData,
-    this.selectable = false,
-    this.selected = false,
     this.onTap,
-    this.flipController,
+    this.selectedNotifier
   });
 
   @override
-  _CategoryIconState createState() => _CategoryIconState(flipController);
+  _CategoryIconState createState() => _CategoryIconState();
 }
 
 class _CategoryIconState extends State<CategoryIcon>
     with SingleTickerProviderStateMixin {
-  //
-  AnimationController? _flipController;
-  late Animation<double> _animation;
-  late bool isSelected;
-
-  _CategoryIconState(this._flipController);
-
-  @override
-  void initState() {
-    super.initState();
-    isSelected = widget.selected;
-    _flipController ??=
+  
+  late bool isSelected = widget.selectedNotifier?.value ?? false;
+  late AnimationController? _flipController =
         AnimationController(duration: Duration(milliseconds: 100), vsync: this);
-
-    _animation = Tween<double>(begin: 0, end: (1 / 2) * math.pi)
-        .animate(_flipController!)
-          ..addListener(() {
-            setState(() {});
-          })
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              isSelected = !isSelected;
-              _flipController!.reverse();
-            }
-          });
-  }
+  late Animation<double> _animation = 
+    Tween<double>(begin: 0, end: (1 / 2) * math.pi).animate(_flipController!);
 
   @override
   Widget build(BuildContext context) {
+    widget.selectedNotifier?.addListener(flip);
     final Icon frontSideIcon = Icon(
       widget.iconData.icon,
       color: Color(
@@ -93,23 +70,38 @@ class _CategoryIconState extends State<CategoryIcon>
     );
 
     return InkResponse(
-      onTap: () => flip(),
-      child: Transform(
-        transform: Matrix4.rotationY(_animation.value),
-        alignment: Alignment.center,
+      onTap: onTap,
+      child: AnimatedBuilder(
+        animation: _flipController!,
         child: isSelected ? backSideContainer : frontSideContainer,
+        builder: (context, child) =>  Transform(
+          transform: Matrix4.rotationY(_animation.value),
+          alignment: Alignment.center,
+          child: child,
+        ),
       ),
     );
   }
 
-  void flip() {
-    if (widget.selectable) _flipController!.forward();
+  void onTap() {
+    if (widget.selectedNotifier != null) {
+      widget.selectedNotifier!.value = !widget.selectedNotifier!.value;
+    }
     widget.onTap?.call();
+  }
+
+  void flip() async {
+    if (widget.selectedNotifier != null) {
+      await _flipController!.forward();
+      setState(() => isSelected = !isSelected);
+      _flipController!.reverse();
+    }
   }
 
   @override
   void dispose() {
     _flipController!.dispose();
+    // widget.selectedNotifier?.removeListener(flip);
     super.dispose();
   }
 }

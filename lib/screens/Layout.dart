@@ -4,7 +4,6 @@ import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
 import 'package:project_ez_finance/components/MainBottomNavigationBar.dart';
-import 'package:project_ez_finance/models/Repetition.dart';
 import 'package:project_ez_finance/screens/home/HomeAppBar.dart';
 import 'package:project_ez_finance/screens/home/HomeScreen.dart';
 import 'package:project_ez_finance/screens/new/NewTransactionScreen.dart';

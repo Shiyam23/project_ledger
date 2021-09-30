@@ -6,12 +6,12 @@ import 'ViewFilterBarTimeDialog.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
 import 'ViewFilterBarFilter.dart';
-import 'ViewFilterBarIcon.dart';
+import 'ViewBarIcon.dart';
 import 'ViewFilterBarSearch.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
   final TransactionRequest request;
-  ViewFilterBarSection({Key? key, required TransactionRequest request})
+  const ViewFilterBarSection({Key? key, required TransactionRequest request})
       : request = request,
         super(key: key);
 
@@ -46,21 +46,14 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
         AppBar(
           actions: <Widget>[
             SizedBox(width: _paddingWidth),
-            ViewFilterBarIcon(
+            ViewBarIcon(
               width: _width,
-              isOpen: _openSearchBar,
               icon: Icons.search,
-              onTap: (open) {
-                setState(() {
-                  _openSearchBar = open ?? false;
-                });
-              },
             ),
-            ViewFilterBarIcon(
+            ViewBarIcon(
               width: _width,
               icon: Icons.calendar_today,
-              canOpen: false,
-              onTap: (open) async {
+              onTap: () async {
                 DateTime start = DateTime.now().subtract(Duration(days: 365));
                 DateTime end = DateTime.now().add(Duration(days: 365));
                 _dateRange = await showDateRangePicker(
@@ -80,11 +73,10 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                     .add(GetTransaction(widget.request));
               },
             ),
-            ViewFilterBarIcon(
+            ViewBarIcon(
               width: _width,
-              canOpen: false,
               icon: Icons.list,
-              onTap: (open) async {
+              onTap: () async {
                 dynamic viewOption = await showDialog(
                     context: context,
                     builder: (context) {
@@ -98,11 +90,10 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 }
               },
             ),
-            ViewFilterBarIcon(
+            ViewBarIcon(
               width: _width,
-              canOpen: false,
               icon: Icons.compress,
-              onTap: (open) async {
+              onTap: () async {
                 dynamic timeOption = await showDialog(
                     context: context,
                     builder: (context) {
@@ -116,11 +107,10 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 }
               },
             ),
-            ViewFilterBarIcon(
+            ViewBarIcon(
               width: _width,
-              canOpen: false,
               icon: Icons.sort,
-              onTap: (open) async {
+              onTap: () async {
                 dynamic sortOption = await showDialog(
                     context: context,
                     builder: (context) {
@@ -134,13 +124,9 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 }
               },
             ),
-            ViewFilterBarIcon(
+            ViewBarIcon(
               width: _width,
-              canOpen: false,
               icon: Icons.file_upload,
-              onTap: (open) => {
-                BlocProvider.of<TransactionBloc>(context).add(DeleteAll()),
-              },
             ),
             SizedBox(width: _paddingWidth),
           ],
@@ -149,6 +135,47 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ? ViewFilterBarSearch(request: widget.request)
             : Container(),
         _openFilterBar ? ViewFilterBarFilter() : Container(),
+      ],
+    );
+  }
+}
+
+class ViewSelectionBarSection extends StatelessWidget {
+  
+  final void Function() onDelete;
+  final void Function() onDeleteAll;
+  final void Function() onEdit;
+  
+  const ViewSelectionBarSection({
+    Key? key,
+    required this.onDelete,
+    required this.onDeleteAll,
+    required this.onEdit
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double _paddingWidth = 20;
+    double _width = (MediaQuery.of(context).size.width - _paddingWidth * 2) / 6;
+    return AppBar(
+      actions: <Widget>[
+        SizedBox(width: _paddingWidth),
+        ViewBarIcon(
+          width: _width,
+          icon: Icons.edit,
+          onTap: onEdit,
+        ),
+        ViewBarIcon(
+          width: _width,
+          icon: Icons.delete_forever,
+          onTap: onDelete,
+        ),
+        ViewBarIcon(
+          width: _width * 1.15,
+          icon: Icons.delete_sweep,
+          onTap: onDeleteAll,
+        ),
+        SizedBox(width: _paddingWidth),
       ],
     );
   }

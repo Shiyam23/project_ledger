@@ -17,11 +17,6 @@ class GetTransaction extends TransactionEvent {
   List<Object?> get props => [request];
 }
 
-class DeleteAll extends TransactionEvent {
-  @override
-  List<Object?> get props => throw UnimplementedError();
-}
-
 class LoadTemplate extends TransactionEvent {
   final Transaction template;
   LoadTemplate(this.template);
@@ -37,7 +32,25 @@ class AddTransaction extends TransactionEvent {
   AddTransaction(this.transaction, this.account, this.templateChecked);
 
   @override
-  List<Object?> get props => [transaction, account];
+  List<Object?> get props => [transaction, account, this.templateChecked];
+}
+
+class DeleteTransaction extends TransactionEvent {
+  final List<Transaction> transactions;
+  final Account account;
+
+  DeleteTransaction(this.transactions, this.account);
+
+  @override
+  List<Object?> get props => [transactions, account];
+}
+
+class DeleteAllShownTransactions extends TransactionEvent {
+
+  const DeleteAllShownTransactions();
+
+  @override
+  List<Object?> get props => [];
 }
 
 // ignore: must_be_immutable

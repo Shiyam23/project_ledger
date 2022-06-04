@@ -76,3 +76,6 @@ project_ledger_main.zip
 
 # Content related
 lib/models/currencies_backup.dart
+
+# ios related
+ios/Flutter/Flutter.podspec

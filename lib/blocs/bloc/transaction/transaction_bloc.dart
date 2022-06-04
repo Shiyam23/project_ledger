@@ -17,6 +17,23 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   TransactionBloc(TransactionState initialState) : super(initialState) {
     _database.setupDatabase();
+    on<GetTransaction>(_getTransaction);
+    on<AddTransaction>((event, emit) {
+      _database.saveTransaction(event.transaction, event.templateChecked);
+      emit(TransactionLoaded(_transactions));
+    });
+    on<DeleteTransaction>((event, emit) {
+      emit(const TransactionLoading());
+      _database.deleteTransactions(event.transactions);
+      _refreshTransactions(_lastRequest!);
+      emit (TransactionLoaded(_transactions));
+    });
+    on<DeleteAllShownTransactions>((event, emit) {
+      emit(const TransactionLoading());
+      _database.deleteTransactions(_transactions);
+      _refreshTransactions(_lastRequest!);
+      emit(TransactionLoaded(_transactions));
+    });
   }
 
   @override
@@ -24,7 +41,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     if (event is GetTransaction) {
       if (event.request != _lastRequest || _database.changed) {
         yield const TransactionLoading();
-        await _refreshTransactions(event.request);
+        _refreshTransactions(event.request);
         yield TransactionLoaded(_transactions);
       }
     } else if (event is AddTransaction) {
@@ -33,15 +50,25 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     } else if (event is DeleteTransaction) {
       yield const TransactionLoading();
       await _database.deleteTransactions(event.transactions);
-      await _refreshTransactions(_lastRequest!);
+      _refreshTransactions(_lastRequest!);
       yield TransactionLoaded(_transactions);
     } else if (event is DeleteAllShownTransactions) {
       yield const TransactionLoading();
       await _database.deleteTransactions(_transactions);
-      await _refreshTransactions(_lastRequest!);
+      _refreshTransactions(_lastRequest!);
       yield TransactionLoaded(_transactions);
     } 
   }
+
+
+  void _getTransaction(event, emit) async {
+    if (event.request != _lastRequest || _database.changed) {
+        emit(const TransactionLoading());
+        await _refreshTransactions(event.request);
+        emit(TransactionLoaded(_transactions));
+    }
+  }
+
 
   Future<void> _refreshTransactions(TransactionRequest request) async {
     _transactions.clear();

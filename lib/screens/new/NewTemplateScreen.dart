@@ -54,8 +54,9 @@ class NewTemplateScreen extends StatelessWidget {
               repetition: template.repetition,
               isExpense: template.isExpense,
             );
+            var cubit = TransactionDetailsCubit.of(context);
             await this.setPage(2);
-            TransactionDetailsCubit.of(context).emit(details);
+            cubit.projectDetails(details);
           },
           tile: template,
         )

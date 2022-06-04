@@ -22,6 +22,10 @@ class TransactionDetailsCubit extends Cubit<TransactionDetails> {
     return BlocProvider.of<TransactionDetailsCubit>(context);
   }
 
+  void projectDetails(TransactionDetails details) {
+    emit(details);
+  }
+
   void resetCategory() {
     emit(state.reset(category: true));
   }

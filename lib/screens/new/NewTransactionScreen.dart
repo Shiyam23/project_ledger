@@ -147,7 +147,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       name: _titleController!.text,
       amount: _amountController!.getAmount()
     );
-    TransactionDetailsCubit.of(context).emit(details);
+    TransactionDetailsCubit.of(context).projectDetails(details);
   }
 
   void selectRepetition(BuildContext context) async {
@@ -162,7 +162,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       name: _titleController!.text,
       amount: _amountController!.getAmount()
     );
-    TransactionDetailsCubit.of(context).emit(details);
+    TransactionDetailsCubit.of(context).projectDetails(details);
   }
 
   void selectAccount(BuildContext context) async {
@@ -177,7 +177,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
         name: _titleController!.text,
         amount: _amountController!.getAmount()
       );
-      TransactionDetailsCubit.of(context).emit(details);
+      TransactionDetailsCubit.of(context).projectDetails(details);
     }
   }
 
@@ -226,7 +226,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
         account : mainAccount,
       );
       previousDetails = details;
-      TransactionDetailsCubit.of(context).emit(details);
+      TransactionDetailsCubit.of(context).projectDetails(details);
     }
   }
 
@@ -244,7 +244,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       isExpense: true
     );
     _amountController!.buildInitialText(null);
-    TransactionDetailsCubit.of(context).emit(details);
+    TransactionDetailsCubit.of(context).projectDetails(details);
   }
 
   Future showError(context) {

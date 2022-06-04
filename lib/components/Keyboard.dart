@@ -44,6 +44,10 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
     duration: const Duration(milliseconds: 150),
     vsync: this,
   );
+
+  late final double width = MediaQuery.of(context).size.width;
+  late final double height = MediaQuery.of(context).size.height;
+
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(
     begin: const Offset(0, 1),
     end: Offset.zero,
@@ -59,7 +63,7 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
   
   @override
   Widget build(BuildContext context) {
-    Size buttonSize = Size(95, 60);
+    Size buttonSize = Size(this.width/4 - 5, this.height/12 - 5);
     double height = MediaQuery.of(context).size.height / 3;
     return TextButtonTheme(
       data: TextButtonThemeData(
@@ -68,7 +72,7 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
           backgroundColor: Colors.white,
           fixedSize: buttonSize,
           elevation: 5,
-          textStyle: TextStyle(fontSize: 40),
+          textStyle: TextStyle(fontSize: height/8),
           shape: ContinuousRectangleBorder(
             borderRadius: BorderRadius.circular(10)
           )
@@ -92,7 +96,7 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
                   children: [
                     TextButton(
                       child: Text("1"),
-                      onPressed: () => tapButton("1")
+                      onPressed: () => tapButton("1"),
                     ), 
                     TextButton(
                       child: Text("4"),
@@ -155,27 +159,37 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(
-                      child: Icon(Icons.backspace),
+                      child: Icon(Icons.backspace, color: Colors.white,),
                       onPressed: () => tapButton("Backspace"),
                       style: TextButton.styleFrom(
-                        backgroundColor: Colors.grey[200]
-                      ),
-                    ), 
-                    TextButton(
-                      child: Text("+ / -"),
-                      onPressed: () => tapButton("+ / -"),
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.grey[200]
+                        backgroundColor: Colors.red                        
                       ),
                     ), 
                     TextButton(
                       child: Text(
+                        "+ / -",
+                        style: TextStyle(
+                          inherit: true,
+                          color: Colors.black 
+                        ),
+                      ),
+                      onPressed: () => tapButton("+ / -"),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.white
+                      ),
+                    ),
+                    TextButton(
+                      child: Text(
                         "OK",
+                        style: TextStyle(
+                          inherit: true,
+                          color: Colors.black 
+                        ),
                       ),
                       onPressed: closeKeyboard,
                       style: TextButton.styleFrom(
                         fixedSize: _getOKSize(buttonSize, height),
-                        backgroundColor: Colors.grey[200]
+                        backgroundColor: Colors.white
                       ),
                     ), 
                   ]

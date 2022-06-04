@@ -61,38 +61,70 @@ Widget build(BuildContext context) {
     },
     builder: (context, state) => Column(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(1.0),
-          child: _selectedCategory != null ?
-            CategoryIcon(
+        _selectedCategory != null ?
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(5,5),
+                  blurRadius: 5,
+                  color: Colors.black26
+                )
+              ],
+              border: Border.all(
+                color: Colors.white,
+              ),
+              borderRadius: BorderRadius.circular(50)
+            ),
+            child: CategoryIcon(
               onTap: onTap,
-              iconData: _selectedCategory!.icon!.iconData)
-          : DottedBorder(
-              color: Colors.black,
-              strokeWidth: 1,
-              dashPattern: [6, 6],
-              padding: const EdgeInsets.all(1),
-              borderType: BorderType.Circle,
-              child: SlideTransition(
-                position: _offsetAnimation,
+              iconData: _selectedCategory!.icon!.iconData),
+          )
+        : Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(5,5),
+                  blurRadius: 5,
+                  color: Colors.black26
+                )
+              ],
+              borderRadius: BorderRadius.circular(50),
+              color: Colors.white,
+              border: Border.all(
+                color: Theme.of(context).primaryColor
+              )
+            ),
+            padding: const EdgeInsets.all(1),
+            child: SlideTransition(
+              position: _offsetAnimation,
+              child: Transform.scale(
+                scale: 0.75,
                 child: CategoryIcon(
                   onTap: onTap,
                   iconData: CategoryIconData(
                     backgroundColorInt: Colors.transparent.value,
                     iconName: "pen",
-                    iconColorInt: Colors.black45.value,
+                    iconColorInt: Theme.of(context).primaryColor.value,
                   ),
                 ),
-              )),
-        ),
+              ),
+            )),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: Container(
             alignment: Alignment.center,
-            width: 50,
             child: Text(
               _selectedCategory?.name ?? "Category",
-              style: const TextStyle(fontSize: 10),
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor
+              ),
               textAlign: TextAlign.center,
             ),
           ),

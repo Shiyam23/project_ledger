@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,8 +27,6 @@ class NewTransactionScreen extends StatefulWidget {
 class _NewTransactionScreenState extends State<NewTransactionScreen>{
   
   bool _templateChecked = false;
-  
-
   List<Account>? allAccounts;
   Account? mainAccount;
   NewMoneyAmountController? _amountController;
@@ -56,32 +53,24 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
   Widget build(BuildContext context) {
     return  Column(
       children: <Widget>[
-        const Spacer(),
         NewMoneyAmount(
           setController: setAmountController,
         ),
-        const Spacer(),
-        Container(
-          alignment: Alignment.centerLeft,
-          width: MediaQuery.of(context).size.width * 0.85,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              NewCategoryIcon(
-                onSelect: (category) => setCategory(context, category)
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 20),
-                child: NewTitleTextField(
-                  setTitleController: (controller) => _titleController = controller,
-                )
-              )
-            ],
+        Transform.translate(
+          offset: Offset(0,-30),
+          child: Transform.scale(
+            scale: 1.25,
+            child: NewCategoryIcon(
+              onSelect: (category) => setCategory(context, category)
+            ),
           ),
         ),
-        const Spacer(),
+        Container(
+          child: NewTitleTextField(
+            setTitleController: (controller) => _titleController = controller,
+          )
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height/40),
         Container(
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width * 0.85,
@@ -106,22 +95,18 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
             ],
           ),
         ),
-        const Spacer(),
+        SizedBox(height: MediaQuery.of(context).size.height/40),
         NewRepetitionField(
           onTap: () => selectRepetition(context)
         ),
-        const Spacer(),
-        Container(
-          alignment: Alignment.centerLeft,
-          width: MediaQuery.of(context).size.width * 0.85,
-          child: NewSaveAsTemplate(
-            (bool checked) => _templateChecked = checked, 
-            _templateChecked)),
-        const Spacer(flex: 2),
+        SizedBox(height: MediaQuery.of(context).size.height/40),
+        NewSaveAsTemplate(
+          (bool checked) => _templateChecked = checked, 
+          _templateChecked),
         NewBottonButtons(
           onSave: () => saveTransaction(context), 
           onReset: () => resetInput(context)),
-        const Spacer(flex: 2),
+        Spacer(flex: 1)
       ],
     );
   }

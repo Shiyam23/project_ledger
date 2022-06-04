@@ -83,45 +83,70 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
             state.amount
           );
         }
-        else if (amountDifferent!) {
+        if (amountDifferent!) {
           controller.buildInitialText(state.amount);
           controller.updateThousandseparator(-1);
         }
-        if (isExpenseDifferent! ) setSign(state.isExpense!);
+        setSign(state.isExpense!);
       },
       builder: (context, state) {
         return Container(
-          width: MediaQuery.of(context).size.width * 0.85,
-          height: MediaQuery.of(context).size.height / 7,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 5,
           alignment: Alignment.center,
-          child: TextField(
-            controller: controller,
-            readOnly: true,
-            showCursor: true,
-            enableInteractiveSelection: true,
-            onTap: () => KeyboardWidget.of(context)?.triggerKeyboard(true),
-            toolbarOptions: ToolbarOptions(
-              copy: true,
-              cut: false,
-              paste: false,
-              selectAll: true
-            ),
-            keyboardType: TextInputType.numberWithOptions(
-              decimal: true,
-              signed: false
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              isCollapsed: true,
-              suffixText: getSuffix(),
-              prefixText: getPrefix(),
-            ),
-            cursorColor: Theme.of(context).colorScheme.primary,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.blueGrey[900],
-              fontWeight: FontWeight.w500,
-              fontSize: MediaQuery.of(context).size.width * fontSizeFactor,
+          padding: EdgeInsets.only(top: 20, bottom: 50),
+          decoration: BoxDecoration(
+            boxShadow: [
+                BoxShadow(
+                  offset: Offset(5,5),
+                  blurRadius: 5,
+                  color: Colors.black26
+                )
+            ],
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(40)),
+            color: Theme.of(context).primaryColor,
+          ),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width*0.9,
+            child: TextField(
+              controller: controller,
+              readOnly: true,
+              cursorWidth: 3,
+              showCursor: true,
+              enableInteractiveSelection: true,
+              onTap: () => KeyboardWidget.of(context)?.triggerKeyboard(true),
+              toolbarOptions: ToolbarOptions(
+                copy: true,
+                cut: false,
+                paste: false,
+                selectAll: true
+              ),
+              keyboardType: TextInputType.numberWithOptions(
+                decimal: true,
+                signed: false
+              ),
+              
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                isCollapsed: true,
+                suffixStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width * fontSizeFactor
+                ),
+                suffixText: getSuffix(),
+                prefixText: getPrefix(),
+                prefixStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: MediaQuery.of(context).size.width * fontSizeFactor
+                ),
+              ),
+              cursorColor: Colors.white,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: MediaQuery.of(context).size.width * fontSizeFactor,
+              ),
             ),
           ),
         );

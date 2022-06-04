@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
 import 'package:project_ez_finance/components/Keyboard.dart';
@@ -14,16 +15,18 @@ class _NewTextField extends StatefulWidget {
   final bool enabled;
   final bool readOnly;
   final TextEditingController? controller;
+  final IconData icon;
 
   _NewTextField({
     this.widthRatio = 0.85,
     required this.labelText,
     this.content,
     this.enabled = true,
-    this.fontSize = 20,
+    this.fontSize = 15,
     this.onTap,
     this.readOnly = true,
     this.controller,
+    required this.icon,
     Key? key,
   }) : super(key: key);
 
@@ -48,7 +51,12 @@ class _NewTextFieldState extends State<_NewTextField> {
             fontSize: widget.fontSize,
             color: Theme.of(context).colorScheme.primary),
         decoration: InputDecoration(
-          filled: true,
+          border: OutlineInputBorder(),
+          prefixIcon: Transform.scale(
+            child: Icon(widget.icon),
+            scale: 0.5,
+          ),
+          prefixIconConstraints: BoxConstraints.tightFor(width: 30),
           contentPadding: const EdgeInsets.all(5),
           enabled: widget.enabled,
           labelText: widget.labelText,
@@ -82,6 +90,7 @@ class _NewDateFieldState extends State<NewDateField> {
           widthRatio: 0.3,
           onTap: widget.onTap,
           content: _formatDate(state.date),
+          icon: FontAwesomeIcons.clock,
         );
       },
     );
@@ -116,6 +125,7 @@ class NewRepetitionDateField extends StatelessWidget {
       widthRatio: 0.5,
       onTap: onTap,
       content: content,
+      icon: FontAwesomeIcons.repeat
     );
   }
 }
@@ -141,6 +151,7 @@ class _NewAccountFieldState extends State<NewAccountField> {
           onTap: widget.onTap,
           widthRatio: 0.5,
           content: state.account.toString(),
+          icon: FontAwesomeIcons.creditCard
         );
       },
     );
@@ -167,6 +178,7 @@ class _NewRepetitionFieldState extends State<NewRepetitionField> {
           labelText: "Repetition",
           onTap: widget.onTap,
           content: state.repetition.toString(),
+          icon: FontAwesomeIcons.repeat
         );
       },
     );
@@ -180,7 +192,6 @@ class NewTitleTextField extends StatefulWidget {
   const NewTitleTextField({
     Key? key, 
     required this.setTitleController}) : super(key: key);
-
 
   @override
   State<NewTitleTextField> createState() => _NewTitleTextFieldState();
@@ -207,7 +218,7 @@ class _NewTitleTextFieldState extends State<NewTitleTextField> {
         }
       },
       child : SizedBox(
-        width: MediaQuery.of(context).size.width * 0.65,
+        width: MediaQuery.of(context).size.width * 0.85,
         child: TextField(
           enableInteractiveSelection: false,
           controller: controller,
@@ -216,14 +227,20 @@ class _NewTitleTextFieldState extends State<NewTitleTextField> {
           },
           style: TextStyle(
             height: 1.5,
-              fontSize: 20,
+              fontSize: 15,
               color: Theme.of(context).colorScheme.primary),
           decoration: InputDecoration(
-            filled: true,
+            prefixIcon: Transform.scale(
+            child: Icon(FontAwesomeIcons.pen),
+            scale: 0.5,
+            ),
+            prefixIconConstraints: BoxConstraints.tightFor(width: 30),
             contentPadding: const EdgeInsets.all(5),
             enabled: true,
             labelText: "Name",
             labelStyle: TextStyle(fontSize: 15),
+            border: OutlineInputBorder(
+            )
           ),
         ),
       )

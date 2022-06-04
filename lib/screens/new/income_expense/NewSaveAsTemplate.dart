@@ -13,34 +13,37 @@ class NewSaveAsTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool _checked = false;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Transform.scale(
-          alignment: Alignment.centerLeft,
-          scale: 1.3,
-          child: Text(
-            "Save as template",
-            textAlign: TextAlign.left, 
-            style: TextStyle(fontSize: 15)
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Transform.scale(
+            alignment: Alignment.centerLeft,
+            scale: 1,
+            child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Checkbox(
+                  value: _checked,
+                  onChanged: (checked) {
+                    setTemplateChecked(checked!);
+                    setState(() => _checked = checked);
+                  } ,
+                );
+              } 
+            )
           ),
-        ),
-        Transform.scale(
-          alignment: Alignment.centerRight,
-          scale: 1.3,
-          child: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return Switch(
-                value: _checked,
-                onChanged: (checked) {
-                  setTemplateChecked(checked);
-                  setState(() => _checked = checked);
-                } ,
-              );
-            } 
-          )
-        ),
-      ],
+          Transform.scale(
+            alignment: Alignment.centerLeft,
+            scale: 1,
+            child: Text(
+              "Save as template",
+              textAlign: TextAlign.left, 
+              style: TextStyle(fontSize: 15)
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

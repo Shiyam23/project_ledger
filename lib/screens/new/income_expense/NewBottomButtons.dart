@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_ez_finance/components/button/Button.dart';
 
 class NewBottonButtons extends StatelessWidget {
   final void Function()? onSave;
@@ -12,32 +13,11 @@ class NewBottonButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       alignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            fixedSize: Size(
-              MediaQuery.of(context).size.width * 0.3,
-              MediaQuery.of(context).size.width * 0.1,
-            )
-          ),
-          icon: Icon(Icons.restore),
-          label: Text(
-            "RESET",
-          ),
-          onPressed: onReset,
-        ),
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            fixedSize: Size(
-              MediaQuery.of(context).size.width * 0.3,
-              MediaQuery.of(context).size.width * 0.1,
-            )
-          ),
-          icon: Icon(Icons.save),
-          label: Text(
-            "SAVE",
-          ),
-          onPressed: onSave,
-        ),
+        RoundButton(onPressed: onReset, text: "RESET"),
+        RoundGradientButton(
+          onPressed: onSave, 
+          text: "Save"
+        )
       ],
     );
   }

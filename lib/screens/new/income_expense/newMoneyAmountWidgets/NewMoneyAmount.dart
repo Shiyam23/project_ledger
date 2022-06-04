@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
 import 'package:project_ez_finance/components/Keyboard.dart';
@@ -137,14 +135,16 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
       TransactionDetails details = cubit.state.copyWith(
         isExpense: isExpense
       );
-      cubit.emit(details);
+      cubit.projectDetails(details);
     }
     setState(() => controller.isExpense = isExpense);
   } 
 
   String? getSuffix() {
-    if (controller.symbolOnLeft != null)
-    return controller.symbolOnLeft! ? null : controller.symbol;
+    if (controller.symbolOnLeft != null) {
+      return controller.symbolOnLeft! ? null : controller.symbol;
+    }
+    return null;
   }
 
   String? getPrefix() {
@@ -160,6 +160,7 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
       if (controller.symbolOnLeft!) return "$sign $symbol$space";
       else return sign;
     }
+    return null;
   }
 
   @override

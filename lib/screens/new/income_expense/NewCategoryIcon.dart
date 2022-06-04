@@ -1,6 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
 import 'package:project_ez_finance/components/Keyboard.dart';
@@ -48,7 +47,7 @@ class NewCategoryIconState extends State<NewCategoryIcon> with SingleTickerProvi
       period: Duration(milliseconds: 500)
     );
     TransactionDetailsCubit cubit = TransactionDetailsCubit.of(context);
-    cubit.emit(cubit.state.copyWith(category: null));
+    cubit.projectDetails(cubit.state.copyWith(category: null));
     super.initState();
   }
 

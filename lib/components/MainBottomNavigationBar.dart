@@ -31,14 +31,14 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
     BottomNavigationBarItem(
       icon: Padding(
         padding: const EdgeInsets.only(bottom: 5),
-        child: Icon(FontAwesomeIcons.home),
+        child: Icon(FontAwesomeIcons.house),
       ),
       label: 'Home'
     ),
     BottomNavigationBarItem(
       icon: Padding(
         padding: const EdgeInsets.only(bottom: 5),
-        child: Icon(FontAwesomeIcons.plusCircle),
+        child: Icon(FontAwesomeIcons.circlePlus),
       ),
       label: 'New',
     )

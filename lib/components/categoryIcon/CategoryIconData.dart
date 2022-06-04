@@ -18,16 +18,16 @@ class CategoryIconData extends Equatable{
   final int? iconColorInt;
 
   static const Map<String, IconData> iconList = {
-    "home": FontAwesomeIcons.home,
-    "shopping": FontAwesomeIcons.shoppingBag,
+    "home": FontAwesomeIcons.house,
+    "shopping": FontAwesomeIcons.bagShopping,
     "food": FontAwesomeIcons.utensils,
-    "hobby": FontAwesomeIcons.running,
+    "hobby": FontAwesomeIcons.personRunning,
     "communication": FontAwesomeIcons.comment,
     "vehicle": FontAwesomeIcons.car,
-    "salary": FontAwesomeIcons.handHoldingUsd,
-    "rent": FontAwesomeIcons.home,
-    "others": FontAwesomeIcons.ellipsisH,
-    "insurance": FontAwesomeIcons.houseDamage,
+    "salary": FontAwesomeIcons.handHoldingDollar,
+    "rent": FontAwesomeIcons.house,
+    "others": FontAwesomeIcons.ellipsis,
+    "insurance": FontAwesomeIcons.houseChimneyCrack,
     "pet": FontAwesomeIcons.paw,
     "subscription": FontAwesomeIcons.bell,
     "suitcaseRolling": FontAwesomeIcons.suitcaseRolling,

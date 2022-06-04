@@ -8,7 +8,6 @@ import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transacti
 import 'package:project_ez_finance/components/Keyboard.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/models/Repetition.dart';
 import 'package:project_ez_finance/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
@@ -43,7 +42,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
   @override
   void initState() {
    TransactionDetailsCubit cubit = TransactionDetailsCubit.of(context);
-    cubit.emit(cubit.state.reset(
+    cubit.projectDetails(cubit.state.reset(
       name: true,
       repetition: true,
       isExpense: true,
@@ -270,6 +269,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       name: _titleController!.text,
       amount: _amountController!.getAmount()
     ); 
-    BlocProvider.of<TransactionDetailsCubit>(context).emit(details);
+    BlocProvider.of<TransactionDetailsCubit>(context).projectDetails(details);
   }  
 }

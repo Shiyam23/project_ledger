@@ -18,19 +18,11 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc(TransactionState initialState) : super(initialState) {
     _database.setupDatabase();
     on<GetTransaction>(_getTransaction);
-    on<AddTransaction>((event, emit) {
-      _database.saveTransaction(event.transaction, event.templateChecked);
-      emit(TransactionLoaded(_transactions));
-    });
-    on<DeleteTransaction>((event, emit) {
+    on<AddTransaction>(_addTransaction);
+    on<DeleteTransaction>(_deleteTransaction);
+    on<DeleteAllShownTransactions>((event, emit) async {
       emit(const TransactionLoading());
-      _database.deleteTransactions(event.transactions);
-      _refreshTransactions(_lastRequest!);
-      emit (TransactionLoaded(_transactions));
-    });
-    on<DeleteAllShownTransactions>((event, emit) {
-      emit(const TransactionLoading());
-      _database.deleteTransactions(_transactions);
+      await _database.deleteTransactions(_transactions);
       _refreshTransactions(_lastRequest!);
       emit(TransactionLoaded(_transactions));
     });
@@ -42,6 +34,18 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
         await _refreshTransactions(event.request);
         emit(TransactionLoaded(_transactions));
     }
+  }
+
+  void _addTransaction(event, emit) async {
+    await _database.saveTransaction(event.transaction, event.templateChecked);
+    emit(TransactionLoaded(_transactions));
+  }
+
+  void _deleteTransaction(event, emit) async {
+    emit(const TransactionLoading());
+    _database.deleteTransactions(event.transactions);
+    await _refreshTransactions(_lastRequest!);
+    emit (TransactionLoaded(_transactions));
   }
 
   Future<void> _refreshTransactions(TransactionRequest request) async {

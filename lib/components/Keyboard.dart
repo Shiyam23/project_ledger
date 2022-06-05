@@ -65,140 +65,146 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
   Widget build(BuildContext context) {
     Size buttonSize = Size(this.width/4 - 5, this.height/12 - 5);
     double height = MediaQuery.of(context).size.height / 3;
-    return TextButtonTheme(
-      data: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          enableFeedback: true,
-          backgroundColor: Colors.white,
-          fixedSize: buttonSize,
-          elevation: 5,
-          textStyle: TextStyle(fontSize: height/8),
-          shape: ContinuousRectangleBorder(
-            borderRadius: BorderRadius.circular(10)
+    return SafeArea(
+      bottom: true,
+      left: false,
+      top: false,
+      right: false,
+      child: TextButtonTheme(
+        data: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            enableFeedback: true,
+            backgroundColor: Colors.white,
+            fixedSize: buttonSize,
+            elevation: 5,
+            textStyle: TextStyle(fontSize: height/8),
+            shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.circular(10)
+            )
           )
-        )
-      ),
-      child: SlideTransition(
-        position: _offsetAnimation,
-        child: WillPopScope(
-          onWillPop: () {
-            closeKeyboard();
-            return Future.value(false);
-          },
-          child: Container(
-            color: Theme.of(context).primaryColor,
-            height: height,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      child: Text("1"),
-                      onPressed: () => tapButton("1"),
-                    ), 
-                    TextButton(
-                      child: Text("4"),
-                      onPressed: () => tapButton("4"),
-                    ), 
-                    TextButton(
-                      child: Text("7"),
-                      onPressed: () => tapButton("7"),
-                    ), 
-                    SizedBox(
-                      width: buttonSize.width,
-                      height: buttonSize.height
-                    ), 
-                  ]
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    TextButton(
-                      child: Text("2"),
-                      onPressed: () => tapButton("2")
-                    ), 
-                    TextButton(
-                      child: Text("5"),
-                      onPressed: () => tapButton("5")
-                    ), 
-                    TextButton(
-                      child: Text("8"),
-                      onPressed: () => tapButton("8")
-                    ), 
-                    TextButton(
-                      child: Text("0"),
-                      onPressed: () => tapButton("0")
-                    ), 
-                  ]
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      child: Text("3"),
-                      onPressed: () => tapButton("3")
-                    ), 
-                    TextButton(
-                      child: Text("6"),
-                      onPressed: () => tapButton("6")
-                    ), 
-                    TextButton(
-                      child: Text("9"),
-                      onPressed: () => tapButton("9")
-                    ), 
-                    TextButton(
-                      child: Text(amountController!.decimalSeparator!),
-                      onPressed: () => tapButton(amountController!.decimalSeparator!)
-                    ), 
-                  ]
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      child: Icon(Icons.backspace, color: Colors.white,),
-                      onPressed: () => tapButton("Backspace"),
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.red                        
-                      ),
-                    ), 
-                    TextButton(
-                      child: Text(
-                        "+ / -",
-                        style: TextStyle(
-                          inherit: true,
-                          color: Colors.black 
+        ),
+        child: SlideTransition(
+          position: _offsetAnimation,
+          child: WillPopScope(
+            onWillPop: () {
+              closeKeyboard();
+              return Future.value(false);
+            },
+            child: Container(
+              color: Theme.of(context).primaryColor,
+              height: height,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        child: Text("1"),
+                        onPressed: () => tapButton("1"),
+                      ), 
+                      TextButton(
+                        child: Text("4"),
+                        onPressed: () => tapButton("4"),
+                      ), 
+                      TextButton(
+                        child: Text("7"),
+                        onPressed: () => tapButton("7"),
+                      ), 
+                      SizedBox(
+                        width: buttonSize.width,
+                        height: buttonSize.height
+                      ), 
+                    ]
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      TextButton(
+                        child: Text("2"),
+                        onPressed: () => tapButton("2")
+                      ), 
+                      TextButton(
+                        child: Text("5"),
+                        onPressed: () => tapButton("5")
+                      ), 
+                      TextButton(
+                        child: Text("8"),
+                        onPressed: () => tapButton("8")
+                      ), 
+                      TextButton(
+                        child: Text("0"),
+                        onPressed: () => tapButton("0")
+                      ), 
+                    ]
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        child: Text("3"),
+                        onPressed: () => tapButton("3")
+                      ), 
+                      TextButton(
+                        child: Text("6"),
+                        onPressed: () => tapButton("6")
+                      ), 
+                      TextButton(
+                        child: Text("9"),
+                        onPressed: () => tapButton("9")
+                      ), 
+                      TextButton(
+                        child: Text(amountController!.decimalSeparator!),
+                        onPressed: () => tapButton(amountController!.decimalSeparator!)
+                      ), 
+                    ]
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        child: Icon(Icons.backspace, color: Colors.white,),
+                        onPressed: () => tapButton("Backspace"),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.red                        
+                        ),
+                      ), 
+                      TextButton(
+                        child: Text(
+                          "+ / -",
+                          style: TextStyle(
+                            inherit: true,
+                            color: Colors.black 
+                          ),
+                        ),
+                        onPressed: () => tapButton("+ / -"),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.white
                         ),
                       ),
-                      onPressed: () => tapButton("+ / -"),
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.white
-                      ),
-                    ),
-                    TextButton(
-                      child: Text(
-                        "OK",
-                        style: TextStyle(
-                          inherit: true,
-                          color: Colors.black 
+                      TextButton(
+                        child: Text(
+                          "OK",
+                          style: TextStyle(
+                            inherit: true,
+                            color: Colors.black 
+                          ),
                         ),
-                      ),
-                      onPressed: closeKeyboard,
-                      style: TextButton.styleFrom(
-                        fixedSize: _getOKSize(buttonSize, height),
-                        backgroundColor: Colors.white
-                      ),
-                    ), 
-                  ]
-                ),
-              ],
+                        onPressed: closeKeyboard,
+                        style: TextButton.styleFrom(
+                          fixedSize: _getOKSize(buttonSize, height),
+                          backgroundColor: Colors.white
+                        ),
+                      ), 
+                    ]
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      )
+        )
+      ),
     );
   }
 

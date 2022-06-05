@@ -68,15 +68,21 @@ class NewTemplateScreen extends StatelessWidget {
 
   void showAccountMenu(BuildContext context, Transaction template) {
     showModalBottomSheet(context: context, builder: (sheetContext) {
-      return Wrap(
-        children: [
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Delete template"),
-            leading: const Icon(Icons.delete),
-            onTap: () => deleteTemplate(context, template)
-          ),
-        ]
+      return SafeArea(
+        bottom: true,
+        left: false,
+        top: false,
+        right: false,
+        child: Wrap(
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Delete template"),
+              leading: const Icon(Icons.delete),
+              onTap: () => deleteTemplate(context, template)
+            ),
+          ]
+        ),
       );
     });    
   }

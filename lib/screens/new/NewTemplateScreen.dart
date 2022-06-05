@@ -41,6 +41,8 @@ class NewTemplateScreen extends StatelessWidget {
     return SizeTransition(
       sizeFactor: animation,
       child: Card(
+        elevation: 10,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: IconListTile(
           selectable: false,
           onSelect: () => showAccountMenu(context, template),

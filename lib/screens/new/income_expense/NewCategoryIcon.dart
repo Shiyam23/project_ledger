@@ -63,8 +63,8 @@ Widget build(BuildContext context) {
       children: <Widget>[
         _selectedCategory != null ?
           Container(
-            width: 50,
-            height: 50,
+            width: MediaQuery.of(context).size.height/15,
+            height: MediaQuery.of(context).size.height/15,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -83,8 +83,8 @@ Widget build(BuildContext context) {
               iconData: _selectedCategory!.icon!.iconData),
           )
         : Container(
-            height: 50,
-            width: 50,
+            height: MediaQuery.of(context).size.height/15,
+            width: MediaQuery.of(context).size.height/15,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -94,9 +94,9 @@ Widget build(BuildContext context) {
                 )
               ],
               borderRadius: BorderRadius.circular(50),
-              color: Colors.white,
+              color: Theme.of(context).canvasColor,
               border: Border.all(
-                color: Theme.of(context).primaryColor
+                color: Colors.black26
               )
             ),
             padding: const EdgeInsets.all(1),

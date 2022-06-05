@@ -92,7 +92,8 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                     itemBuilder: (BuildContext context, int index) {
                       Transaction transaction = state.transactionList[index];
                       return Card(
-                        elevation: 3.0,
+                        elevation: 10.0,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         child: IconListTile(
                           onSelect: () => onTransactionSelect(transaction),
                           onTap: () => onTransactionSelect(transaction),

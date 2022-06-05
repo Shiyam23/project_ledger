@@ -11,19 +11,24 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       style: new TextStyle(fontFamily: "Pacifico", fontSize: 28.0),
     );
 
-    return AppBar(titleSpacing: 20, title: titleDollavuText, actions: [
-      PopupMenuButton<String>(
-        onSelected: (choice) =>  choiceAction(choice, context),
-        itemBuilder: (BuildContext context) {
-          return PopUpMenuButtonChoices.choices.map((String choice) {
-            return PopupMenuItem<String>(
-              value: choice,
-              child: Text(choice),
-            );
-          }).toList();
-        },
-      ),
-    ]);
+    return AppBar(
+      titleSpacing: 20, 
+      title: titleDollavuText,
+      centerTitle: true, 
+      actions: [
+        PopupMenuButton<String>(
+          onSelected: (choice) =>  choiceAction(choice, context),
+          itemBuilder: (BuildContext context) {
+            return PopUpMenuButtonChoices.choices.map((String choice) {
+              return PopupMenuItem<String>(
+                value: choice,
+                child: Text(choice),
+              );
+            }).toList();
+          },
+        ),
+      ]
+    );
   }
 
   choiceAction(String choice, BuildContext context) {

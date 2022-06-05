@@ -12,11 +12,13 @@ class CategoryIcon extends StatefulWidget {
   final CategoryIconData iconData;
   final void Function()? onTap;
   final ValueNotifier<bool>? selectedNotifier;
+  final double? size;
 
   CategoryIcon({
     required this.iconData,
     this.onTap,
-    this.selectedNotifier
+    this.selectedNotifier,
+    this.size
   });
 
   @override
@@ -37,6 +39,7 @@ class _CategoryIconState extends State<CategoryIcon>
     widget.selectedNotifier?.addListener(flip);
     final Icon frontSideIcon = Icon(
       widget.iconData.icon,
+      size: widget.size,
       color: Color(
         widget.iconData.iconColorInt ?? Colors.white.value
         ),

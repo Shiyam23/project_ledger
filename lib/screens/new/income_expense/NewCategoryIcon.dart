@@ -103,8 +103,9 @@ Widget build(BuildContext context) {
             child: SlideTransition(
               position: _offsetAnimation,
               child: Transform.scale(
-                scale: 0.75,
+                scale: 1,
                 child: CategoryIcon(
+                  size: MediaQuery.of(context).size.width*0.045,
                   onTap: onTap,
                   iconData: CategoryIconData(
                     backgroundColorInt: Colors.transparent.value,

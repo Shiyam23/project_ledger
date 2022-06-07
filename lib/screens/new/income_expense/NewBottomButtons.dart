@@ -13,10 +13,15 @@ class NewBottonButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       alignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        RoundButton(onPressed: onReset, text: "RESET"),
+        RoundButton(
+          onPressed: onReset, 
+          text: "RESET",
+          widthRatio: 0.4,
+        ),
         RoundGradientButton(
+          widthRatio: 0.4,
           onPressed: onSave, 
-          text: "Save"
+          text: "SAVE"
         )
       ],
     );

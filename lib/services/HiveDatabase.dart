@@ -105,9 +105,9 @@ class HiveDatabase implements Database {
     Box? accountBoxMap = await Hive.openBox(accountBoxMapBoxName);
     accountBoxMap.delete(deletedAccount.name);
   }
-
+  
   @override
-  void setupDatabase() async {
+  Future<void> setupDatabase() async {
     final appDocumentDir =
         await path_provider.getApplicationDocumentsDirectory();
     Hive.init(appDocumentDir.path);

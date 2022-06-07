@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:currency_picker/currency_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/IconSelectionSheet.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
@@ -98,45 +100,53 @@ class _AccountPageState extends State<AccountPage> {
 
   void showAccountMenu(BuildContext context, Account account, StateSetter listSetState) {
     showModalBottomSheet(context: context, builder: (sheetContext) {
-      return Wrap(
-        children: [
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Edit name"),
-            leading: const Icon(Icons.edit),
-            onTap: () => saveNewName(context, account)
-          ),
-          const Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Change Icon"),
-            leading: const Icon(Icons.circle),
-            onTap: () => saveNewIcon(context, account)
-          ),
-          const Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Change currency"),
-            leading: const Icon(Icons.attach_money),
-            onTap: () => saveNewCurrency(context, account)
-          ),
-          const Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Delete account"),
-            leading: const Icon(Icons.delete),
-            onTap: () => deleteAccount(context, account)
-          ),
-        ]
+      return SafeArea(
+        top: false,
+        right: false,
+        left: false,
+        child: Wrap(
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Edit name"),
+              leading: const Icon(Icons.edit),
+              onTap: () => saveNewName(context, account)
+            ),
+            const Divider(
+              thickness: 1,
+              height: 1,
+            ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Change Icon"),
+              leading: const Icon(Icons.circle),
+              onTap: () => saveNewIcon(context, account)
+            ),
+            const Divider(
+              thickness: 1,
+              height: 1,
+            ),
+            /* Changing the currency of an existing account will break the existing 
+            transactions. User should create a new account instead.
+
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Change currency"),
+              leading: const Icon(Icons.attach_money),
+              onTap: () => saveNewCurrency(context, account)
+            ),*/
+            const Divider(
+              thickness: 1,
+              height: 1,
+            ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Delete account"),
+              leading: const Icon(Icons.delete),
+              onTap: () => deleteAccount(context, account)
+            ),
+          ]
+        ),
       );
     });    
   }
@@ -154,6 +164,7 @@ class _AccountPageState extends State<AccountPage> {
         _accountList[newIndex] = modifiedSelectedAccount;
       });
     }
+    BlocProvider.of<AccountChangedCubit>(context).emit(selectedAccount.hashCode);
   }
 
   void deleteAccount(BuildContext context, Account account) async {

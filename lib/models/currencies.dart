@@ -1,3 +1,23 @@
+String formatCurrency(String currencycode, double amount) {
+  if (!currencies.keys.contains(currencycode)) {
+    throw ArgumentError(
+      "Following currency code was not fount: $currencycode",
+      "currencycode"
+    );
+  }
+  bool symbolOnLeft = currencies[currencycode]!["symbol_on_left"];
+  String symbol = currencies[currencycode]!["symbol"];
+  bool hasSpace = currencies[currencycode]!["space_between_amount_and_symbol"];
+  int decimalDigits = currencies[currencycode]!["decimal_digits"];
+  StringBuffer buffer = StringBuffer();
+  if (symbolOnLeft) buffer.write(symbol);
+  if (hasSpace && symbolOnLeft) buffer.write(" ");
+  buffer.write(amount.toStringAsFixed(decimalDigits));
+  if (hasSpace && !symbolOnLeft) buffer.write(" ");
+  if (!symbolOnLeft) buffer.write(symbol);
+  return buffer.toString();
+}
+
 Map<String, Map<String, dynamic>> currencies = {
 
   "USD": {

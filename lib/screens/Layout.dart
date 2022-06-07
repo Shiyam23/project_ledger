@@ -48,23 +48,23 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
       keyboard: keyboard,
       triggerKeyboard: triggerKeyboard,
       child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: builder()
-      ),
+            alignment: Alignment.bottomCenter,
+            children: builder()
+          ),
     );
   }
 
   List<Widget> builder() {
     List<Widget> stackList = [
       Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: getTopBar(lController!.currentPage!) as PreferredSizeWidget?,
-        body: buildPageView(),
-        bottomNavigationBar: MainBottomNaviationBar(
-          layoutController: lController,
-          setPage: setPage,
-        )
-      ),
+            resizeToAvoidBottomInset: false,
+            appBar: getTopBar(lController!.currentPage!) as PreferredSizeWidget?,
+            body: buildPageView(),
+            bottomNavigationBar: MainBottomNaviationBar(
+              layoutController: lController,
+              setPage: setPage,
+            )
+          ),
     ];
     if (keyboardOpen) stackList.add(keyboard);
     return stackList;
@@ -82,7 +82,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
         children: <Widget>[
           ViewStandingOrderScreen(),
           ViewTransactionScreen(),
-          HomeScreen(),
+          HomeScreen(setPage: setPage),
           NewTransactionScreen(),
           NewTemplateScreen(setPage)
         ],

@@ -16,7 +16,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   final TransactionFilter _filter = TransactionFilter();
 
   TransactionBloc(TransactionState initialState) : super(initialState) {
-    _database.setupDatabase();
     on<GetTransaction>(_getTransaction);
     on<AddTransaction>(_addTransaction);
     on<DeleteTransaction>(_deleteTransaction);

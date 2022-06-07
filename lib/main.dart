@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/routes/CategoryPage.dart';
 import 'package:project_ez_finance/screens/Layout.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
@@ -12,7 +14,6 @@ import 'package:project_ez_finance/components/routes/AccountPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupDatabase();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(DThemeContainer(
     initialDTheme: DThemeLight(),
@@ -20,7 +21,6 @@ void main() async {
   ));
 }
 
-void setupDatabase() async {}
 
 class MyApp extends StatefulWidget {
   @override
@@ -30,24 +30,27 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      localizationsDelegates: [
-        GlobalWidgetsLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate
-      ],
-      supportedLocales: [
-        Locale("de"),
-        Locale("en"),
-      ],
-      title: 'Dollavu',
-      theme: DTheme.of(context)?.themeData,
-      home: Layout(),
-      routes: {
-        "account": (context) => AccountPage(),
-        "category": (context) => CategoryPage(),
-      },
-      debugShowCheckedModeBanner: false,
+    return BlocProvider(
+      create: (context) => AccountChangedCubit(),
+      child: MaterialApp(
+          localizationsDelegates: [
+            GlobalWidgetsLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate
+          ],
+          supportedLocales: [
+            Locale("de"),
+            Locale("en"),
+          ],
+          title: 'Dollavu',
+          theme: DTheme.of(context)?.themeData,
+          home: Layout(),
+          routes: {
+            "account": (context) => AccountPage(),
+            "category": (context) => CategoryPage(),
+          },
+          debugShowCheckedModeBanner: false,
+        ),
     );
   }
 

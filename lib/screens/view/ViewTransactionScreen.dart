@@ -54,7 +54,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   ).animate(_animationController);
 
   final ValueNotifier<int> selectedTransactionsNotifier = ValueNotifier<int>(0);
-  final List<GlobalObjectKey> transactionKeys = [];
+  final HashMap<int, GlobalObjectKey> transactionKeys = new HashMap();
 
   @override
   void initState() {
@@ -95,7 +95,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                     itemBuilder: (BuildContext context, int index) {
                       Transaction transaction = state.transactionList[index];
                       GlobalObjectKey key = GlobalObjectKey(transaction);
-                      transactionKeys.add(key);
+                      transactionKeys[transaction.hashCode] = key;
                       return Card(
                         elevation: 10.0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -143,6 +143,9 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
         HiveDatabase().selectedAccount!
       )
     );
+    _selectedTransactions.forEach((transaction) {
+      transactionKeys.remove(GlobalObjectKey(transaction));
+    });
     _selectedTransactions.clear();
     _flipToViewBar();
   }
@@ -150,14 +153,14 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   void onDeleteAll() {
     _databaseBloc?.add(const DeleteAllShownTransactions());
     _selectedTransactions.clear();
+    transactionKeys.clear();
     _flipToViewBar();
   }
 
   void onReset() {
-    List<Transaction> selectedTransactions = _selectedTransactions.toList();
-    selectedTransactions.forEach(onTransactionSelect);
-    transactionKeys.forEach((key) {
-      (key.currentWidget as IconListTile).selectedNotifier?.value = false;
+    _selectedTransactions.forEach((transaction) {
+      (transactionKeys[transaction.hashCode]?.currentWidget as IconListTile)
+      .selectedNotifier?.value = false;
     });
     _selectedTransactions.clear();
     _flipToViewBar();

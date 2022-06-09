@@ -48,7 +48,7 @@ class CategoryChartInfo{
       ));
     }
     result.sort(((a, b) => b.amount.compareTo(a.amount)));
-    return result.getRange(0, 5).toList();
+    return result.getRange(0, 5 < result.length ? 5 : result.length).toList();
   }
 
 }

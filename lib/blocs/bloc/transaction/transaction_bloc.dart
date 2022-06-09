@@ -42,7 +42,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   void _deleteTransaction(event, emit) async {
     emit(const TransactionLoading());
-    _database.deleteTransactions(event.transactions);
+    await _database.deleteTransactions(event.transactions);
     await _refreshTransactions(_lastRequest!);
     emit (TransactionLoaded(_transactions));
   }

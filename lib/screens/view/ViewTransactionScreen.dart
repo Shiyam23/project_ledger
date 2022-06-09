@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,6 @@ import 'package:collection/collection.dart' show ListEquality;
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/screens/view/filterbar/ViewBarSection.dart';
 import 'dart:math' as math;
-
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
 class ViewTransactionScreen extends StatefulWidget {
@@ -40,7 +38,9 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   late final Widget topSelectionBar = ViewSelectionBarSection(
     onDelete: onDelete,
     onDeleteAll: onDeleteAll,
-    onEdit: onEdit
+    onEdit: onEdit,
+    onReset: onReset,
+    selectedTransactionsNotifier: selectedTransactionsNotifier
   );
   late Widget topBar = topViewBar;
 
@@ -52,6 +52,9 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     begin: 0,
     end: 0.5 * math.pi
   ).animate(_animationController);
+
+  final ValueNotifier<int> selectedTransactionsNotifier = ValueNotifier<int>(0);
+  final List<GlobalObjectKey> transactionKeys = [];
 
   @override
   void initState() {
@@ -91,6 +94,8 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                     dragStartBehavior: DragStartBehavior.down,
                     itemBuilder: (BuildContext context, int index) {
                       Transaction transaction = state.transactionList[index];
+                      GlobalObjectKey key = GlobalObjectKey(transaction);
+                      transactionKeys.add(key);
                       return Card(
                         elevation: 10.0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -99,7 +104,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                           onTap: () => onTransactionSelect(transaction),
                           selectable: true,
                           selected: _selectedTransactions.contains(transaction),
-                          key: ObjectKey(transaction),
+                          key: key,
                           tile: transaction,
                         ),
                       );
@@ -128,6 +133,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     else if (_selectedTransactions.isEmpty && topBar is ViewSelectionBarSection) {
       _flipToViewBar();
     }
+    selectedTransactionsNotifier.value = _selectedTransactions.length;
   }
 
   void onDelete() async {
@@ -147,6 +153,16 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     _flipToViewBar();
   }
 
+  void onReset() {
+    List<Transaction> selectedTransactions = _selectedTransactions.toList();
+    selectedTransactions.forEach(onTransactionSelect);
+    transactionKeys.forEach((key) {
+      (key.currentWidget as IconListTile).selectedNotifier?.value = false;
+    });
+    _selectedTransactions.clear();
+    _flipToViewBar();
+  }
+
   void _flipToViewBar() async {
     await _animationController.forward();
     topBar = topViewBar;
@@ -161,41 +177,46 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   void onEdit() async {
     showModalBottomSheet(context: context, builder: (sheetContext) {
-      return Wrap(
-        children: [
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Edit name"),
-            leading: const Icon(Icons.edit),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Change category"),
-            leading: const Icon(Icons.circle),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Change date"),
-            leading: const Icon(Icons.calendar_today),
-          ),
-          const Divider(
-            thickness: 1,
-            height: 1,
-          ),
-          ListTile(
-            contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Change amount"),
-            leading: const Icon(Icons.money),
-          ),
-        ]
+      return SafeArea(
+        left: false,
+        right: false,
+        top: false,
+        child: Wrap(
+          children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Edit name"),
+              leading: const Icon(Icons.edit),
+            ),
+            const Divider(
+              thickness: 1,
+              height: 1,
+            ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Change category"),
+              leading: const Icon(Icons.circle),
+            ),
+            const Divider(
+              thickness: 1,
+              height: 1,
+            ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Change date"),
+              leading: const Icon(Icons.calendar_today),
+            ),
+            const Divider(
+              thickness: 1,
+              height: 1,
+            ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Change amount"),
+              leading: const Icon(Icons.money),
+            ),
+          ]
+        ),
       );
     });    
   }

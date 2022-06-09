@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'ViewFilterBarTimeDialog.dart';
@@ -145,12 +146,16 @@ class ViewSelectionBarSection extends StatelessWidget {
   final void Function() onDelete;
   final void Function() onDeleteAll;
   final void Function() onEdit;
+  final void Function() onReset;
+  final ValueNotifier<int> selectedTransactionsNotifier;
   
   const ViewSelectionBarSection({
     Key? key,
     required this.onDelete,
     required this.onDeleteAll,
-    required this.onEdit
+    required this.onEdit,
+    required this.onReset,
+    required this.selectedTransactionsNotifier
   }) : super(key: key);
 
   @override
@@ -158,6 +163,29 @@ class ViewSelectionBarSection extends StatelessWidget {
     double _paddingWidth = 20;
     double _width = (MediaQuery.of(context).size.width - _paddingWidth * 2) / 6;
     return AppBar(
+      title: Row(
+        children: [
+          IconButton(
+            icon: Icon(FontAwesomeIcons.arrowLeft),
+            onPressed: onReset,
+          ),
+          SizedBox(width: 10),
+          ValueListenableBuilder(
+                valueListenable: selectedTransactionsNotifier, 
+                builder: (context, numberSelected, _) {
+                  return Text(
+                    " " + numberSelected.toString(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25
+                    ),
+                  );
+                }
+          ),
+          SizedBox(width: 10),
+          Icon(FontAwesomeIcons.check)
+        ],
+      ),
       actions: <Widget>[
         SizedBox(width: _paddingWidth),
         ViewBarIcon(

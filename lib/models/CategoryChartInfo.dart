@@ -22,7 +22,7 @@ class CategoryChartInfo{
 
     if (HiveDatabase().selectedAccount == null) {
       await HiveDatabase().setupDatabase();
-    };
+    }
     String currencyCode = HiveDatabase().selectedAccount!.currencyCode;
     List<Transaction> transactions = 
       await HiveDatabase().getTransactions({DateTime.now()});

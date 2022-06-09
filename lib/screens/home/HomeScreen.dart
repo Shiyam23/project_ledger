@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   category.categoryName,
                   style: TextStyle(
                     inherit: true,
-                    fontSize:20,
+                    fontSize:18,
                     fontWeight: FontWeight.bold
                   ),
                 ),

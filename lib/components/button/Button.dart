@@ -42,7 +42,7 @@ class RoundGradientButton extends StatelessWidget {
             color: Colors.white,
             fontFamily: "Roboto",
             fontStyle: FontStyle.normal,
-            fontSize: width * 0.03
+            fontSize: width * 0.035
           ),
           textAlign: TextAlign.center,
         )
@@ -90,6 +90,7 @@ class RoundButton extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             fontFamily: "Roboto",
             fontStyle: FontStyle.normal,
+            fontSize: screenWidth * 0.035
           ),
           textAlign: TextAlign.center,
         )

@@ -53,13 +53,13 @@ class DeleteAllShownTransactions extends TransactionEvent {
   List<Object?> get props => [];
 }
 
-// ignore: must_be_immutable
+
 class TransactionRequest extends Equatable {
-  String? searchText;
-  ViewMode viewMode;
-  TimeMode timeMode;
-  SortMode sortMode;
-  DateTimeRange dateRange;
+  final String? searchText;
+  final ViewMode viewMode;
+  final TimeMode timeMode;
+  final SortMode sortMode;
+  final DateTimeRange dateRange;
 
   TransactionRequest(
       {required String? searchText,
@@ -67,7 +67,8 @@ class TransactionRequest extends Equatable {
       required TimeMode timeMode,
       required SortMode sortMode,
       required DateTimeRange dateRange})
-      : viewMode = viewMode,
+      : searchText = searchText,
+        viewMode = viewMode,
         timeMode = timeMode,
         sortMode = sortMode,
         dateRange = dateRange;
@@ -78,6 +79,21 @@ class TransactionRequest extends Equatable {
         viewMode = request.viewMode,
         sortMode = request.sortMode,
         dateRange = request.dateRange;
+
+  TransactionRequest copyOf({
+    String? searchText,
+    ViewMode? viewMode,
+    TimeMode? timeMode,
+    SortMode? sortMode,
+    DateTimeRange? dateRange
+  }) {
+    return TransactionRequest(
+      searchText: searchText ?? this.searchText, 
+      viewMode: viewMode ?? this.viewMode, 
+      timeMode: timeMode ?? this.timeMode, 
+      sortMode: sortMode ?? this.sortMode, 
+      dateRange: dateRange ?? this.dateRange);
+  }
 
   @override
   List<Object?> get props =>

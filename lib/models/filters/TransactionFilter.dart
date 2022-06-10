@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/models/Modes.dart';
 
 import '../Transaction.dart';
 
@@ -11,6 +12,7 @@ class TransactionFilter {
     if (request == null) return filteredlist;
     filteredlist = _filterNames(filteredlist);
     filteredlist = _filterDateRange(filteredlist);
+    filteredlist = _sortTransactions(filteredlist);
     return filteredlist;
   }
 
@@ -29,5 +31,33 @@ class TransactionFilter {
             t.date.isAtSameMomentAs(dateRange.start) ||
             (t.date.isBefore(dateRange.end) && t.date.isAfter(dateRange.start)))
         .toList();
+  }
+
+  List<Transaction> _sortTransactions(List<Transaction> list) {
+    if (request!.sortMode == SortMode.DateAsc) {
+      list.sort((t1, t2) => t1.date.compareTo(t2.date));
+    }
+    if (request!.sortMode == SortMode.DateDesc) {
+      list.sort((t1, t2) => t2.date.compareTo(t1.date));
+    }
+    if (request!.sortMode == SortMode.AmountAsc) {
+      list.sort((t1, t2) => t1.amount.compareTo(t2.amount));
+    }
+    if (request!.sortMode == SortMode.AmountDesc) {
+      list.sort((t1, t2) => t2.amount.compareTo(t1.amount));
+    }
+    if (request!.sortMode == SortMode.NameAsc) {
+      list.sort((t1, t2) => t1.name.compareTo(t2.name));
+    }
+    if (request!.sortMode == SortMode.NameDesc) {
+      list.sort((t1, t2) => t2.name.compareTo(t1.name));
+    }
+    if (request!.sortMode == SortMode.CategoryAsc) {
+      list.sort((t1, t2) => t1.category!.name!.compareTo(t2.category!.name!));
+    }
+    if (request!.sortMode == SortMode.CategoryDesc) {
+      list.sort((t1, t2) => t2.category!.name!.compareTo(t1.category!.name!));
+    }
+    return list;
   }
 }

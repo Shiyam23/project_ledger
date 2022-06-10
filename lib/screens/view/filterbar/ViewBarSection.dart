@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/components/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'ViewFilterBarTimeDialog.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
 import 'ViewFilterBarFilter.dart';
 import 'ViewBarIcon.dart';
-import 'ViewFilterBarSearch.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
   final TransactionRequest request;
@@ -20,17 +20,19 @@ class ViewFilterBarSection extends StatefulWidget {
 }
 
 class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
-  bool _openSearchBar = false;
   bool _openFilterBar = false;
+  late TimeMode _timeOption;
+  late ViewMode _viewOption;
+  late SortMode _sortOption;
+  late DateTimeRange _dateRange;
+  late TransactionRequest _request;
 
-  TimeMode? _timeOption;
-  ViewMode? _viewOption;
-  SortMode? _sortOption;
-  DateTimeRange? _dateRange;
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _request = widget.request;
     _timeOption = widget.request.timeMode;
     _viewOption = widget.request.viewMode;
     _sortOption = widget.request.sortMode;
@@ -41,7 +43,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   Widget build(BuildContext context) {
     double _paddingWidth = 20;
     double _width = (MediaQuery.of(context).size.width - _paddingWidth * 2) / 6;
-
+    TransactionBloc bloc = BlocProvider.of<TransactionBloc>(context);
     return Column(
       children: <Widget>[
         AppBar(
@@ -50,6 +52,23 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ViewBarIcon(
               width: _width,
               icon: Icons.search,
+              onTap: () async {
+                String? searchText = await showDialog(
+                  context: context, 
+                  builder: (context) => TextInputDialog(
+                    prefixIcon: Icon(Icons.search),
+                    controller: _searchController,
+                    title: Text("Search"),
+                  )
+                );
+                bloc.add(
+                  GetTransaction(
+                    _request.copyOf(
+                      searchText: searchText
+                    )
+                  )
+                );
+              },
             ),
             ViewBarIcon(
               width: _width,
@@ -57,21 +76,23 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               onTap: () async {
                 DateTime start = DateTime.now().subtract(Duration(days: 365));
                 DateTime end = DateTime.now().add(Duration(days: 365));
-                _dateRange = await showDateRangePicker(
+                DateTimeRange? dateRange = await showDateRangePicker(
                     context: context,
                     firstDate: start,
                     lastDate: end,
-                    initialDateRange: widget.request.dateRange);
-                if (_dateRange != null) {
+                    initialDateRange: _request.dateRange);
+                if (dateRange != null) {
                   _dateRange = DateTimeRange(
-                      start: _dateRange!.start,
-                      end: _dateRange!.end
+                      start: dateRange.start,
+                      end: dateRange.end
                           .add(Duration(days: 1))
                           .subtract(Duration(microseconds: 1)));
-                  widget.request.dateRange = _dateRange!;
+                  _request = _request.copyOf(
+                    dateRange : _dateRange
+                  );
                 }
                 BlocProvider.of<TransactionBloc>(context)
-                    .add(GetTransaction(widget.request));
+                    .add(GetTransaction(_request));
               },
             ),
             ViewBarIcon(
@@ -112,17 +133,18 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               width: _width,
               icon: Icons.sort,
               onTap: () async {
-                dynamic sortOption = await showDialog(
+                SortMode sortOption = await showDialog(
                     context: context,
                     builder: (context) {
                       return ViewFilterBarSortDialog(
                           initialOption: _sortOption);
                     });
-                if (sortOption is SortMode) {
-                  setState(() {
-                    _sortOption = sortOption;
-                  });
-                }
+                bloc.add(GetTransaction(
+                  _request.copyOf(
+                    sortMode: sortOption
+                  )
+                ));
+                _sortOption = sortOption;
               },
             ),
             ViewBarIcon(
@@ -132,12 +154,15 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             SizedBox(width: _paddingWidth),
           ],
         ),
-        _openSearchBar
-            ? ViewFilterBarSearch(request: widget.request)
-            : Container(),
         _openFilterBar ? ViewFilterBarFilter() : Container(),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }
 

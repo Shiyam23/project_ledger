@@ -49,26 +49,35 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
         AppBar(
           actions: <Widget>[
             SizedBox(width: _paddingWidth),
-            ViewBarIcon(
-              width: _width,
-              icon: Icons.search,
-              onTap: () async {
-                String? searchText = await showDialog(
-                  context: context, 
-                  builder: (context) => TextInputDialog(
-                    prefixIcon: Icon(Icons.search),
-                    controller: _searchController,
-                    title: Text("Search"),
-                  )
+            StatefulBuilder(
+              builder: (context, setState) {
+                ValueNotifier<bool> showIndicator = ValueNotifier(false);
+                return ViewBarIcon(
+                  showIndicatorNotifier: showIndicator,
+                  width: _width,
+                  icon: Icons.search,
+                  onTap: () async {
+                    String? searchText = await showDialog(
+                      context: context, 
+                      builder: (context) => TextInputDialog(
+                        prefixIcon: Icon(Icons.search),
+                        controller: _searchController,
+                        title: Text("Search"),
+                      )
+                    );
+                    showIndicator.value = 
+                      (searchText != "");
+                    if (searchText != null)
+                    bloc.add(
+                      GetTransaction(
+                        _request.copyOf(
+                          searchText: searchText
+                        )
+                      )
+                    );
+                  },
                 );
-                bloc.add(
-                  GetTransaction(
-                    _request.copyOf(
-                      searchText: searchText
-                    )
-                  )
-                );
-              },
+              }
             ),
             ViewBarIcon(
               width: _width,
@@ -133,18 +142,21 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               width: _width,
               icon: Icons.sort,
               onTap: () async {
-                SortMode sortOption = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return ViewFilterBarSortDialog(
-                          initialOption: _sortOption);
-                    });
-                bloc.add(GetTransaction(
+                SortMode? sortOption = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ViewFilterBarSortDialog(
+                        initialOption: _sortOption);
+                  }
+                );
+                if (sortOption != null) {
+                  bloc.add(GetTransaction(
                   _request.copyOf(
                     sortMode: sortOption
                   )
                 ));
                 _sortOption = sortOption;
+                }
               },
             ),
             ViewBarIcon(

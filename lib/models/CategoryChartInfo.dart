@@ -26,7 +26,7 @@ class CategoryChartInfo{
     String currencyCode = HiveDatabase().selectedAccount!.currencyCode;
     List<Transaction> transactions = 
       await HiveDatabase().getTransactions({DateTime.now()});
-    if (transactions.isEmpty) return null;
+    if (transactions.isEmpty) return [];
     Map<Category, double> categoryAmount = Map<Category, double>();
     for (Transaction transaction in transactions) {
       Category category = transaction.category!;

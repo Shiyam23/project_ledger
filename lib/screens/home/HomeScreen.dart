@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:project_ez_finance/blocs/bloc/accountChanged/AccountChangedCubit.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
+import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import '../../models/CategoryChartInfo.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -119,10 +120,20 @@ class _HomeScreenState extends State<HomeScreen> {
               return FutureBuilder(
               future: CategoryChartInfo.getTopFiveCategories(),
               builder: (context, snapshot) {
+                print(snapshot.hasData);
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return Expanded(child: Center(child: CircularProgressIndicator()));
                 }
                 else {
+                  List<CategoryChartInfo> chartList = 
+                    snapshot.data as List<CategoryChartInfo>;
+                  if (chartList.isEmpty) {
+                    return Expanded(
+                      child: Center(
+                        child: Text("No transactions yet ..."),
+                      ),
+                    );
+                  }
                   return Expanded(
                     child: ListView(
                       shrinkWrap: true,

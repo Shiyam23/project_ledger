@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/components/DollavuDialog.dart';
 import 'package:project_ez_finance/components/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'ViewFilterBarTimeDialog.dart';
@@ -60,9 +61,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                     );
                     if (searchText != null) {
                       _searchText = searchText;
-                      bloc.add(GetTransaction(_request.copyOf(
-                        searchText: _searchText
-                      )));
+                      _request = _request.copyOf(searchText: _searchText);
+                      bloc.add(GetTransaction(_request));
                     }
                     showIndicator.value = (
                       _searchText != null && _searchText != ""
@@ -114,36 +114,42 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
-              icon: Icons.compress,
-              onTap: () async {
-                TimeMode? timeOption = await showDialog(
-                  context: context,
-                  builder: (context) {
-                    return ViewFilterBarTimeDialog(
-                      initialOption: _request.timeMode
-                    );
-                  }
-                );
-                if (timeOption != null) {
-                  //TODO: handle timeMode change
-                }
-              },
-            ),
-            ViewBarIcon(
-              width: _width,
               icon: Icons.sort,
               onTap: () async {
                 SortMode? sortOption = await showDialog(
                   context: context,
                   builder: (context) {
                     return ViewFilterBarSortDialog(
-                        initialOption: _request.sortMode);
+                      initialOption: _request.sortMode
+                    );
                   }
                 );
                 if (sortOption != null) {
                   _request = _request.copyOf(sortMode: sortOption);
                   bloc.add(GetTransaction(_request));
                 }
+              },
+            ),
+            ViewBarIcon(
+              width: _width,
+              icon: Icons.history,
+              onTap: () async {
+                final TransactionRequest request = TransactionRequest(
+                  searchText: null,
+                  viewMode: ViewMode.List,
+                  timeMode: TimeMode.Individual,
+                  sortMode: SortMode.DateAsc,
+                  dateRange: DateTimeRange(
+                  start: DateTime(DateTime.now().year, DateTime.now().month),
+                  end: DateTime(DateTime.now().year, DateTime.now().month + 1)
+                    .subtract(Duration(microseconds: 1)))
+                );
+                bloc.add(GetTransaction(request));
+                setState(() {
+                  _request = request;
+                  _searchText = null;
+                  _searchController.text = "";
+                });
               },
             ),
             ViewBarIcon(

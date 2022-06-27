@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction/transaction_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction/transaction_event.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart';
+import 'package:project_ez_finance/components/PieChart.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:collection/collection.dart' show ListEquality;
@@ -83,6 +84,16 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                     currentState.transactionList);
           },
           builder: (BuildContext context, TransactionState state) {
+            if (state is GraphLoaded) {
+              return Expanded(
+                child: Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: PieLabelChart.fromChartInfo(state.chartInfo)
+                  ),
+                ),
+              );
+            }
             if (state is TransactionLoaded) {
               return Flexible(
                 child: Scrollbar(

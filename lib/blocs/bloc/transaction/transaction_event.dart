@@ -17,6 +17,14 @@ class GetTransaction extends TransactionEvent {
   List<Object?> get props => [request];
 }
 
+class GetGraph extends TransactionEvent {
+  
+  const GetGraph();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class LoadTemplate extends TransactionEvent {
   final Transaction template;
   LoadTemplate(this.template);

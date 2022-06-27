@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
             buildWhen: (oldHash, newHash) => oldHash != newHash,
             builder: (context,_) {
               return FutureBuilder(
-              future: CategoryChartInfo.getTopFiveCategories(),
+              future: CategoryChartInfo.getCategories(top: 5),
               builder: (context, snapshot) {
                 print(snapshot.hasData);
                 if (!snapshot.hasData) {

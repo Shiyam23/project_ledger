@@ -21,11 +21,8 @@ class ViewFilterBarSection extends StatefulWidget {
 
 class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   bool _openFilterBar = false;
-  late TimeMode _timeOption;
-  late ViewMode _viewOption;
-  late SortMode _sortOption;
-  late DateTimeRange _dateRange;
   late TransactionRequest _request;
+  String? _searchText;
 
   TextEditingController _searchController = TextEditingController();
 
@@ -33,10 +30,6 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   void initState() {
     super.initState();
     _request = widget.request;
-    _timeOption = widget.request.timeMode;
-    _viewOption = widget.request.viewMode;
-    _sortOption = widget.request.sortMode;
-    _dateRange = widget.request.dateRange;
   }
 
   @override
@@ -65,15 +58,14 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                         title: Text("Search"),
                       )
                     );
-                    showIndicator.value = 
-                      (searchText != "");
-                    if (searchText != null)
-                    bloc.add(
-                      GetTransaction(
-                        _request.copyOf(
-                          searchText: searchText
-                        )
-                      )
+                    if (searchText != null) {
+                      _searchText = searchText;
+                      bloc.add(GetTransaction(_request.copyOf(
+                        searchText: _searchText
+                      )));
+                    }
+                    showIndicator.value = (
+                      _searchText != null && _searchText != ""
                     );
                   },
                 );
@@ -91,50 +83,49 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                     lastDate: end,
                     initialDateRange: _request.dateRange);
                 if (dateRange != null) {
-                  _dateRange = DateTimeRange(
+                  _request = _request.copyOf(
+                    dateRange : DateTimeRange(
                       start: dateRange.start,
                       end: dateRange.end
                           .add(Duration(days: 1))
-                          .subtract(Duration(microseconds: 1)));
-                  _request = _request.copyOf(
-                    dateRange : _dateRange
+                          .subtract(Duration(microseconds: 1)))
                   );
                 }
-                BlocProvider.of<TransactionBloc>(context)
-                    .add(GetTransaction(_request));
+                bloc.add(GetTransaction(_request));
               },
             ),
             ViewBarIcon(
               width: _width,
               icon: Icons.list,
               onTap: () async {
-                dynamic viewOption = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return ViewFilterBarViewDialog(
-                          initialOption: _viewOption);
-                    });
-                if (viewOption is ViewMode) {
-                  setState(() {
-                    _viewOption = viewOption;
-                  });
-                }
+                ViewMode? viewOption = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ViewFilterBarViewDialog(
+                      initialOption: _request.viewMode
+                    );
+                  }
+                );
+                if (viewOption != null) _request = _request.copyOf(
+                  viewMode: viewOption
+                );
+                bloc.add(GetTransaction(_request));
               },
             ),
             ViewBarIcon(
               width: _width,
               icon: Icons.compress,
               onTap: () async {
-                dynamic timeOption = await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return ViewFilterBarTimeDialog(
-                          initialOption: _timeOption);
-                    });
-                if (timeOption is TimeMode) {
-                  setState(() {
-                    _timeOption = timeOption;
-                  });
+                TimeMode? timeOption = await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return ViewFilterBarTimeDialog(
+                      initialOption: _request.timeMode
+                    );
+                  }
+                );
+                if (timeOption != null) {
+                  //TODO: handle timeMode change
                 }
               },
             ),
@@ -146,16 +137,12 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                   context: context,
                   builder: (context) {
                     return ViewFilterBarSortDialog(
-                        initialOption: _sortOption);
+                        initialOption: _request.sortMode);
                   }
                 );
                 if (sortOption != null) {
-                  bloc.add(GetTransaction(
-                  _request.copyOf(
-                    sortMode: sortOption
-                  )
-                ));
-                _sortOption = sortOption;
+                  _request = _request.copyOf(sortMode: sortOption);
+                  bloc.add(GetTransaction(_request));
                 }
               },
             ),

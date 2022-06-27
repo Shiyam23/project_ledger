@@ -3,6 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart' show DateTimeRange;
 import 'package:project_ez_finance/blocs/bloc/transaction/transaction_event.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart';
+import 'package:project_ez_finance/models/CategoryChartInfo.dart';
+import 'package:project_ez_finance/models/Modes.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 import 'package:project_ez_finance/services/Database.dart';
@@ -17,6 +19,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   TransactionBloc(TransactionState initialState) : super(initialState) {
     on<GetTransaction>(_getTransaction);
+    on<GetGraph>(_getGraph);
     on<AddTransaction>(_addTransaction);
     on<DeleteTransaction>(_deleteTransaction);
     on<DeleteAllShownTransactions>((event, emit) async {
@@ -27,12 +30,23 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     });
   }
 
-  void _getTransaction(event, emit) async {
+  void _getTransaction(GetTransaction event, emit) async {
     if (event.request != _lastRequest || _database.changed) {
         emit(const TransactionLoading());
         await _refreshTransactions(event.request);
-        emit(TransactionLoaded(_transactions));
+        if (event.request.viewMode == ViewMode.List) {
+          emit(TransactionLoaded(_transactions));
+        } else {
+          List<CategoryChartInfo> categoryList 
+            = await CategoryChartInfo.getCategories(transactions: _transactions);
+          emit(GraphLoaded(categoryList));
+        }
     }
+  }
+
+  void _getGraph(event, emit) async {
+    emit(const TransactionLoading());
+    
   }
 
   void _addTransaction(event, emit) async {

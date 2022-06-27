@@ -18,13 +18,16 @@ class CategoryChartInfo{
     required this.displayedAmount,
   });
 
-  static Future<List<CategoryChartInfo>?> getTopFiveCategories() async {
+  static Future<List<CategoryChartInfo>> getCategories({
+    int? top,
+    List<Transaction>? transactions
+  }) async {
 
     if (HiveDatabase().selectedAccount == null) {
       await HiveDatabase().setupDatabase();
     }
     String currencyCode = HiveDatabase().selectedAccount!.currencyCode;
-    List<Transaction> transactions = 
+    transactions ??= 
       await HiveDatabase().getTransactions({DateTime.now()});
     if (transactions.isEmpty) return [];
     Map<Category, double> categoryAmount = Map<Category, double>();
@@ -47,8 +50,13 @@ class CategoryChartInfo{
         displayedAmount: formatCurrency(currencyCode, categoryAmount[category]!),
       ));
     }
-    result.sort(((a, b) => b.amount.compareTo(a.amount)));
-    return result.getRange(0, 5 < result.length ? 5 : result.length).toList();
+    if (top != null) {
+      result.sort(((a, b) => b.amount.compareTo(a.amount)));
+      return result.getRange(0, 5 < result.length ? 5 : result.length).toList();
+    }
+    else {
+      return result;
+    }
   }
 
 }

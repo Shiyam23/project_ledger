@@ -8,7 +8,6 @@ import 'package:project_ez_finance/models/Modes.dart';
 import 'ViewFilterBarTimeDialog.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
-import 'ViewFilterBarFilter.dart';
 import 'ViewBarIcon.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
@@ -21,7 +20,6 @@ class ViewFilterBarSection extends StatefulWidget {
 }
 
 class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
-  bool _openFilterBar = false;
   late TransactionRequest _request;
   String? _searchText;
 
@@ -154,12 +152,11 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
-              icon: Icons.file_upload,
+              icon: FontAwesomeIcons.filePdf,
             ),
             SizedBox(width: _paddingWidth),
           ],
         ),
-        _openFilterBar ? ViewFilterBarFilter() : Container(),
       ],
     );
   }

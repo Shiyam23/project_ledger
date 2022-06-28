@@ -48,6 +48,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                   showIndicatorNotifier: showIndicator,
                   width: _width,
                   icon: Icons.search,
+                  tooltip: "Search",
                   onTap: () async {
                     String? searchText = await showDialog(
                       context: context, 
@@ -71,6 +72,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
+              tooltip: "Date",
               icon: Icons.calendar_today,
               onTap: () async {
                 DateTime start = DateTime.now().subtract(Duration(days: 365));
@@ -94,6 +96,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
+              tooltip: "Viewmode",
               icon: Icons.list,
               onTap: () async {
                 ViewMode? viewOption = await showDialog(
@@ -112,6 +115,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
+              tooltip: "Sort",
               icon: Icons.sort,
               onTap: () async {
                 SortMode? sortOption = await showDialog(
@@ -130,6 +134,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
+              tooltip: "Reset",
               icon: Icons.history,
               onTap: () async {
                 final TransactionRequest request = TransactionRequest(
@@ -151,6 +156,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               },
             ),
             ViewBarIcon(
+              tooltip: "Generate PDF",
               width: _width,
               icon: FontAwesomeIcons.filePdf,
             ),

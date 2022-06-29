@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
-import 'package:project_ez_finance/components/DollavuDialog.dart';
 import 'package:project_ez_finance/components/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart';
-import 'ViewFilterBarTimeDialog.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
 import 'ViewBarIcon.dart';
@@ -174,7 +172,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   }
 }
 
-class ViewSelectionBarSection extends StatelessWidget {
+class ViewSelectionBarSection extends StatefulWidget {
   
   final void Function() onDelete;
   final void Function() onDeleteAll;
@@ -192,52 +190,66 @@ class ViewSelectionBarSection extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ViewSelectionBarSection> createState() => _ViewSelectionBarSectionState();
+}
+
+class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
+
+  late bool _showEdit;
+
+  @override
+  void initState() {
+     super.initState();
+    _showEdit = widget.selectedTransactionsNotifier.value == 1;
+  }
+  @override
+  
   Widget build(BuildContext context) {
     double _paddingWidth = 20;
     double _width = (MediaQuery.of(context).size.width - _paddingWidth * 2) / 6;
-    return AppBar(
-      title: Row(
-        children: [
-          IconButton(
-            icon: Icon(FontAwesomeIcons.arrowLeft),
-            onPressed: onReset,
+    return ValueListenableBuilder(
+      valueListenable: widget.selectedTransactionsNotifier,
+      builder: (context, numberSelected, _) {
+        return AppBar(
+          title: Row(
+            children: [
+              IconButton(
+                icon: Icon(FontAwesomeIcons.arrowLeft),
+                onPressed: widget.onReset,
+              ),
+              SizedBox(width: 10),
+              Text(
+                " " + numberSelected.toString(),
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25
+                ),
+              ),
+              SizedBox(width: 10),
+              Icon(FontAwesomeIcons.check)
+            ],
           ),
-          SizedBox(width: 10),
-          ValueListenableBuilder(
-                valueListenable: selectedTransactionsNotifier, 
-                builder: (context, numberSelected, _) {
-                  return Text(
-                    " " + numberSelected.toString(),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25
-                    ),
-                  );
-                }
-          ),
-          SizedBox(width: 10),
-          Icon(FontAwesomeIcons.check)
-        ],
-      ),
-      actions: <Widget>[
-        SizedBox(width: _paddingWidth),
-        ViewBarIcon(
-          width: _width,
-          icon: Icons.edit,
-          onTap: onEdit,
-        ),
-        ViewBarIcon(
-          width: _width,
-          icon: Icons.delete_forever,
-          onTap: onDelete,
-        ),
-        ViewBarIcon(
-          width: _width * 1.15,
-          icon: Icons.delete_sweep,
-          onTap: onDeleteAll,
-        ),
-        SizedBox(width: _paddingWidth),
-      ],
+          actions: <Widget>[
+            SizedBox(width: _paddingWidth),
+            if (numberSelected == 1) ViewBarIcon(
+              width: _width,
+              icon: Icons.edit,
+              onTap: widget.onEdit,
+            ),
+            ViewBarIcon(
+              width: _width,
+              icon: Icons.delete_forever,
+              onTap: widget.onDelete,
+            ),
+            ViewBarIcon(
+              width: _width * 1.15,
+              icon: Icons.delete_sweep,
+              onTap: widget.onDeleteAll,
+            ),
+            SizedBox(width: _paddingWidth),
+          ],
+        );
+      }
     );
   }
 }

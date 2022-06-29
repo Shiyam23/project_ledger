@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 
@@ -34,23 +33,21 @@ class LoadTemplate extends TransactionEvent {
 
 class AddTransaction extends TransactionEvent {
   final Transaction transaction;
-  final Account account;
   final bool templateChecked;
 
-  AddTransaction(this.transaction, this.account, this.templateChecked);
+  AddTransaction(this.transaction, this.templateChecked);
 
   @override
-  List<Object?> get props => [transaction, account, this.templateChecked];
+  List<Object?> get props => [transaction, this.templateChecked];
 }
 
 class DeleteTransaction extends TransactionEvent {
   final List<Transaction> transactions;
-  final Account account;
 
-  DeleteTransaction(this.transactions, this.account);
+  DeleteTransaction(this.transactions);
 
   @override
-  List<Object?> get props => [transactions, account];
+  List<Object?> get props => [transactions];
 }
 
 class DeleteAllShownTransactions extends TransactionEvent {

@@ -18,7 +18,7 @@ class TransactionAdapter extends TypeAdapter<Transaction> {
     };
     return Transaction(
       name: fields[0] as String,
-      category: fields[2] as Dollavu.Category?,
+      category: fields[2] as Dollavu.Category,
       date: fields[1] as DateTime,
       amount: fields[3] as double,
       amountString: fields[5] as String,

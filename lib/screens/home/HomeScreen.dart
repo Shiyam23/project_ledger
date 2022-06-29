@@ -120,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
               return FutureBuilder(
               future: CategoryChartInfo.getCategories(top: 5),
               builder: (context, snapshot) {
-                print(snapshot.hasData);
                 if (!snapshot.hasData) {
                   return Expanded(child: Center(child: CircularProgressIndicator()));
                 }

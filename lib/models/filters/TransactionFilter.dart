@@ -53,10 +53,10 @@ class TransactionFilter {
       list.sort((t1, t2) => t2.name.compareTo(t1.name));
     }
     if (request!.sortMode == SortMode.CategoryAsc) {
-      list.sort((t1, t2) => t1.category!.name!.compareTo(t2.category!.name!));
+      list.sort((t1, t2) => t1.category.name!.compareTo(t2.category.name!));
     }
     if (request!.sortMode == SortMode.CategoryDesc) {
-      list.sort((t1, t2) => t2.category!.name!.compareTo(t1.category!.name!));
+      list.sort((t1, t2) => t2.category.name!.compareTo(t1.category.name!));
     }
     return list;
   }

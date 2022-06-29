@@ -183,7 +183,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
         account: details.account!,
         amount: _amountController!.getAmount(),
         amountString: _amountController!.getAmountString(),
-        category: details.category,
+        category: details.category!,
         isExpense: _amountController!.isExpense,
         name: _titleController!.text,
         repetition: details.repetition!,
@@ -191,7 +191,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       );
       BlocProvider.of<TransactionBloc>(context).add(AddTransaction(
           transaction, 
-          details.account!,
           _templateChecked
         ));
       this.resetInput(context);

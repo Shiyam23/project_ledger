@@ -335,7 +335,7 @@ class HiveDatabase implements Database {
         Box? box = await Hive.openBox(boxName);
         List<Transaction> transactions = box.values.cast<Transaction>().toList();
         for (int i = 0; i < box.values.toList().length; i++) {
-          if (transactions[i].category!.name == oldCategory.name) {
+          if (transactions[i].category.name == oldCategory.name) {
             Transaction newTransaction = transactions[i];
             newTransaction.category = newCategory;
             box.putAt(i, newTransaction);

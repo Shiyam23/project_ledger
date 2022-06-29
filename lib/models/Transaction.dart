@@ -18,7 +18,7 @@ class Transaction extends Equatable implements SelectableTile {
   @HiveField(1)
   DateTime date;
   @HiveField(2)
-  Dollavu.Category? category;
+  Dollavu.Category category;
   @HiveField(3)
   double amount;
   @HiveField(4)
@@ -58,7 +58,7 @@ class Transaction extends Equatable implements SelectableTile {
 
   @override
   Text get secondaryTitle => Text(
-        "${this.category!.name}\n" + DateFormat("dd.MM.yyyy").format(date),
+        "${this.category.name}\n" + DateFormat("dd.MM.yyyy").format(date),
         style: TextStyle(fontSize: 13),
       );
 
@@ -69,7 +69,6 @@ class Transaction extends Equatable implements SelectableTile {
   List<Object?> get props => [
         name,
         date,
-        icon,
         amount,
         isExpense,
         category,
@@ -79,5 +78,28 @@ class Transaction extends Equatable implements SelectableTile {
       ];
 
   @override
-  CategoryIcon? get icon => category!.icon;
+  CategoryIcon? get icon => category.icon;
+
+  Transaction copyWith({
+    name,
+    category,
+    date,
+    amount,
+    amountString,
+    isExpense,
+    repetition,
+    account,
+    addDateTime
+  }) {
+    return Transaction(
+      name: name ?? this.name, 
+      category: category ?? this.category, 
+      date: date ?? this.date, 
+      amount: amount ?? this.amount, 
+      amountString: amountString ?? this.amountString, 
+      isExpense: isExpense ?? this.isExpense, 
+      repetition: repetition ?? this.repetition, 
+      account: account ?? this.account, 
+      addDateTime: addDateTime ?? this.addDateTime);
+  }
 }

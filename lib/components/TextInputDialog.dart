@@ -2,16 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TextInputDialog extends StatelessWidget {
-  const TextInputDialog({
+  TextInputDialog({
     Key? key,
     required this.controller,
     required this.prefixIcon,
     required this.title,
+    this.validator,
+    this.prefix,
+    this.suffix
   }) : super(key: key);
 
   final TextEditingController controller;
   final Icon prefixIcon;
   final Text title;
+  final String? Function(String?)? validator;
+  final String? prefix;
+  final String? suffix;
+  final GlobalKey<FormFieldState> _formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +28,14 @@ class TextInputDialog extends StatelessWidget {
       children: [
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,
-          child: TextField(
-            onSubmitted: (text) => Navigator.of(context).pop(text),
+          child: TextFormField(
+            key: _formKey,
+            keyboardType: TextInputType.numberWithOptions(
+              decimal: true,
+              signed: true
+            ),
+            validator: validator,
+            autovalidateMode: AutovalidateMode.always,   
             autofocus: true,
             controller: controller,
             maxLength: 30,
@@ -54,7 +67,11 @@ class TextInputDialog extends StatelessWidget {
                     child: const Text("Cancel"),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(controller.text),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        Navigator.of(context).pop(controller.text);
+                      }
+                    },
                     child: const Text("Save"),
                   ),
                 ],

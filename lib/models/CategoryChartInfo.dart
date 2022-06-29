@@ -32,7 +32,7 @@ class CategoryChartInfo{
     if (transactions.isEmpty) return [];
     Map<Category, double> categoryAmount = Map<Category, double>();
     for (Transaction transaction in transactions) {
-      Category category = transaction.category!;
+      Category category = transaction.category;
       if (categoryAmount[category] == null) {
         categoryAmount[category] = transaction.amount;
       }

@@ -25,142 +25,145 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-        width: screenWidth,
-        height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            elevation: 10,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            margin: EdgeInsets.zero,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Create Invoice",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor
-                        ),
-                      ),
-                      Text(_formatCurrentMonth(),
-                        style: TextStyle(
-                          fontSize: 20,
-                          overflow: TextOverflow.fade,
-                          color: Theme.of(context).primaryColor
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      RoundGradientButton(
-                        onPressed: () => {}, 
-                        text: "CREATE",
-                        widthRatio: 0.3,
-                      )
-                    ],
-                  ),
-                  Icon(
-                    FontAwesomeIcons.fileInvoice,
-                    color: Theme.of(context).primaryColor,
-                    size: 100,
-                  )
-                ],
-              ),
-            ),
-          ),
-          Divider(
-            color: Theme.of(context).primaryColor,
-            height: 50,
-            thickness: 2,
-          ),
-          Expanded(
-            child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
+      child: Container(
+          width: screenWidth,
+          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
               elevation: 10,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.zero,
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _formatCurrentMonth(),
-                                overflow: TextOverflow.fade,
-                                softWrap: false,
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.06,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor
-                                ),
-                              ),
-                              Text("Top 5 Categories",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Theme.of(context).primaryColor
-                                ),
-                              ),
-                            ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Create Invoice",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor
                           ),
-                          RoundGradientButton(
-                            onPressed: () {
-                              widget.setPage(0);
-                            }, 
-                            text: "SEE MORE",
-                            widthRatio: 0.3
-                          )
-                        ],
-                      ),
-                      BlocBuilder<AccountChangedCubit, int>(
-                    bloc: BlocProvider.of<AccountChangedCubit>(context),
-                    buildWhen: (oldHash, newHash) => oldHash != newHash,
-                    builder: (context,_) {
-                      return FutureBuilder(
-                      future: CategoryChartInfo.getCategories(top: 5),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        else {
-                          List<CategoryChartInfo> chartList = 
-                            snapshot.data as List<CategoryChartInfo>;
-                          if (chartList.isEmpty) {
-                            return Center(
-                              child: Text("No transactions yet ..."),
+                        ),
+                        Text(_formatCurrentMonth(),
+                          style: TextStyle(
+                            fontSize: 20,
+                            overflow: TextOverflow.fade,
+                            color: Theme.of(context).primaryColor
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        RoundGradientButton(
+                          onPressed: () => {}, 
+                          text: "CREATE",
+                          widthRatio: 0.3,
+                        )
+                      ],
+                    ),
+                    Icon(
+                      FontAwesomeIcons.fileInvoice,
+                      color: Theme.of(context).primaryColor,
+                      size: 100,
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Divider(
+              color: Theme.of(context).primaryColor,
+              height: 50,
+              thickness: 2,
+            ),
+            Expanded(
+              child: Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                elevation: 10,
+                margin: EdgeInsets.zero,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _formatCurrentMonth(),
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 0.06,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor
+                                  ),
+                                ),
+                                Text("Top 5 Categories",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Theme.of(context).primaryColor
+                                  ),
+                                ),
+                              ],
+                            ),
+                            RoundGradientButton(
+                              onPressed: () {
+                                widget.setPage(0);
+                              }, 
+                              text: "SEE MORE",
+                              widthRatio: 0.3
+                            )
+                          ],
+                        ),
+                        BlocBuilder<AccountChangedCubit, int>(
+                      bloc: BlocProvider.of<AccountChangedCubit>(context),
+                      buildWhen: (oldHash, newHash) => oldHash != newHash,
+                      builder: (context,_) {
+                        return FutureBuilder(
+                        future: CategoryChartInfo.getCategories(top: 5),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          else {
+                            List<CategoryChartInfo> chartList = 
+                              snapshot.data as List<CategoryChartInfo>;
+                            if (chartList.isEmpty) {
+                              return Center(
+                                child: Text("No transactions yet ..."),
+                              );
+                            }
+                            return ListView(
+                              physics: BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              children: 
+                                diagramRow((snapshot.data as List<CategoryChartInfo>), context)
                             );
                           }
-                          return ListView(
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            children: 
-                              diagramRow((snapshot.data as List<CategoryChartInfo>), context)
-                          );
-                        }
-                      } 
-                    );
-                    },
-                  ),
-                    ],
-                  ),
-              ),
-              ),
-          ),
-        ],
+                        } 
+                      );
+                      },
+                    ),
+                      ],
+                    ),
+                ),
+                ),
+            ),
+          ],
+        ),
       ),
     );
   }

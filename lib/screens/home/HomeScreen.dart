@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:project_ez_finance/blocs/bloc/accountChanged/AccountChangedCubit.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import '../../models/CategoryChartInfo.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,9 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
-      child: Container(
-          width: screenWidth,
-          height: MediaQuery.of(context).size.height,
+      child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,31 +40,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Create Invoice",
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Create Invoice",
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).primaryColor
+                            ),
                           ),
-                        ),
-                        Text(_formatCurrentMonth(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            overflow: TextOverflow.fade,
-                            color: Theme.of(context).primaryColor
+                          FittedBox(
+                            child: Text(_formatCurrentMonth(),
+                              style: TextStyle(
+                                fontSize: 20,
+                                overflow: TextOverflow.fade,
+                                color: Theme.of(context).primaryColor
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        RoundGradientButton(
-                          onPressed: () => {}, 
-                          text: "CREATE",
-                          widthRatio: 0.3,
-                        )
-                      ],
+                          SizedBox(height: 10),
+                          RoundGradientButton(
+                            onPressed: () => {}, 
+                            text: "CREATE",
+                            widthRatio: 0.3,
+                          )
+                        ],
+                      ),
                     ),
                     Icon(
                       FontAwesomeIcons.fileInvoice,
@@ -83,32 +84,34 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 50,
               thickness: 2,
             ),
-            Expanded(
-              child: Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                elevation: 10,
-                margin: EdgeInsets.zero,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                  child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              elevation: 10,
+              margin: EdgeInsets.zero,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  _formatCurrentMonth(),
-                                  overflow: TextOverflow.fade,
-                                  softWrap: false,
-                                  style: TextStyle(
-                                    fontSize: screenWidth * 0.06,
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).primaryColor
+                                FittedBox(
+                                  child: Text(
+                                    _formatCurrentMonth(),
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.06,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor
+                                    ),
                                   ),
                                 ),
                                 Text("Top 5 Categories",
@@ -119,49 +122,49 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ],
                             ),
-                            RoundGradientButton(
-                              onPressed: () {
-                                widget.setPage(0);
-                              }, 
-                              text: "SEE MORE",
-                              widthRatio: 0.3
-                            )
-                          ],
-                        ),
-                        BlocBuilder<AccountChangedCubit, int>(
-                      bloc: BlocProvider.of<AccountChangedCubit>(context),
-                      buildWhen: (oldHash, newHash) => oldHash != newHash,
-                      builder: (context,_) {
-                        return FutureBuilder(
-                        future: CategoryChartInfo.getCategories(top: 5),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          else {
-                            List<CategoryChartInfo> chartList = 
-                              snapshot.data as List<CategoryChartInfo>;
-                            if (chartList.isEmpty) {
-                              return Center(
-                                child: Text("No transactions yet ..."),
-                              );
-                            }
-                            return ListView(
-                              physics: BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              children: 
-                                diagramRow((snapshot.data as List<CategoryChartInfo>), context)
+                          ),
+                          RoundGradientButton(
+                            onPressed: () {
+                              widget.setPage(0);
+                            }, 
+                            text: "SEE MORE",
+                            widthRatio: 0.3
+                          )
+                        ],
+                      ),
+                      BlocBuilder<AccountChangedCubit, int>(
+                    bloc: BlocProvider.of<AccountChangedCubit>(context),
+                    buildWhen: (oldHash, newHash) => oldHash != newHash,
+                    builder: (context,_) {
+                      return FutureBuilder(
+                      future: CategoryChartInfo.getCategories(top: 5),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        else {
+                          List<CategoryChartInfo> chartList = 
+                            snapshot.data as List<CategoryChartInfo>;
+                          if (chartList.isEmpty) {
+                            return Center(
+                              child: Text("No transactions yet ..."),
                             );
                           }
-                        } 
-                      );
-                      },
-                    ),
-                      ],
-                    ),
-                ),
-                ),
-            ),
+                          return ListView(
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            children: 
+                              diagramRow((snapshot.data as List<CategoryChartInfo>), context)
+                          );
+                        }
+                      } 
+                    );
+                    },
+                  ),
+                    ],
+                  ),
+              ),
+              ),
           ],
         ),
       ),
@@ -239,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       category.displayedAmount,
                       style: TextStyle(
                         overflow: TextOverflow.fade,
-                        color: Colors.black
+                        color: Theme.of(context).primaryColor
                       )
                     ),
                 ],

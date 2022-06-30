@@ -79,6 +79,7 @@ Widget build(BuildContext context) {
               borderRadius: BorderRadius.circular(50)
             ),
             child: CategoryIcon(
+              size: MediaQuery.of(context).size.width*0.055,
               onTap: onTap,
               iconData: _selectedCategory!.icon!.iconData),
           )

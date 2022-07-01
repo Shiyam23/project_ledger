@@ -10,4 +10,13 @@ class AdmobHelper {
     }
     throw UnsupportedError("Unsupported platform for Admob");
   }
+
+  static String get getInterstitialVideoId {
+    if (Platform.isAndroid) {
+      return "ca-app-pub-3940256099942544/8691691433";
+    } else if (Platform.isIOS) {
+      return "ca-app-pub-3940256099942544/5135589807";
+    }
+    throw UnsupportedError("Unsupported platform for Admob");
+  }
 }

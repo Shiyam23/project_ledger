@@ -9,7 +9,7 @@ import 'package:project_ez_finance/services/HiveDatabase.dart';
     Category? selectedCategory = await showModalBottomSheet<Category>(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      )
+      ),
       enableDrag: true,
       isDismissible: true,
       context: context, 
@@ -28,7 +28,7 @@ import 'package:project_ez_finance/services/HiveDatabase.dart';
                         "No Categories available. " + 
                         "Please create a category to add a new transaction!",
                         ),
-                    )
+                    );
                   }
                   return Container(
                     padding: const EdgeInsets.only(top: 20),

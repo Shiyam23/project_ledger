@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
@@ -230,19 +228,9 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     TransactionDetailsCubit.of(context).projectDetails(details);
   }
 
-  Future showError(context) {
-    return Flushbar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      icon: Icon(
-        Icons.warning,
-        size: 28.0,
-        color: Colors.red[300],
-      ),
-      leftBarIndicatorColor: Colors.red[300],
-      duration: const Duration(seconds: 3),
-      title: 'Invalid Input!',
-      message: 'Account and Category must be selected',
-    ).show(context);
+  void showError(context) {
+    //TODO: show proper error message
+    print("Error");
   }
   
   void setCategory(BuildContext context, Category? category) {

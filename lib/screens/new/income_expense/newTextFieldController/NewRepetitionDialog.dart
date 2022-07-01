@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -131,7 +130,7 @@ class NewRepetitionDialog {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: NewRepetitionDateField(
-                            enabled: endDateEnabled && isEnabled!
+                            enabled: endDateEnabled && isEnabled!,
                             content: DateFormat("yMd").format(_selectedEndDate),
                             onTap: () async {
                               DateTime? temp = await showDatePicker(
@@ -139,7 +138,7 @@ class NewRepetitionDialog {
                                 initialDate: _selectedEndDate,
                                 firstDate: _selectedEndDate,
                                 lastDate: _selectedEndDate.add(Duration(days: 365))
-                              )
+                              );
                               if (temp != null) {
                                 setRowState(() => _selectedEndDate = temp);
                               }
@@ -192,18 +191,8 @@ class NewRepetitionDialog {
     return rep;
   }
 
-  Future showError(context) {
-    return Flushbar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
-      icon: Icon(
-        Icons.warning,
-        size: 28.0,
-        color: Colors.red[300],
-      ),
-      leftBarIndicatorColor: Colors.red[300],
-      duration: const Duration(seconds: 3),
-      title: 'Ungültige Eingabe!',
-      message: 'Anzahl darf nicht leer oder Null sein.',
-    ).show(context);
+  void showError(context) {
+    //TODO: show proper error message
+    return print("Error");
   }
 }

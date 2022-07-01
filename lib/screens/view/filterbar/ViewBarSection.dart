@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart';
+import 'package:project_ez_finance/services/AdmobHelper.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
 import 'ViewBarIcon.dart';
@@ -20,13 +22,14 @@ class ViewFilterBarSection extends StatefulWidget {
 class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   late TransactionRequest _request;
   String? _searchText;
-
   TextEditingController _searchController = TextEditingController();
+  InterstitialAd? _interstitialAd;
 
   @override
   void initState() {
     super.initState();
     _request = widget.request;
+    _loadRewardedAd();
   }
 
   @override
@@ -157,6 +160,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               tooltip: "Generate PDF",
               width: _width,
               icon: FontAwesomeIcons.filePdf,
+              onTap: _showRewardedAd,
             ),
             SizedBox(width: _paddingWidth),
           ],
@@ -169,6 +173,37 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _loadRewardedAd() async {
+    await InterstitialAd.load(
+      adUnitId: AdmobHelper.getInterstitialVideoId, 
+      request: AdRequest(), 
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (InterstitialAd ad) async {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              print("Ok1");
+              ad.dispose();
+            },
+            onAdFailedToShowFullScreenContent: (ad, error) {
+              print("Ok2");
+              ad.dispose();
+            },
+            onAdClicked: (ad) => print("Ok3"),
+            onAdImpression: (ad) => print("Ok4"),
+            onAdShowedFullScreenContent: (ad) => print("Ok5"),
+            onAdWillDismissFullScreenContent: (ad) => print("Ok6")
+          );
+          _interstitialAd = ad;
+        }, 
+        onAdFailedToLoad: (ad) => print("Failed"),
+      )
+    );
+  }
+
+  void _showRewardedAd() async {
+    _interstitialAd?.show();
   }
 }
 
@@ -195,12 +230,9 @@ class ViewSelectionBarSection extends StatefulWidget {
 
 class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
 
-  late bool _showEdit;
-
   @override
   void initState() {
      super.initState();
-    _showEdit = widget.selectedTransactionsNotifier.value == 1;
   }
   @override
   

@@ -183,17 +183,11 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
         onAdLoaded: (InterstitialAd ad) async {
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
-              print("Ok1");
               ad.dispose();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
-              print("Ok2");
               ad.dispose();
             },
-            onAdClicked: (ad) => print("Ok3"),
-            onAdImpression: (ad) => print("Ok4"),
-            onAdShowedFullScreenContent: (ad) => print("Ok5"),
-            onAdWillDismissFullScreenContent: (ad) => print("Ok6")
           );
           _interstitialAd = ad;
         }, 

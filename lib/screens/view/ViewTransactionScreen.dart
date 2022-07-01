@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction/transaction_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction/transaction_event.dart';
 import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart';
@@ -15,9 +16,8 @@ import 'package:project_ez_finance/models/Modes.dart';
 import 'package:collection/collection.dart' show ListEquality;
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/models/currencies.dart';
-import 'package:project_ez_finance/screens/new/NewTransactionScreen.dart';
-import 'package:project_ez_finance/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmount.dart';
 import 'package:project_ez_finance/screens/view/filterbar/ViewBarSection.dart';
+import 'package:project_ez_finance/services/AdmobHelper.dart';
 import 'dart:math' as math;
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
@@ -63,11 +63,13 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   final ValueNotifier<int> selectedTransactionsNotifier = ValueNotifier<int>(0);
   final HashMap<int, GlobalObjectKey> transactionKeys = new HashMap();
+  late BannerAd _bottomBannerAd;
+  bool _isInlineBannerAdLoaded = false;
 
   @override
   void initState() {
-    _databaseBloc?.add(GetTransaction(widget.request));
     super.initState();
+    _databaseBloc?.add(GetTransaction(widget.request));
   }
 
   @override
@@ -83,13 +85,14 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
             child: topBar
           ),
         ),
-        BlocBuilder<TransactionBloc, TransactionState>(
+        BlocConsumer<TransactionBloc, TransactionState>(
           buildWhen: (previousState, currentState) {
             return !(previousState is TransactionLoaded &&
                     currentState is TransactionLoaded) ||
                 !widget._eq(previousState.transactionList,
                     currentState.transactionList);
           },
+          listener: (_, __) => _createInlineBannerAd(),
           builder: (BuildContext context, TransactionState state) {
             if (state is GraphLoaded) {
               return Expanded(
@@ -108,10 +111,19 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                     key: ValueKey(state.transactionList.length),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: state.transactionList.length,
+                    itemCount: state.transactionList.length + (_isInlineBannerAdLoaded ? 1 : 0),
                     physics: BouncingScrollPhysics(),
                     dragStartBehavior: DragStartBehavior.down,
                     itemBuilder: (BuildContext context, int index) {
+                      if (_isInlineBannerAdLoaded && index == 0) {
+                        return Card(
+                          child: Container(
+                            height: _bottomBannerAd.size.height.toDouble(),
+                            width: _bottomBannerAd.size.width.toDouble(),
+                            child: AdWidget(ad: _bottomBannerAd)),
+                        );
+                      }
+                      if (_isInlineBannerAdLoaded) index = index - 1;
                       Transaction transaction = state.transactionList[index];
                       GlobalObjectKey key = GlobalObjectKey(transaction);
                       transactionKeys[transaction.hashCode] = key;
@@ -137,6 +149,21 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
         ),
       ],
     );
+  }
+
+  void _createInlineBannerAd() {
+    _bottomBannerAd = BannerAd(
+      adUnitId: AdmobHelper.getInlineBannerId,
+      size: AdSize.largeBanner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (_) => setState(() {
+          _isInlineBannerAdLoaded = true;
+        }),
+        onAdFailedToLoad: (ad, _) => ad.dispose(),
+      )
+    );
+    _bottomBannerAd.load();
   }
 
   void onTransactionSelect(Transaction transaction) async {
@@ -362,13 +389,13 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     if (amount == null) return "Empty amount not allowed";
     String currencyCode = HiveDatabase().selectedAccount!.currencyCode;
     Map<String, dynamic> currency = currencies[currencyCode]!;
-    int decimal_digits = currency["decimal_digits"];
-    int int_digits = 12-decimal_digits;
+    int decimalDigits = currency["decimal_digits"];
+    int intDigits = 12-decimalDigits;
     String decimalSeparator = currency["decimal_separator"];
     RegExp regex = 
-      RegExp("^[+,-] [0-9]{1,$int_digits}\\$decimalSeparator[0-9]{$decimal_digits}\$");
+      RegExp("^[+,-] [0-9]{1,$intDigits}\\$decimalSeparator[0-9]{$decimalDigits}\$");
     if (!amount.contains(regex)) {
-      String suffix = "0" + decimalSeparator + "0"*decimal_digits;
+      String suffix = "0" + decimalSeparator + "0"*decimalDigits;
       return "Format has to be: + " + suffix + " or - " + suffix;
     } 
     return null;
@@ -378,6 +405,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   void dispose() {
     _animationController.dispose();
     _selectedTransactions.clear();
+    _bottomBannerAd.dispose();
     super.dispose();
   }
 }

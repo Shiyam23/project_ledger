@@ -10,6 +10,9 @@
         android:name="${applicationName}"
         android:label="Dollavu"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5288793768363497~1313849343"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

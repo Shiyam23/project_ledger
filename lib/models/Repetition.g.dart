@@ -14,20 +14,20 @@ class CalenderUnitAdapter extends TypeAdapter<CalenderUnit> {
   CalenderUnit read(BinaryReader reader) {
     switch (reader.readByte()) {
       case 0:
-        return CalenderUnit.dayly;
+        return CalenderUnit.daily;
       case 1:
         return CalenderUnit.monthly;
       case 2:
         return CalenderUnit.yearly;
       default:
-        return CalenderUnit.dayly;
+        return CalenderUnit.daily;
     }
   }
 
   @override
   void write(BinaryWriter writer, CalenderUnit obj) {
     switch (obj) {
-      case CalenderUnit.dayly:
+      case CalenderUnit.daily:
         writer.writeByte(0);
         break;
       case CalenderUnit.monthly:

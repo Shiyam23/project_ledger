@@ -18,6 +18,7 @@ abstract class Database {
   Future<void> saveTransaction(Transaction transaction, bool templateChecked);
   Future<List<Transaction>> getTransactions(Set<DateTime> months);
   Future<List<Transaction>> getTemplates();
+  Future<List<Transaction>> getRepetitions();
   Future<bool> deleteTemplate(Transaction template); 
   Future<bool> selectAccount(Account account);
   Account? get selectedAccount;

@@ -27,7 +27,7 @@ class Repetition extends Equatable{
 
     if (amount == 1) {
       switch (time!) {
-        case CalenderUnit.dayly:
+        case CalenderUnit.daily:
           buffer.write("Every day");
           break;
 
@@ -42,7 +42,7 @@ class Repetition extends Equatable{
     } else {
       buffer.write("Every $amount ");
       switch (time!) {
-        case CalenderUnit.dayly:
+        case CalenderUnit.daily:
           buffer.write("day(s)");
           break;
 
@@ -67,7 +67,7 @@ class Repetition extends Equatable{
 @HiveType(typeId: 5)
 enum CalenderUnit {
   @HiveField(0)
-  dayly,
+  daily,
   @HiveField(1)
   monthly,
   @HiveField(2)

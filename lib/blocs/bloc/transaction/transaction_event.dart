@@ -16,6 +16,14 @@ class GetTransaction extends TransactionEvent {
   List<Object?> get props => [request];
 }
 
+class UpdateRepetitionTransactions extends TransactionEvent {
+
+  UpdateRepetitionTransactions();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class GetGraph extends TransactionEvent {
   
   const GetGraph();

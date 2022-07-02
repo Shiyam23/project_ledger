@@ -22,10 +22,6 @@ class CategoryChartInfo{
     int? top,
     List<Transaction>? transactions
   }) async {
-
-    if (HiveDatabase().selectedAccount == null) {
-      await HiveDatabase().setupDatabase();
-    }
     String currencyCode = HiveDatabase().selectedAccount!.currencyCode;
     transactions ??= 
       await HiveDatabase().getTransactions({DateTime.now()});

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:project_ez_finance/blocs/bloc/accountChanged/AccountChangedCubit.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
+import 'package:project_ez_finance/services/HiveDatabase.dart';
 import '../../models/CategoryChartInfo.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,7 +23,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     double screenWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),

@@ -165,7 +165,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
 
   void saveTransaction(BuildContext context) {
     TransactionDetails details = TransactionDetailsCubit.of(context).state;
-
     if (
       _titleController?.text != null &&
       _titleController?.text != "" &&
@@ -211,10 +210,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     }
   }
 
-  
-
   void resetInput(BuildContext context) {
-
     TransactionDetails details = TransactionDetailsCubit.of(context).state;
     details = TransactionDetails(
       account : mainAccount,

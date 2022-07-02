@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/routes/CategoryPage.dart';
 import 'package:project_ez_finance/screens/Layout.dart';
+import 'package:project_ez_finance/services/HiveDatabase.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeLight.dart';
 import 'package:project_ez_finance/components/routes/AccountPage.dart';
@@ -15,6 +16,7 @@ import 'package:project_ez_finance/components/routes/AccountPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await HiveDatabase().setupDatabase();
   MobileAds.instance.initialize();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(DThemeContainer(

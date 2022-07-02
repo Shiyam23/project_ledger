@@ -15,7 +15,7 @@ class NewRepetitionDialog {
 
   Future<Repetition?> chooseRepetition(BuildContext contextS) async {
 
-    CalenderUnit? _selectedUnit = initialRepetition.time ?? CalenderUnit.dayly;
+    CalenderUnit? _selectedUnit = initialRepetition.time ?? CalenderUnit.daily;
     DateTime _selectedEndDate = initialRepetition.endDate ?? DateTime.now().add(Duration(days: 30));
     bool? isEnabled = initialRepetition != Repetition.none;
 
@@ -96,7 +96,7 @@ class NewRepetitionDialog {
                                     : [
                                         DropdownMenuItem(
                                           child: Text("Day(s)"),
-                                          value: CalenderUnit.dayly,
+                                          value: CalenderUnit.daily,
                                         ),
                                         DropdownMenuItem(
                                           child: Text("Month(s)"),

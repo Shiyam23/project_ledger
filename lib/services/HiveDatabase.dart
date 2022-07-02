@@ -23,8 +23,8 @@ class HiveDatabase implements Database {
   
   Account? _selectedAccount;
   bool _changed = true;
+  bool _initialized = false;
 
-  final List<Account> _accountList = [];
   final List<Category> _categoryList = [];
   final List<Transaction> _transactions = [];
   final Set<String> _boxes = {};
@@ -32,16 +32,14 @@ class HiveDatabase implements Database {
 
   static const String accountBoxName = "accounts";
   static const String categoryBoxName = "categories";
-  static const String accountBoxMapBoxName = "accountBoxMap";
   static const String boxesBoxName = "boxes";
   static const String templateBoxName = "templates";
+  static const String repetitionBoxName = "repetitions";
 
   @override
   Future<List<Account>> getAllAccounts() async{
     Box? accountBox = await Hive.openBox(accountBoxName);
-    _accountList.clear();
-    accountBox.values.forEach((e) => _accountList.add(e));
-    return Future.value(_accountList);
+    return accountBox.values.toList().cast<Account>();
   }
 
   @override
@@ -54,56 +52,36 @@ class HiveDatabase implements Database {
 
   @override
   void changeAccount(Account oldAccount, Account newAccount) async {
-    if (!_accountList.contains(newAccount)) {
-      int i = _accountList.indexWhere((account) => account.name == oldAccount.name);
-      Box? accountBox = await Hive.openBox(accountBoxName);
-      accountBox.putAt(i, newAccount);
-      _accountList[i] = newAccount;
-      if (oldAccount.name != newAccount.name) {
-        Box? accountBoxMap = await Hive.openBox(accountBoxMapBoxName);
-        int boxName = accountBox.get(oldAccount.name);
-        accountBoxMap.delete(oldAccount.name);
-        accountBoxMap.put(newAccount.name, boxName);
-      }
+    Box? accountBox = await Hive.openBox(accountBoxName);
+    if (!accountBox.values.any((account) => account.name == newAccount.name)) {
+      int accountId = accountBox.keys
+      .singleWhere((id) => accountBox.get(id) == oldAccount);
+      accountBox.put(accountId, newAccount);
     }
   }
 
   @override
   Future<void> addAccount(Account newAccount) async {
     Box? accountBox = await Hive.openBox(accountBoxName);
-    if (accountBox.containsKey(newAccount.name)) {
+    if (accountBox.values.contains(newAccount)) {
       throw Exception("Account with this name already exists!");
     }
-    accountBox.add(newAccount);
-    _accountList.add(newAccount);
     // Get next available number for boxname
-    Box? accountBoxMap = await Hive.openBox(accountBoxMapBoxName);
-    List<int> allBoxNames = accountBoxMap.values.toList(growable: false).cast<int>();
-    int? boxName;
-    if (allBoxNames.isEmpty) boxName = 0;
-    else {
-      allBoxNames.sort();
-      for(int i = 0; i < allBoxNames.length; i++) {
-        if (allBoxNames[i] != i) {
-          boxName = i;
-          break;
-        }
-      }
-      boxName ??= allBoxNames.last + 1;
+    int accountId = 0;
+    while (accountBox.get(accountId) != null) {
+      accountId++;
     }
-    accountBoxMap.put(newAccount.name, boxName);
+    accountBox.put(accountId, newAccount);
   }
 
   @override
   void deleteAccount(Account deletedAccount) async {
-    int i = _accountList.indexWhere((account) => account.name == deletedAccount.name);
-    _accountList.removeAt(i);
     Box? accountBox = await Hive.openBox(accountBoxName);
-    accountBox.deleteAt(i);
+    int accountId = accountBox.keys.
+    singleWhere((accountId) => accountBox.get(accountId) == deletedAccount);
+    accountBox.deleteAt(accountId);
     _deleteTransactionsOfAccount(deletedAccount);
     _deleteTemplates((template) => template.account == deletedAccount);
-    Box? accountBoxMap = await Hive.openBox(accountBoxMapBoxName);
-    accountBoxMap.delete(deletedAccount.name);
   }
   
   @override
@@ -129,8 +107,8 @@ class HiveDatabase implements Database {
     _boxes.forEach(print);
 
     // Add a default account if the list of accounts is empty
-    await getAllAccounts();
-    if (_accountList.isEmpty) {
+    Box? accountBox = await Hive.openBox(accountBoxName);
+    if (accountBox.isEmpty) {
       Account firstAccount = Account(
         name: "Privatkonto",
         selected: true,
@@ -142,6 +120,7 @@ class HiveDatabase implements Database {
         )
       );
       await addAccount(firstAccount);
+      _initialized = true;
     }
 
     // Add a default category if the list of category is empty
@@ -159,12 +138,14 @@ class HiveDatabase implements Database {
     }
 
     // Initialize selected account
-    _selectedAccount = _accountList.firstWhere((account) => account.selected);
+    _selectedAccount = accountBox.values
+    .firstWhere((account) => account.selected);
   }
 
   void _deleteTransactionsOfAccount(Account account) async {
-    Box? accountBoxMap = await Hive.openBox(accountBoxMapBoxName);
-    String prefix = accountBoxMap.get(account.name).toString();
+    Box? accountBox = await Hive.openBox(accountBoxName);
+    int accountId = accountBox.keys.singleWhere((id) => accountBox.get(id) == account);
+    String prefix = accountId.toString();
     Box? nameBoxes = await Hive.openBox("boxes");
     nameBoxes.values.forEach((name) async {
       if ((name as String).split("_")[0] == prefix) {
@@ -216,8 +197,9 @@ class HiveDatabase implements Database {
     required Account account,
     bool createNew = false,
   }) async {
-    Box? accountBoxMap = await Hive.openBox(accountBoxMapBoxName);
-    String boxPrefix = accountBoxMap.get(account.name).toString();
+    Box? accountBox = await Hive.openBox(accountBoxName);
+    int accountId = accountBox.keys.singleWhere((id) => accountBox.get(id) == account);
+    String boxPrefix = accountId.toString();
     String currentName = "$boxPrefix" +
       "_${DateFormat.yMMM().format(date).replaceAll(" ", "").toLowerCase()}";
     if (createNew || await Hive.boxExists(currentName)) {
@@ -242,11 +224,13 @@ class HiveDatabase implements Database {
       currentBox.add(transaction);
       _transactions.add(transaction);
       print("Saving into Box:" + currentBox.name);
-      currentBox.close();
+    }
+    if (transaction.repetition != Repetition.none) {
+      _saveRepetition(transaction);
     }
     if (templateChecked) {
       Box? templateBox = await Hive.openBox(templateBoxName);
-      templateBox.add(transaction);
+      templateBox.add(transaction.copyWith(repetition: Repetition.none));
     }
   }
 
@@ -278,6 +262,11 @@ class HiveDatabase implements Database {
     return templateBox.values.cast<Transaction>().toList();
   }
 
+  Future<List<Transaction>> getStandingOrders() async {
+    Box? repetitionBox = await Hive.openBox(repetitionBoxName);
+    return repetitionBox.values.cast<Transaction>().toList();
+  }
+
   Future<bool> deleteTemplate(Transaction template) async {
     try {
       Box? templateBox = await Hive.openBox(templateBoxName);
@@ -289,11 +278,30 @@ class HiveDatabase implements Database {
     return true;
   }
 
+  Future<List<Transaction>> getRepetitions() async {
+    Box? repetitionBox = await Hive.openBox(repetitionBoxName);
+    return repetitionBox.values.cast<Transaction>().toList();
+  }
+
+  Future<bool> deleteRepetition(Transaction repetition) async {
+    try {
+      Box? repetitionBox = await Hive.openBox(repetitionBoxName);
+      int index = repetitionBox.values.toList().indexOf(repetition);
+      repetitionBox.deleteAt(index);
+    } on HiveError {
+      return false;
+    }
+    return true;
+  }
+
   @override
   Future<bool> selectAccount(Account selection) async {
-    int oldIndex = _accountList.indexWhere((account) => account.selected);
-    int newIndex = _accountList.indexOf(selection);
-    Account modifiedOldAccount = _accountList[oldIndex].copyWith(
+    Box? accountBox = await Hive.openBox(accountBoxName);
+    int oldId = accountBox.keys
+      .singleWhere((id) => (accountBox.get(id) as Account).selected);
+    int newId = accountBox.keys
+      .singleWhere((id) => accountBox.get(id) == selection);
+    Account modifiedOldAccount = accountBox.get(oldId).copyWith(
       selected: false
     );
     Account modifiedNewAccount = selection.copyWith(
@@ -301,8 +309,8 @@ class HiveDatabase implements Database {
     );
     try {
       Box? accountBox = await Hive.openBox(accountBoxName);
-      accountBox.putAt(oldIndex, modifiedOldAccount);
-      accountBox.putAt(newIndex, modifiedNewAccount);
+      accountBox.put(oldId, modifiedOldAccount);
+      accountBox.put(newId, modifiedNewAccount);
       _selectedAccount = modifiedNewAccount;
       _changed = true;
     } on HiveError {
@@ -313,6 +321,7 @@ class HiveDatabase implements Database {
 
   Account? get selectedAccount => _selectedAccount;
   bool get changed => _changed;
+  bool get initialized => _initialized;
 
   @override
   void addCategory(Category newCategory) async {
@@ -378,5 +387,17 @@ class HiveDatabase implements Database {
     _deleteTemplates((template) => template.category == category);
     _changed = true;
   }
+
+  void _saveRepetition(Transaction transaction) async {
+    Repetition repetition = transaction.repetition;
+    if (repetition.amount == null) {
+      throw StateError("Repetition has to be either none or amount has to be non null");
+    }
+    Box? repetitionBox = await Hive.openBox(repetitionBoxName);
+    repetitionBox.add(transaction);
+    repetitionBox.close();
+  }
+
+  
 }
 

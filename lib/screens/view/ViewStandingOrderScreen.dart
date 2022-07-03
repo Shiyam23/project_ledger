@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_ez_finance/models/StandingOrder.dart';
@@ -81,8 +81,8 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(standingOrder.initialTransaction.name),
-                Text(_formatDate(standingOrder.initialTransaction.date)),
-                Text(_formatDate(standingOrder.nextDueDate)),
+                Text(standingOrder.initialTransaction.date.format()),
+                Text(standingOrder.nextDueDate.format()),
                 Text(standingOrder.totalTransactions.toString()),
                 Text(_formatAmount(standingOrder.totalAmount)),
               ],

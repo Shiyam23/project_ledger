@@ -4,7 +4,7 @@ import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/models/SelectableTile.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:hive/hive.dart';
-
+import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 part 'StandingOrder.g.dart';
 
 @HiveType(typeId: 7)
@@ -43,7 +43,9 @@ class StandingOrder extends SelectableTile with EquatableMixin {
   }
 
   @override
-  Text get secondaryTitle => Text("Next: ${nextDueDate.toString()}");
+  Text get secondaryTitle => Text(
+    "${initialTransaction.category.name}\nNext: ${nextDueDate.format()}"
+  );
 
   @override
   Text get title => Text(initialTransaction.name);

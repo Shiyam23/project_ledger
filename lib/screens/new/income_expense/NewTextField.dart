@@ -1,10 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
 import 'package:project_ez_finance/components/Keyboard.dart';
+import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 
 class _NewTextField extends StatefulWidget {
   final double widthRatio;
@@ -89,19 +88,14 @@ class _NewDateFieldState extends State<NewDateField> {
           labelText: "Date",
           widthRatio: 0.3,
           onTap: widget.onTap,
-          content: _formatDate(state.date),
+          content: state.date?.format(),
           icon: FontAwesomeIcons.clock,
         );
       },
     );
   }
 
-  String? _formatDate(DateTime? dateTime) {
-    if (dateTime != null) {
-      return DateFormat("yMd", Platform.localeName).format(dateTime);
-    }
-    else return null;
-  }
+  
 }
 
 class NewRepetitionDateField extends StatelessWidget {

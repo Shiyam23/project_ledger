@@ -22,7 +22,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   TransactionBloc(TransactionState initialState) : super(initialState) {
     on<GetTransaction>(_getTransaction);
-    on<UpdateRepetitionTransactions>(_updateAllStandingOrders);
+    on<UpdateStandingOrderTransactions>(_updateAllStandingOrders);
     on<GetGraph>(_getGraph);
     on<AddTransaction>(_addTransaction);
     on<DeleteTransaction>(_deleteTransaction);

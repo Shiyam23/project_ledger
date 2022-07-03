@@ -16,9 +16,9 @@ class GetTransaction extends TransactionEvent {
   List<Object?> get props => [request];
 }
 
-class UpdateRepetitionTransactions extends TransactionEvent {
+class UpdateStandingOrderTransactions extends TransactionEvent {
 
-  UpdateRepetitionTransactions();
+  UpdateStandingOrderTransactions();
 
   @override
   List<Object?> get props => [];

@@ -75,7 +75,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
 
               ],
             ),
-            SizedBox(width: MediaQuery.of(context).size.width / 10),
+            SizedBox(width: MediaQuery.of(context).size.width / 20),
             Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,

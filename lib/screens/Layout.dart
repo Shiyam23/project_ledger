@@ -31,6 +31,8 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    super.initState();
+    transactionBloc.add(UpdateStandingOrderTransactions());
     lController = LayoutController(
         bottomSelectedIndex: 1,
         currentPage: 2,
@@ -39,7 +41,6 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
         overViewTabController:
             TabController(length: 2, initialIndex: 1, vsync: this),
         pageController: PageController(initialPage: 2, keepPage: true));
-    super.initState();
   }
 
   @override

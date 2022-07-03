@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/models/Category.dart' as Dollavu;
 import 'package:project_ez_finance/models/SelectableTile.dart';
+import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 import 'Account.dart';
 import 'Repetition.dart';
 
@@ -58,7 +59,7 @@ class Transaction extends Equatable implements SelectableTile {
 
   @override
   Text get secondaryTitle => Text(
-        "${this.category.name}\n" + DateFormat("dd.MM.yyyy").format(date),
+        "${this.category.name}\n" + date.format(),
         style: TextStyle(fontSize: 13),
       );
 

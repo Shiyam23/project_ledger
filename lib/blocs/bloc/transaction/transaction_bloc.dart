@@ -11,6 +11,8 @@ import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
+import '../../../models/StandingOrder.dart';
+
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   
   Database _database = HiveDatabase();
@@ -20,7 +22,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   TransactionBloc(TransactionState initialState) : super(initialState) {
     on<GetTransaction>(_getTransaction);
-    on<UpdateRepetitionTransactions>(_updateRepetitonTransactions);
+    on<UpdateRepetitionTransactions>(_updateAllStandingOrders);
     on<GetGraph>(_getGraph);
     on<AddTransaction>(_addTransaction);
     on<DeleteTransaction>(_deleteTransaction);
@@ -50,44 +52,78 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     emit(const TransactionLoading());
   }
   
-  void _updateRepetitonTransactions(event, emit) async {
-    List<Transaction> repetitions = await _database.getRepetitions();
-    repetitions.forEach(_addRepetitionTransactions);
+  void _updateAllStandingOrders(event, emit) async {
+    List<StandingOrder> standingOrders = await _database.getStandingOrders();
+    standingOrders.forEach(_updateStandingOrderTransactions);
   }
 
   void _addTransaction(AddTransaction event, emit) async {
     await _database.saveTransaction(event.transaction, event.templateChecked);
     if(event.transaction.repetition != Repetition.none) {
-      _addRepetitionTransactions(event.transaction);
+      _addStandingOrder(event.transaction);
     }
     emit(TransactionLoaded(_transactions));
   }
 
-  void _addRepetitionTransactions(Transaction standingOrder) {
-    Repetition repetition = standingOrder.repetition;
-    DateTime endDate = DateTime.now();
-    if (repetition.endDate != null && repetition.endDate!.isBefore(endDate)) {
-      endDate = repetition.endDate!;
-      HiveDatabase().deleteRepetition(standingOrder);
+  void _addStandingOrder(Transaction transaction) async {
+    DateTime? endDate = transaction.repetition.endDate;
+    if (endDate != null && endDate.isBefore(transaction.date)) {
+      throw ArgumentError("Repetition endDate must not be before transaction date");
     }
-    DateTime initialDate = standingOrder.date;
-    DateTime addInterval(DateTime initialDate, Repetition repetition) {
+    StandingOrder standingOrder = StandingOrder(
+      initialTransaction: transaction,
+      nextDueDate: _addInterval(transaction.date, transaction.repetition),
+      totalAmount: transaction.amount,
+      totalTransactions: 1
+    );
+    await _database.saveStandingOrder(standingOrder);
+    if (standingOrder.nextDueDate.isBefore(DateTime.now())) {
+      _updateStandingOrderTransactions(standingOrder);
+    }
+  }
+
+  void _updateStandingOrderTransactions(StandingOrder standingOrder) async {
+    Repetition repetition = standingOrder.initialTransaction.repetition;
+    DateTime? endDate = repetition.endDate;
+    if (endDate != null && endDate.isBefore(DateTime.now())) {
+      _database.deleteStandingOrder(standingOrder);
+    } else {
+      endDate = DateTime.now();
+    }
+    DateTime dueDate = standingOrder.nextDueDate;
+    int numberTransactions = standingOrder.totalTransactions;
+    while (dueDate.isBefore(endDate)) {
+      _database.saveTransaction(
+        standingOrder.initialTransaction.copyWith(
+          date: dueDate,
+          repetition: Repetition.none,
+          addDateTime: DateTime.now()
+        ), 
+        false
+      );
+      dueDate = _addInterval(dueDate, repetition);
+      numberTransactions++;
+    }
+    if (numberTransactions != standingOrder.totalTransactions) {
+      StandingOrder newStandingOrder = StandingOrder(
+        initialTransaction: standingOrder.initialTransaction,
+        nextDueDate: dueDate,
+        totalTransactions: numberTransactions,
+        totalAmount: numberTransactions * standingOrder.initialTransaction.amount
+      );
+      await _database.updateStandingOrder(standingOrder, newStandingOrder);
+    }
+
+
+  }
+
+  DateTime _addInterval(DateTime initialDate, Repetition repetition) {
       return DateTime(
       initialDate.year + (repetition.time == CalenderUnit.yearly ? repetition.amount! : 0), 
       initialDate.month + (repetition.time == CalenderUnit.monthly ? repetition.amount! : 0),
       initialDate.day + (repetition.time == CalenderUnit.daily ? repetition.amount! : 0),
       );
     }
-    while ((initialDate = addInterval(initialDate, repetition)).isBefore(endDate)) {
-      _database.saveTransaction(
-        standingOrder.copyWith(
-          date: initialDate,
-          repetition: Repetition.none,
-        ), 
-        false
-      );
-    }
-  }
 
   void _deleteTransaction(event, emit) async {
     emit(const TransactionLoading());

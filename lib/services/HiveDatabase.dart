@@ -5,6 +5,7 @@ import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart
 import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/models/Repetition.dart';
+import 'package:project_ez_finance/models/StandingOrder.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'Database.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -34,7 +35,7 @@ class HiveDatabase implements Database {
   static const String categoryBoxName = "categories";
   static const String boxesBoxName = "boxes";
   static const String templateBoxName = "templates";
-  static const String repetitionBoxName = "repetitions";
+  static const String standingOrderBoxName = "standingOrders";
 
   @override
   Future<List<Account>> getAllAccounts() async{
@@ -98,6 +99,7 @@ class HiveDatabase implements Database {
     Hive.registerAdapter(RepetitionAdapter());
     Hive.registerAdapter(CalenderUnitAdapter());
     Hive.registerAdapter(AccountAdapter());
+    Hive.registerAdapter(StandingOrderAdapter());
 
     // Saving all box names
     _boxes.clear();
@@ -225,9 +227,6 @@ class HiveDatabase implements Database {
       _transactions.add(transaction);
       print("Saving into Box:" + currentBox.name);
     }
-    if (transaction.repetition != Repetition.none) {
-      _saveRepetition(transaction);
-    }
     if (templateChecked) {
       Box? templateBox = await Hive.openBox(templateBoxName);
       templateBox.add(transaction.copyWith(repetition: Repetition.none));
@@ -262,11 +261,6 @@ class HiveDatabase implements Database {
     return templateBox.values.cast<Transaction>().toList();
   }
 
-  Future<List<Transaction>> getStandingOrders() async {
-    Box? repetitionBox = await Hive.openBox(repetitionBoxName);
-    return repetitionBox.values.cast<Transaction>().toList();
-  }
-
   Future<bool> deleteTemplate(Transaction template) async {
     try {
       Box? templateBox = await Hive.openBox(templateBoxName);
@@ -278,16 +272,16 @@ class HiveDatabase implements Database {
     return true;
   }
 
-  Future<List<Transaction>> getRepetitions() async {
-    Box? repetitionBox = await Hive.openBox(repetitionBoxName);
-    return repetitionBox.values.cast<Transaction>().toList();
+  Future<List<StandingOrder>> getStandingOrders() async {
+    Box? standingOrderBox = await Hive.openBox(standingOrderBoxName);
+    return standingOrderBox.values.cast<StandingOrder>().toList();
   }
 
-  Future<bool> deleteRepetition(Transaction repetition) async {
+  Future<bool> deleteStandingOrder(StandingOrder standingOrder) async {
     try {
-      Box? repetitionBox = await Hive.openBox(repetitionBoxName);
-      int index = repetitionBox.values.toList().indexOf(repetition);
-      repetitionBox.deleteAt(index);
+      Box? standingOrderBox = await Hive.openBox(standingOrderBoxName);
+      int index = standingOrderBox.values.toList().indexOf(standingOrder);
+      standingOrderBox.deleteAt(index);
     } on HiveError {
       return false;
     }
@@ -388,16 +382,19 @@ class HiveDatabase implements Database {
     _changed = true;
   }
 
-  void _saveRepetition(Transaction transaction) async {
-    Repetition repetition = transaction.repetition;
-    if (repetition.amount == null) {
-      throw StateError("Repetition has to be either none or amount has to be non null");
-    }
-    Box? repetitionBox = await Hive.openBox(repetitionBoxName);
-    repetitionBox.add(transaction);
-    repetitionBox.close();
+  Future<void> saveStandingOrder(StandingOrder standingOrder) async {
+    Box? standingOrderBox = await Hive.openBox(standingOrderBoxName);
+    standingOrderBox.add(standingOrder);
   }
 
-  
+  Future<void> updateStandingOrder(
+    StandingOrder standingOrder, 
+    StandingOrder newStandingOrder
+  ) async {
+    Box? standingOrderBox = await Hive.openBox(standingOrderBoxName);
+    int index = standingOrderBox.values.toList().indexOf(standingOrder);
+    standingOrderBox.putAt(index, newStandingOrder);
+    print(standingOrderBox.values.toList());
+  }
 }
 

@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:project_ez_finance/models/Transaction.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:project_ez_finance/models/StandingOrder.dart';
+import 'package:project_ez_finance/models/currencies.dart';
+import 'package:project_ez_finance/services/HiveDatabase.dart';
 import '../../components/IconListTile.dart';
 
 class ViewStandingOrderScreen extends StatefulWidget {
@@ -12,7 +15,7 @@ class ViewStandingOrderScreen extends StatefulWidget {
 
 class _ViewScreenState extends State<ViewStandingOrderScreen> {
 
-  List<Transaction> _standingOrders = [];
+  List<StandingOrder> _standingOrders = [];
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
 
   @override
@@ -24,7 +27,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
           return Center(child: CircularProgressIndicator());
         }
         _standingOrders.clear();
-        _standingOrders.addAll(snapshot.data as List<Transaction>);
+        _standingOrders.addAll(snapshot.data as List<StandingOrder>);
         return AnimatedList(
             key: _listKey,
             initialItemCount: _standingOrders.length,
@@ -35,7 +38,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
     );
   }
 
-  Widget _listBuilder (BuildContext context, Transaction standingOrder, Animation<double> animation) {
+  Widget _listBuilder (BuildContext context, StandingOrder standingOrder, Animation<double> animation) {
     return SizeTransition(
       sizeFactor: animation,
       child: Card(
@@ -44,14 +47,65 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
         child: IconListTile(
           selectable: false,
           onSelect: () => showStandingOrderMenu(context, standingOrder),
-          onTap: () => showStandingOrderMenu(context, standingOrder),
+          onTap: () => showStandingOrderDetails(context, standingOrder),
           tile: standingOrder,
         )
       ),
     );
   }
 
-  void showStandingOrderMenu(BuildContext context, Transaction standingOrder) {
+  void showStandingOrderDetails(BuildContext context, StandingOrder standingOrder) {
+    showDialog(
+      context: context, 
+      builder: (context) => AlertDialog(
+        title: Text("Details"),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Name:"),
+                Text("Starting date:"),
+                Text("Next due date:"),
+                Text("Total transactions:"),
+                Text("Total amount:"),
+
+              ],
+            ),
+            SizedBox(width: MediaQuery.of(context).size.width / 10),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(standingOrder.initialTransaction.name),
+                Text(_formatDate(standingOrder.initialTransaction.date)),
+                Text(_formatDate(standingOrder.nextDueDate)),
+                Text(standingOrder.totalTransactions.toString()),
+                Text(_formatAmount(standingOrder.totalAmount)),
+              ],
+            )
+          ],
+        )
+      )
+    );
+  }
+
+  String _formatAmount(double amount) {
+    return formatCurrency(
+      HiveDatabase().selectedAccount!.currencyCode, 
+      amount
+    );
+
+  }
+
+  String _formatDate(DateTime dateTime) {
+    return DateFormat("yMd", Platform.localeName).format(dateTime);
+  }
+
+  void showStandingOrderMenu(BuildContext context, StandingOrder standingOrder) {
     showModalBottomSheet(context: context, builder: (sheetContext) {
       return SafeArea(
         bottom: true,
@@ -72,7 +126,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
     });    
   }
 
-  void deleteStandingOrder(BuildContext context, Transaction standingOrder) async {
+  void deleteStandingOrder(BuildContext context, StandingOrder standingOrder) async {
       Navigator.of(context).pop();
       bool? sureToDelete = await showDialog<bool>(
         context: context, 
@@ -94,7 +148,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
           ],
         ));
       if (sureToDelete ?? false) {
-        bool noError = await HiveDatabase().deleteRepetition(standingOrder);
+        bool noError = await HiveDatabase().deleteStandingOrder(standingOrder);
         if (noError) {
           int index = _standingOrders.indexOf(standingOrder);
           _listKey.currentState!.removeItem(

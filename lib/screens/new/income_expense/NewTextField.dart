@@ -208,7 +208,6 @@ class _NewTitleTextFieldState extends State<NewTitleTextField> {
       listener: (context, state) {
         if (state.name != controller.text) {
           if (state.name != null) controller.text = state.name!;
-          else controller.clear();
         }
       },
       child : SizedBox(

@@ -215,7 +215,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     details = TransactionDetails(
       account : mainAccount,
       category : null,
-      name: null,
+      name: "",
       date : DateTime.now(),
       repetition : Repetition.none,
       isExpense: true

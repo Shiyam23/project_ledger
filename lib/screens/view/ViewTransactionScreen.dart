@@ -166,7 +166,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     _bottomBannerAd.load();
   }
 
-  void onTransactionSelect(Transaction transaction) async {
+  Future<void> onTransactionSelect(Transaction transaction) async {
     if (_selectedTransactions.contains(transaction)) {
       _selectedTransactions.remove(transaction);
     }
@@ -180,6 +180,9 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
       _flipToViewBar();
     }
     selectedTransactionsNotifier.value = _selectedTransactions.length;
+    if(_selectedTransactions.isEmpty) {
+      _flipToViewBar();
+    }
   }
 
   void onDelete() async {
@@ -210,12 +213,14 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   }
 
   void _flipToViewBar() async {
+    _animationController.stop();
     await _animationController.forward();
     topBar = topViewBar;
     _animationController.reverse();
   }
 
   void _flipToSelectionBar() async {
+    _animationController.stop();
     await _animationController.forward();
     topBar = topSelectionBar;
     _animationController.reverse();

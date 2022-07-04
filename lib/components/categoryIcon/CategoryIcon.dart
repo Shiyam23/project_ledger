@@ -93,10 +93,11 @@ class _CategoryIconState extends State<CategoryIcon>
   }
 
   void flip() async {
+    _flipController!.stop();
     if (widget.selectedNotifier != null) {
       await _flipController!.forward();
-      setState(() => isSelected = !isSelected);
-      _flipController!.reverse();
+      setState(() => isSelected = widget.selectedNotifier!.value);
+      await _flipController!.reverse();
     }
   }
 

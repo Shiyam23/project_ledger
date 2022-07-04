@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:project_ez_finance/blocs/bloc/accountChanged/AccountChangedCubit.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
+import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 import '../../models/CategoryChartInfo.dart';
 
@@ -263,6 +264,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String _formatCurrentMonth() {
-    return DateFormat("MMMM yyyy").format(DateTime.now());
+    return DateTime.now().format(format: "yMMMM");
   }
 }

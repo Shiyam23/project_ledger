@@ -78,10 +78,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    Icon(
-                      FontAwesomeIcons.fileInvoice,
-                      color: Theme.of(context).primaryColor,
-                      size: 100,
+                    Container(
+                      padding: EdgeInsets.only(right: 10),
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      child: const Image(
+                          image: AssetImage('assets/icons/invoice_new.png')
+                        ),
                     )
                   ],
                 ),

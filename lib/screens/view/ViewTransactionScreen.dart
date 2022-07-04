@@ -285,7 +285,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     String? newName = await showDialog<String>(
       context: context, 
       builder: (context) => TextInputDialog(
-        controller: controller, 
+        controller: controller,
         prefixIcon: Icon(FontAwesomeIcons.pen), 
         title: Text("Enter new name"))
     );
@@ -339,14 +339,17 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
       builder: (context) => TextInputDialog(
         validator: validateAmount,
         controller: controller,
+        useNumberKeyboard: true,
         prefixIcon: Icon(FontAwesomeIcons.moneyBill),
         title: Text("New amount"),
       )
     );
     bool isExpense = true;
     String currencyCode = HiveDatabase().selectedAccount!.currencyCode;
+    String decimalSeparator = currencies[currencyCode]!["decimal_separator"];
     if (newAmountString != null) {
       if (newAmountString.startsWith('+')) isExpense = false;
+      newAmountString = newAmountString.replaceFirst(decimalSeparator, ".");
       double newAmount = double.parse(newAmountString.substring(1).trim());
       Transaction newTransaction = selectedTransaction.copyWith(
         isExpense: isExpense,

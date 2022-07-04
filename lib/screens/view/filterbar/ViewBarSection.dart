@@ -243,7 +243,7 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
                 icon: Icon(FontAwesomeIcons.arrowLeft),
                 onPressed: widget.onReset,
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 5),
               Text(
                 " " + numberSelected.toString(),
                 style: TextStyle(
@@ -251,7 +251,7 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
                 fontSize: 25
                 ),
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 5),
               Icon(FontAwesomeIcons.check)
             ],
           ),

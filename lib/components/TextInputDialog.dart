@@ -9,7 +9,8 @@ class TextInputDialog extends StatelessWidget {
     required this.title,
     this.validator,
     this.prefix,
-    this.suffix
+    this.suffix,
+    this.useNumberKeyboard = false
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -19,6 +20,7 @@ class TextInputDialog extends StatelessWidget {
   final String? prefix;
   final String? suffix;
   final GlobalKey<FormFieldState> _formKey = GlobalKey();
+  final bool useNumberKeyboard;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +32,7 @@ class TextInputDialog extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.8,
           child: TextFormField(
             key: _formKey,
-            keyboardType: TextInputType.numberWithOptions(
-              decimal: true,
-              signed: true
-            ),
+            //keyboardType: useNumberKeyboard ? TextInputType.text : null,
             validator: validator,
             autovalidateMode: AutovalidateMode.always,   
             autofocus: true,

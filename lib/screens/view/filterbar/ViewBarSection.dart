@@ -1,14 +1,19 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:open_file/open_file.dart';
+import 'package:pdf/pdf.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:project_ez_finance/services/AdmobHelper.dart';
+import 'package:project_ez_finance/services/pdfGenerator/PDFGenerator.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
 import 'ViewBarIcon.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
   final TransactionRequest request;
@@ -160,7 +165,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               tooltip: "Generate PDF",
               width: _width,
               icon: FontAwesomeIcons.filePdf,
-              onTap: _showRewardedAd,
+              onTap: _generatePDF,
             ),
             SizedBox(width: _paddingWidth),
           ],
@@ -194,6 +199,22 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
         onAdFailedToLoad: (ad) => print("Failed"),
       )
     );
+  }
+
+  void _generatePDF() async {
+    //_showRewardedAd();
+    TransactionState state = BlocProvider.of<TransactionBloc>(context).state;
+    if (state is TransactionLoaded) {
+      Invoice invoice = Invoice(
+        transactions: state.transactionList, 
+        baseColor: PdfColor.fromInt(Theme.of(context).primaryColor.value),
+        accentColor: PdfColor.fromInt(Theme.of(context).primaryColor.value),
+      );
+      Directory temp = await getTemporaryDirectory();
+      final file = File("${temp.path}/example.pdf");
+      await file.writeAsBytes(await invoice.buildPdf());
+      OpenFile.open('${temp.path}/example.pdf');
+    }
   }
 
   void _showRewardedAd() async {

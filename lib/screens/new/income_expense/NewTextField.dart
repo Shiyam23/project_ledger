@@ -218,6 +218,12 @@ class _NewTitleTextFieldState extends State<NewTitleTextField> {
           onTap: () {
             KeyboardWidget.of(context)?.triggerKeyboard(false);
           },
+          onChanged: (name) {
+            TransactionDetailsCubit cubit = TransactionDetailsCubit.of(context);
+            cubit.projectDetails(cubit.state.copyWith(
+              name: name
+            ));
+          },
           style: TextStyle(
             height: 1.5,
               fontSize: 15,

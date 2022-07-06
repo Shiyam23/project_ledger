@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'dart:typed_data';
+import 'package:flutter/material.dart' show Color;
 import 'package:flutter/services.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:project_ez_finance/models/currencies.dart';
@@ -10,13 +14,11 @@ import '../../models/Transaction.dart';
 class Invoice {
   Invoice({
     required this.transactions,
-    required this.baseColor,
-    required this.accentColor,
-  });
+    required Color color
+  }) : color = PdfColor.fromInt(color.value);
 
   final List<Transaction> transactions;
-  final PdfColor baseColor;
-  final PdfColor accentColor;
+  final PdfColor color;
 
   static const _darkColor = PdfColors.blueGrey800;
 
@@ -40,7 +42,7 @@ class Invoice {
   late final pw.Font pacifico;
   late final pw.Font fontawesome;
 
-  Future<Uint8List> buildPdf() async {
+  Future<Uint8List> _buildPdf() async {
     // Create a PDF document.
     final doc = pw.Document();
 
@@ -88,7 +90,7 @@ class Invoice {
               height: 60,
               alignment: pw.Alignment.center,
               decoration: pw.BoxDecoration(
-                    color: baseColor,
+                    color: color,
                     shape: pw.BoxShape.circle,
               ),
               child: pw.Text(
@@ -105,7 +107,7 @@ class Invoice {
               'INVOICE',
               tightBounds: true,
               style: pw.TextStyle(
-                color: baseColor,
+                color: color,
                 fontWeight: pw.FontWeight.bold,
                 fontSize: 40,
               )
@@ -114,7 +116,7 @@ class Invoice {
               'Page: ${context.pageNumber.toString()}/${context.pagesCount.toString()}',
               tightBounds: true,
               style: pw.TextStyle(
-                color: baseColor,
+                color: color,
                 fontSize: 20,
               )
             ),
@@ -189,10 +191,10 @@ class Invoice {
                   ],
                 ),
                 pw.SizedBox(height: 5),
-                pw.Divider(color: accentColor),
+                pw.Divider(color: color),
                 pw.DefaultTextStyle(
                   style: pw.TextStyle(
-                    color: baseColor,
+                    color: color,
                     fontSize: 14,
                     fontWeight: pw.FontWeight.bold,
                   ),
@@ -227,7 +229,7 @@ class Invoice {
         pw.TableRow(
           repeat: true,
           decoration: pw.BoxDecoration(
-            color: baseColor
+            color: color
           ),
           children: tableHeaders.map((e) => 
             pw.Padding(
@@ -249,14 +251,14 @@ class Invoice {
             color: PdfColors.white,
             size: 10
           );
-          int categoryBackgroundColor = t.category.icon!.iconData.backgroundColorInt ?? baseColor.toInt();
+          int categoryBackgroundColor = t.category.icon!.iconData.backgroundColorInt ?? color.toInt();
           pw.Icon accountIcon = pw.Icon(
             pw.IconData(t.account.icon.iconData.icon!.codePoint),
             font: fontawesome,
             color: PdfColors.white,
             size: 10
           );
-          int accountBackgroundColor = t.account.icon.iconData.backgroundColorInt ?? baseColor.toInt();
+          int accountBackgroundColor = t.account.icon.iconData.backgroundColorInt ?? color.toInt();
           return pw.TableRow(
             verticalAlignment: pw.TableCellVerticalAlignment.middle,
             decoration: pw.BoxDecoration(
@@ -332,6 +334,13 @@ class Invoice {
   String _formatCurrency(double amount, [bool? isExpense]) {
   if (isExpense == null) isExpense = amount < 0;
   return (isExpense ? "- " : "+ ") + formatCurrency(currencyCode, amount.abs());
+  }
+
+  void openInvoice() async {
+    Directory temp = await getTemporaryDirectory();
+      final file = File("${temp.path}/example.pdf");
+      await file.writeAsBytes(await this._buildPdf());
+      OpenFile.open('${temp.path}/example.pdf');
   }
 }
 

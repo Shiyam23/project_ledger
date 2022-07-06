@@ -1,13 +1,18 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:project_ez_finance/blocs/bloc/accountChanged/AccountChangedCubit.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/components/ResponseDialog.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/services/DateTimeFormatter.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
 import '../../models/CategoryChartInfo.dart';
+import '../../models/Modes.dart';
+import '../../models/Transaction.dart';
+import '../../services/pdfGenerator/PDFGenerator.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -61,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           FittedBox(
-                            child: Text(_formatCurrentMonth(),
+                            child: Text(_formatPreviousMonth(),
                               style: TextStyle(
                                 fontSize: 20,
                                 overflow: TextOverflow.fade,
@@ -71,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           SizedBox(height: 10),
                           RoundGradientButton(
-                            onPressed: () => {}, 
+                            onPressed: () => _createInvoice(context), 
                             text: "CREATE",
                             widthRatio: 0.3,
                           )
@@ -268,4 +273,53 @@ class _HomeScreenState extends State<HomeScreen> {
   String _formatCurrentMonth() {
     return DateTime.now().format(format: "yMMMM");
   }
+
+  String _formatPreviousMonth() {
+    DateTime now = DateTime.now();
+    DateTime previousMonth = DateTime(now.year, now.month-1);
+    return previousMonth.format(format: "yMMMM");
+  }
+
+  void _createInvoice(BuildContext context) async {
+    final TransactionBloc transactionBloc = 
+      BlocProvider.of<TransactionBloc>(context);
+    final TransactionRequest request = TransactionRequest(
+      searchText: null,
+      viewMode: ViewMode.List,
+      timeMode: TimeMode.Individual,
+      sortMode: SortMode.DateAsc,
+      dateRange: DateTimeRange(
+          start: DateTime(DateTime.now().year, DateTime.now().month - 1),
+          end: DateTime(DateTime.now().year, DateTime.now().month)
+              .subtract(Duration(microseconds: 1))));
+    transactionBloc.add(GetTransaction(request));
+    await Future.doWhile(() {
+      return Future.delayed(Duration(milliseconds: 100), () {
+        return !(transactionBloc.state is TransactionLoaded);
+      });
+    });
+    final List<Transaction> transactions = 
+      (transactionBloc.state as TransactionLoaded).transactionList;
+    if (transactions.isEmpty) {
+      showTransactionsEmptyError(context);
+      return;
+    }
+    final Invoice invoice = Invoice(
+      transactions: transactions,
+      color: Theme.of(context).primaryColor 
+    );
+    invoice.openInvoice();
+  }
+
+  void showTransactionsEmptyError(BuildContext context) async {
+    await showDialog(
+      context: context, 
+      builder: (context) => ResponseDialog(
+        title: "No transactions for this month", 
+        response: Response.Error
+      )
+    );
+  }
+
+
 }

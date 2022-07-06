@@ -207,13 +207,9 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
     if (state is TransactionLoaded) {
       Invoice invoice = Invoice(
         transactions: state.transactionList, 
-        baseColor: PdfColor.fromInt(Theme.of(context).primaryColor.value),
-        accentColor: PdfColor.fromInt(Theme.of(context).primaryColor.value),
+        color: Theme.of(context).primaryColor,
       );
-      Directory temp = await getTemporaryDirectory();
-      final file = File("${temp.path}/example.pdf");
-      await file.writeAsBytes(await invoice.buildPdf());
-      OpenFile.open('${temp.path}/example.pdf');
+      invoice.openInvoice();
     }
   }
 

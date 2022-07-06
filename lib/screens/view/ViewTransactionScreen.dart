@@ -64,11 +64,11 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   final ValueNotifier<int> selectedTransactionsNotifier = ValueNotifier<int>(0);
   final HashMap<int, GlobalObjectKey> transactionKeys = new HashMap();
   late BannerAd _bottomBannerAd;
-  bool _isInlineBannerAdLoaded = false;
 
   @override
   void initState() {
     super.initState();
+    _createInlineBannerAd();
     _databaseBloc?.add(GetTransaction(widget.request));
   }
 
@@ -111,11 +111,11 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                     key: ValueKey(state.transactionList.length),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: state.transactionList.length + (_isInlineBannerAdLoaded ? 1 : 0),
+                    itemCount: state.transactionList.length + 1,
                     physics: BouncingScrollPhysics(),
                     dragStartBehavior: DragStartBehavior.down,
                     itemBuilder: (BuildContext context, int index) {
-                      if (_isInlineBannerAdLoaded && index == 0) {
+                      if (index == 0) {
                         return Card(
                           child: Container(
                             height: _bottomBannerAd.size.height.toDouble(),
@@ -123,7 +123,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                             child: AdWidget(ad: _bottomBannerAd)),
                         );
                       }
-                      if (_isInlineBannerAdLoaded) index = index - 1;
+                      index = index - 1;
                       Transaction transaction = state.transactionList[index];
                       GlobalObjectKey key = GlobalObjectKey(transaction);
                       transactionKeys[transaction.hashCode] = key;
@@ -157,9 +157,6 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
       size: AdSize.largeBanner,
       request: AdRequest(),
       listener: BannerAdListener(
-        onAdLoaded: (_) => setState(() {
-          _isInlineBannerAdLoaded = true;
-        }),
         onAdFailedToLoad: (ad, _) => ad.dispose(),
       )
     );

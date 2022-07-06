@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:project_ez_finance/components/EmptyNotification.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
-class NewTemplateScreen extends StatelessWidget {
+class NewTemplateScreen extends StatefulWidget {
 
+  final Future<void> Function(int) setPage;
+
+  NewTemplateScreen(this.setPage);
+
+  @override
+  State<NewTemplateScreen> createState() => _NewTemplateScreenState();
+}
+
+class _NewTemplateScreenState extends State<NewTemplateScreen> {
   final List<Transaction> _templates = [];
 
   final Database _database = HiveDatabase();
 
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
-
-  final Future<void> Function(int) setPage;
-
-  NewTemplateScreen(this.setPage);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,7 @@ class NewTemplateScreen extends StatelessWidget {
         if (snapshot.hasData) {
           _templates.clear();
           _templates.addAll(snapshot.data as List<Transaction>);
+          if (_templates.isEmpty) return _templatesEmptyNotification();
           return AnimatedList(
             key: _listKey,
             initialItemCount: _templates.length,
@@ -57,7 +64,7 @@ class NewTemplateScreen extends StatelessWidget {
               isExpense: template.isExpense,
             );
             var cubit = TransactionDetailsCubit.of(context);
-            await this.setPage(2);
+            await this.widget.setPage(2);
             cubit.projectDetails(details);
           },
           tile: template,
@@ -114,10 +121,21 @@ class NewTemplateScreen extends StatelessWidget {
             (context, animation) => _listBuilder(context, template, animation)
           );
           _templates.removeAt(index);
+          if (_templates.isEmpty) setState(() {
+          });
         } else {
           print("Error occurred while deleting Template");
           //TODO: show proper error message
         }
       }
-    } 
+    }
+
+  Widget _templatesEmptyNotification() {
+    return Center(child: EmptyNotification(
+      title: "No templates available",
+      information: 
+        "Add new templates by creating a new transaction" + 
+        " and checking the \"Save as template\" box.",
+    ));
+  } 
 }

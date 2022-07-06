@@ -1,10 +1,9 @@
-import 'dart:io';
 import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:project_ez_finance/models/StandingOrder.dart';
 import 'package:project_ez_finance/models/currencies.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
+import '../../components/EmptyNotification.dart';
 import '../../components/IconListTile.dart';
 
 class ViewStandingOrderScreen extends StatefulWidget {
@@ -28,6 +27,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
         }
         _standingOrders.clear();
         _standingOrders.addAll(snapshot.data as List<StandingOrder>);
+        if (_standingOrders.isEmpty) return _standingOrdersEmptyNotification();
         return AnimatedList(
             key: _listKey,
             initialItemCount: _standingOrders.length,
@@ -101,10 +101,6 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
 
   }
 
-  String _formatDate(DateTime dateTime) {
-    return DateFormat("yMd", Platform.localeName).format(dateTime);
-  }
-
   void showStandingOrderMenu(BuildContext context, StandingOrder standingOrder) {
     showModalBottomSheet(context: context, builder: (sheetContext) {
       return SafeArea(
@@ -162,4 +158,13 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
         }
       }
     }
+
+  Widget _standingOrdersEmptyNotification() {
+    return Center(child: EmptyNotification(
+      title: "No standing orders available",
+      information: 
+        "Add new standing order by creating a new transaction" + 
+        " and selecting the corresponding repetition.",
+    ));
+  }
 }

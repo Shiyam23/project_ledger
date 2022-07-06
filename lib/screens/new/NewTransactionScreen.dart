@@ -9,6 +9,7 @@ import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/models/Repetition.dart';
 import 'package:project_ez_finance/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
+import '../../components/ResponseDialog.dart';
 import './income_expense/newTextFieldController/NewAccountTextFieldController.dart';
 import './income_expense/NewCategoryIcon.dart';
 import './income_expense/NewBottomButtons.dart';
@@ -165,36 +166,48 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
 
   void saveTransaction(BuildContext context) {
     TransactionDetails details = TransactionDetailsCubit.of(context).state;
-    if (
-      _titleController?.text != null &&
-      _titleController?.text != "" &&
-      details.category != null && 
-      details.date != null &&
-      details.account != null &&
-      details.repetition != null &&
-      _amountController != null
-      ) 
-    {
-      Transaction transaction = Transaction(
-        addDateTime: DateTime.now(),
-        account: details.account!,
-        amount: _amountController!.getAmount(),
-        amountString: _amountController!.getAmountString(),
-        category: details.category!,
-        isExpense: _amountController!.isExpense,
-        name: _titleController!.text,
-        repetition: details.repetition!,
-        date: details.date!
-      );
-      BlocProvider.of<TransactionBloc>(context).add(AddTransaction(
-          transaction, 
-          _templateChecked
-        ));
-      this.resetInput(context);
-    } 
-    else {
-      showError(context);
+    if (_titleController?.text == null || _titleController?.text == "") {
+      _showError(context, NewTransactionError.NoName);
+      return;
     }
+    if (details.category == null) {
+      _showError(context, NewTransactionError.NoCategory);
+      return;
+    }
+    if (details.date == null) {
+      _showError(context, NewTransactionError.NoDate);
+      return;
+    }
+    if (details.account == null) {
+      _showError(context, NewTransactionError.NoAccount);
+      return;
+    }
+    if (details.repetition == null || _amountController == null) {
+      _showError(context, NewTransactionError.GeneralError);
+      return;
+    }
+    Transaction transaction = Transaction(
+      addDateTime: DateTime.now(),
+      account: details.account!,
+      amount: _amountController!.getAmount(),
+      amountString: _amountController!.getAmountString(),
+      category: details.category!,
+      isExpense: _amountController!.isExpense,
+      name: _titleController!.text,
+      repetition: details.repetition!,
+      date: details.date!
+    );
+    BlocProvider.of<TransactionBloc>(context).add(AddTransaction(
+        transaction, 
+        _templateChecked
+      ));
+    showDialog(
+      context: context, 
+      builder: (context) => ResponseDialog(
+        title: "Transaction added", response: Response.Success
+      )
+    );
+    this.resetInput(context);
   }
 
   void refreshAccounts(BuildContext context, List<Account> loadedAccounts) {
@@ -223,11 +236,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     _amountController!.buildInitialText(null);
     TransactionDetailsCubit.of(context).projectDetails(details);
   }
-
-  void showError(context) {
-    //TODO: show proper error message
-    print("Error");
-  }
   
   void setCategory(BuildContext context, Category? category) {
     FocusScope.of(context).unfocus();
@@ -238,5 +246,43 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       amount: _amountController!.getAmount()
     ); 
     BlocProvider.of<TransactionDetailsCubit>(context).projectDetails(details);
+  }
+
+  void _showError(BuildContext context, NewTransactionError error) {
+    String title;
+    switch (error) {
+      case NewTransactionError.NoName:
+        title = "Please enter a name!";
+        break;
+      case NewTransactionError.NoCategory:
+        title = "Please choose a category!";
+        break;
+      case NewTransactionError.NoDate:
+        title = "Please choose a date!";
+        break;
+      case NewTransactionError.NoAccount:
+        title = "Please choose an account!";
+        break;
+      case NewTransactionError.GeneralError:
+        title = "Something went wrong! Please try again...";
+        break;
+    }
+    showDialog(
+      context: context, 
+      builder: (context) => ResponseDialog(
+        title: title, 
+        response: Response.Error
+      )
+    );
   }  
+}
+
+
+
+enum NewTransactionError {
+  NoName,
+  NoCategory,
+  NoDate,
+  NoAccount,
+  GeneralError
 }

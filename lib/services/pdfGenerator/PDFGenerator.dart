@@ -179,14 +179,14 @@ class Invoice {
                 pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
-                    pw.Text('Total Incomes:'),
+                    pw.Text('Total Income:'),
                     pw.Text(_formatCurrency(_totalIncomes)),
                   ],
                 ),
                 pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
-                    pw.Text('Total Expenses:'),
+                    pw.Text('Total Expense:'),
                     pw.Text(_formatCurrency(_totalExpenses)),
                   ],
                 ),

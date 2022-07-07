@@ -154,7 +154,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   void _createInlineBannerAd() {
     _bottomBannerAd = BannerAd(
       adUnitId: AdmobHelper.getInlineBannerId,
-      size: AdSize.largeBanner,
+      size: AdSize.leaderboard,
       request: AdRequest(),
       listener: BannerAdListener(
         onAdFailedToLoad: (ad, _) => ad.dispose(),

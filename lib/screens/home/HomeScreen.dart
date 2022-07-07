@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/ResponseDialog.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
@@ -12,7 +9,7 @@ import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 import '../../models/CategoryChartInfo.dart';
 import '../../models/Modes.dart';
 import '../../models/Transaction.dart';
-import '../../services/pdfGenerator/PDFGenerator.dart';
+import '../../services/PDFGenerator.dart';
 
 class HomeScreen extends StatefulWidget {
 

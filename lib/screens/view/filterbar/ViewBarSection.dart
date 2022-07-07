@@ -1,19 +1,15 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:open_file/open_file.dart';
-import 'package:pdf/pdf.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:project_ez_finance/services/AdmobHelper.dart';
-import 'package:project_ez_finance/services/pdfGenerator/PDFGenerator.dart';
+import 'package:project_ez_finance/services/PDFGenerator.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
 import 'ViewBarIcon.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
   final TransactionRequest request;

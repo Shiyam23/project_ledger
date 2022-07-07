@@ -48,13 +48,19 @@ class ResponseDialog extends StatelessWidget {
             child: _getImage(response)
           ), 
           SizedBox(height: 40),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor
-            )
+          SizedBox(
+            width: 250,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor
+                )
+              ),
+            ),
           ),
           SizedBox(height: 40), 
           TextButton(

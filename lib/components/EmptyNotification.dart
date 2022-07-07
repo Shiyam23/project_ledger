@@ -35,6 +35,7 @@ class EmptyNotification extends StatelessWidget {
           SizedBox(height: MediaQuery.of(context).size.height / 40),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
               color: Theme.of(context).primaryColor

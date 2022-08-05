@@ -46,6 +46,7 @@ Future<void> createBackup(LoadingProgress progress) async {
   encoder.addFile(checksumFile);
   encoder.close();
   progress.update(backupFileNum + 1);
+  progress.finish();
   Share.shareFiles([backupFileName]);
 }
 

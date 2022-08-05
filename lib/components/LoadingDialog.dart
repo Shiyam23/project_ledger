@@ -49,6 +49,9 @@ class _LoadingDialogState extends State<LoadingDialog> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
       title: Text(widget.title),
       content: AnimatedBuilder(
         animation: _controller,

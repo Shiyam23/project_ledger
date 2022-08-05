@@ -16,11 +16,18 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
 
   List<StandingOrder> _standingOrders = [];
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  late Future<List<StandingOrder>> futureStandingOrders;
+
+  @override
+  void initState() {
+    super.initState();
+    futureStandingOrders = HiveDatabase().getStandingOrders();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: HiveDatabase().getStandingOrders(),
+      future: futureStandingOrders,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(child: CircularProgressIndicator());
@@ -146,6 +153,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
       if (sureToDelete ?? false) {
         bool noError = await HiveDatabase().deleteStandingOrder(standingOrder);
         if (noError) {
+          futureStandingOrders = HiveDatabase().getStandingOrders();
           int index = _standingOrders.indexOf(standingOrder);
           _listKey.currentState!.removeItem(
             index, 

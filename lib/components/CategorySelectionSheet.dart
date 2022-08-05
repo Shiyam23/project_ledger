@@ -5,6 +5,7 @@ import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
  
  Future<Category?> showCategorySelectionSheet(BuildContext context) async {
+    Future<List<Category>> allCategories = HiveDatabase().getAllCategories();
     KeyboardWidget.of(context)!.triggerKeyboard(false);
     Category? selectedCategory = await showModalBottomSheet<Category>(
       shape: RoundedRectangleBorder(
@@ -19,7 +20,7 @@ import 'package:project_ez_finance/services/HiveDatabase.dart';
           thickness: 20,
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: HiveDatabase().getAllCategories(),
+              future: allCategories,
               builder: (context, snapshot) { 
                 if (snapshot.hasData) {
                   if ((snapshot.data as List<Category>).isEmpty) {

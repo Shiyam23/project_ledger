@@ -34,6 +34,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
 
   late NewMoneyAmount moneyField;
   final _database = HiveDatabase();
+  late Future<List<Account>> futureAllAccounts;
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       category: true,
       amount: true,
     ));
+    futureAllAccounts = _database.getAllAccounts();
     super.initState();
   }
 
@@ -81,7 +83,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
               ),
               const Spacer(),
               FutureBuilder(
-                future: _database.getAllAccounts(),
+                future: futureAllAccounts,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     refreshAccounts(context, snapshot.data as List<Account>);

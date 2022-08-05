@@ -24,6 +24,13 @@ class _AccountPageState extends State<AccountPage> {
   final List<Account> _accountList = [];
   final TextEditingController _controller = TextEditingController();
   final Database _database = HiveDatabase();
+  late Future<List<Account>> allAcounts;
+
+  @override
+  void initState() {
+    super.initState();
+    allAcounts = _database.getAllAccounts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +39,7 @@ class _AccountPageState extends State<AccountPage> {
         title: const Text("Accounts"),
       ),
       body: FutureBuilder(
-        future: _database.getAllAccounts(),
+        future: allAcounts,
         builder: (_, snapshot) {
           if (snapshot.hasData) {
             _accountList.clear();
@@ -159,6 +166,7 @@ class _AccountPageState extends State<AccountPage> {
       Account modifiedOldAccount = oldAccount.copyWith(selected: false);
       int newIndex = _accountList.indexOf(selectedAccount);
       Account modifiedSelectedAccount = selectedAccount.copyWith(selected: true);
+      allAcounts = _database.getAllAccounts();
       setState(() {
         _accountList[oldIndex] = modifiedOldAccount;
         _accountList[newIndex] = modifiedSelectedAccount;
@@ -198,6 +206,7 @@ class _AccountPageState extends State<AccountPage> {
       );
       _accountList.removeAt(index);
       _database.deleteAccount(account);
+      allAcounts = _database.getAllAccounts();
     }
   } 
 
@@ -244,6 +253,7 @@ class _AccountPageState extends State<AccountPage> {
         name: newName
       );
       _database.changeAccount(oldAccount, newAccount);
+      allAcounts = _database.getAllAccounts();
       setState(() => oldAccount = newAccount);
     } 
   }
@@ -284,6 +294,7 @@ class _AccountPageState extends State<AccountPage> {
                 )
               );
               _database.addAccount(newAccount);
+              allAcounts = _database.getAllAccounts();
               _accountList.add(newAccount);
               Timer(
                 const Duration(milliseconds: 300),
@@ -313,6 +324,7 @@ class _AccountPageState extends State<AccountPage> {
               ))   
         );
         _database.changeAccount(oldAccount, newAccount);
+        allAcounts = _database.getAllAccounts();
         setState(() => oldAccount = newAccount);
       }
     }
@@ -327,6 +339,7 @@ class _AccountPageState extends State<AccountPage> {
           currencyCode: currency.code
         );
         _database.changeAccount(oldAccount, newAccount);
+        allAcounts = _database.getAllAccounts();
         setState(() => oldAccount = newAccount);
       }
     );

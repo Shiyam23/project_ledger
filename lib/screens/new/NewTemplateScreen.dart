@@ -20,13 +20,19 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
   final List<Transaction> _templates = [];
 
   final Database _database = HiveDatabase();
-
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  late Future<List<Transaction>> allTemplates;
+
+  @override
+  void initState() {
+    super.initState();
+    allTemplates = _database.getTemplates();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _database.getTemplates(),
+      future: allTemplates,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           _templates.clear();
@@ -115,6 +121,7 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
       if (sureToDelete ?? false) {
         bool noError = await _database.deleteTemplate(template);
         if (noError) {
+          allTemplates = _database.getTemplates();
           int index = _templates.indexOf(template);
           _listKey.currentState!.removeItem(
             index, 

@@ -23,6 +23,14 @@ class _CategoryPageState extends State<CategoryPage> {
   final List<Category> _categoryList = [];
   final TextEditingController _controller = TextEditingController();
   final Database _database = HiveDatabase();
+  late Future<List<Category>> allCategories;
+
+  @override
+  void initState() {
+    super.initState();
+    allCategories = _database.getAllCategories();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +39,7 @@ class _CategoryPageState extends State<CategoryPage> {
         title: const Text("Categories"),
       ),
       body: FutureBuilder(
-        future: _database.getAllCategories(),
+        future: allCategories,
         builder: (_, snapshot) {
           if (snapshot.hasData) {
             _categoryList.clear();
@@ -156,6 +164,7 @@ class _CategoryPageState extends State<CategoryPage> {
             )   
           );
           _database.addCategory(newCategory);
+          allCategories = _database.getAllCategories();
           _categoryList.add(newCategory);
           Timer(
             const Duration(milliseconds: 300),
@@ -197,7 +206,10 @@ class _CategoryPageState extends State<CategoryPage> {
         name: newName
       );
       bool noError = await _database.changeCategory(oldCategory, newCategory);
-      if (noError) setState(() => {});
+      if (noError) {
+        allCategories = _database.getAllCategories();
+        setState(() => {});
+      }
     } 
   }
 
@@ -228,7 +240,10 @@ class _CategoryPageState extends State<CategoryPage> {
               ))
         );
         bool noError = await _database.changeCategory(oldCateogry, newCategory);
-        if (noError) setState(() {});
+        if (noError) {
+          allCategories = _database.getAllCategories();
+          setState(() {});
+        }
       }
     }
   }
@@ -260,6 +275,7 @@ class _CategoryPageState extends State<CategoryPage> {
       );
       _categoryList.removeAt(index);
       _database.deleteCategory(category);
+      allCategories = _database.getAllCategories();
     }
   } 
 

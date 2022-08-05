@@ -36,7 +36,7 @@ Future<void> createBackup(LoadingProgress progress) async {
     encoder.addFile(file);
     Uint8List bytes = file.readAsBytesSync();
     input.add(bytes);    
-    progress.update(basenameWithoutExtension(file.path), i + 1);
+    progress.update(i + 1);
   }
   String checkSumPath = join(tempPath,"backup.checksum");
   File checksumFile = File(checkSumPath);
@@ -45,7 +45,7 @@ Future<void> createBackup(LoadingProgress progress) async {
   checksumFile.writeAsBytesSync(digest.bytes);
   encoder.addFile(checksumFile);
   encoder.close();
-  progress.update('checksum', backupFileNum + 1);
+  progress.update(backupFileNum + 1);
   Share.shareFiles([backupFileName]);
 }
 
@@ -65,11 +65,14 @@ Future<List<File>?> checksum(String backupFilePath, LoadingProgress progress) as
   Directory backupFolder = Directory(join(backupFile.parent.path, 'backup/'));
   if (backupFolder.existsSync()) backupFolder.deleteSync(recursive: true);
   backupFolder.createSync();
+  progress.initialize(archive.length, "Checking Files");
   for (ArchiveFile archiveFile in archive) {
     File file = File(join(backupFolder.path, archiveFile.name));
     if (!file.existsSync()) file.createSync();
     file.writeAsBytesSync(archiveFile.content);
+    progress.forward();
   }
+  progress.reset();
   List<File> backupFiles = backupFolder.listSync()
     .map((file) => File(file.path)).toList();
   File checksumFile;
@@ -84,16 +87,17 @@ Future<List<File>?> checksum(String backupFilePath, LoadingProgress progress) as
   AccumulatorSink<Digest> output = AccumulatorSink<Digest>();
   ByteConversionSink input = sha256.startChunkedConversion(output);
   int backupFileNum = backupFiles.length;
-  progress.initialize(backupFileNum + 1);
+  progress.initialize(backupFileNum + 1, "Checking backup");
   for(int i = 0; i < backupFileNum; i++) {
     File file = backupFiles[i];
     Uint8List bytes = file.readAsBytesSync();
     input.add(bytes);    
-    progress.update(basenameWithoutExtension(file.path), i + 1);
+    progress.update(i + 1);
   }
   input.close();
   Digest digest = output.events.single;
   bool backupIsValid = listEquals(digest.bytes, checksumFile.readAsBytesSync());
+  progress.update(backupFileNum + 1);
   if (backupIsValid) {
     return backupFiles;
   } else {
@@ -110,8 +114,12 @@ Future<void> copyBackupFiles(LoadingProgress progress, List<File> backupFiles) a
     .map((f) => File(f.path))
     .toList();
   for (File file in originalFiles) file.deleteSync();
+  progress.initialize(originalFiles.length + 1, "Importing backup");
   for (File file in backupFiles) {
     file.copySync(join(appDocumentDir.path, basename(file.path)));
+    progress.forward();
   }
   HiveDatabase().reset();
+  progress.forward();
+  progress.finish();
 }

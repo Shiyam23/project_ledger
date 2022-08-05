@@ -101,7 +101,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         loadingProgress: progress, 
         title: "Creating Backup");
       }
-      );
+    );
     createBackup(progress);
   }
 
@@ -109,6 +109,15 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     LoadingProgress progress = LoadingProgress();
     String? backupFilePath = await openFile(progress);
     if (backupFilePath == null) return;
+    showDialog(
+      barrierDismissible: false,
+      context: context, 
+      builder: (context) { 
+        return LoadingDialog(
+        loadingProgress: progress, 
+        title: "Creating Backup");
+      }
+    );
     List<File>? backupFiles = await checksum(backupFilePath, progress);
     if (backupFiles == null) {
       showDialog(
@@ -128,6 +137,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       return;
     }
     await copyBackupFiles(progress, backupFiles);
+    
     context.read<AccountChangeNotifier>().notify();
   }
 }

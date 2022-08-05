@@ -44,7 +44,6 @@ class _LoadingDialogState extends State<LoadingDialog> with SingleTickerProvider
         }
       });
     }
-    
   }
 
   @override
@@ -65,9 +64,16 @@ class _LoadingDialogState extends State<LoadingDialog> with SingleTickerProvider
                 backgroundColor: Color.fromRGBO(56, 100, 132, 0.75),
               ),
               SizedBox(height: 10),
-              if (widget.loadingProgress.progress != null) Text(secondaryProgress),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (widget.loadingProgress.description != null) Text(widget.loadingProgress.description!),
+                  SizedBox(width: 10),
+                  if (widget.loadingProgress.progress != null) Text(secondaryProgress),
+                ],
+              ),
               SizedBox(height: 10),
-              if (widget.loadingProgress.progress == 1) okButton(context)
+              if (widget.loadingProgress.finished) okButton(context)
             ],
           );
         }
@@ -101,44 +107,40 @@ class _LoadingDialogState extends State<LoadingDialog> with SingleTickerProvider
 class LoadingProgress extends ChangeNotifier{
 
   double? _progress;
-  String _actualItem = "";
   int _actualValue = 0;
   int _maxValue = -1;
+  String? _description;
+  bool _finished = false;
 
   double? get progress => _progress;
-  String get actualItem => _actualItem;
   int get actualValue => _actualValue;
   int get maxValue => _maxValue;
+  String? get description => _description;
+  bool get finished => _finished;
 
-  void initialize(int maxValue, [String? actualItem, int? actualValue]) {
+  void initialize(int maxValue, [String? description]) {
     if (_maxValue != -1) throw StateError("Already Initialized");
+    if (_finished) throw StateError("Loading progress already finished");
     if (maxValue <= 1) throw ArgumentError.value(
       maxValue, 
       "maxValue", 
       "Must be greater than 1"
     );
-    if (actualItem == "") throw ArgumentError.value(
-      actualItem,
+    if (description == "") throw ArgumentError.value(
+      description,
       "actualItem",
       "Can not be empty"
     );
-    if (actualValue != null) {
-      if (actualValue <= 1 || actualValue > maxValue) {
-        throw ArgumentError.value(
-          actualValue, 
-          "actualValue", 
-          "Must not be less than one and greater than maxValue which is: $maxValue");
-      }
-      _actualValue = actualValue;
-    }
+    _actualValue = actualValue;
     _maxValue = maxValue;
-    if (actualItem != null) _actualItem = actualItem;
     _progress = _actualValue / _maxValue;
+    _description = description;
     notifyListeners();
   }
 
-  void update(String actualItem, int actualValue) {
+  void update(int actualValue) {
     if (_maxValue == -1) throw StateError("LoadingProgress not initialized yet");
+    if (_finished) throw StateError("Loading progress already finished");
     if (actualValue > maxValue || actualValue < 1) {
       throw ArgumentError.value(
         actualValue,
@@ -146,19 +148,28 @@ class LoadingProgress extends ChangeNotifier{
         "Must not be less than one or greater than maxValue which is: $maxValue"
       );
     }
-    if (actualItem == _actualItem && actualValue == _actualValue) {
+    if (actualValue == _actualValue) {
       return;
     }
-    _actualItem = actualItem;
     _actualValue = actualValue;
     _progress = _actualValue / maxValue;
     notifyListeners();
   }
 
+  void forward() {
+    update(actualValue + 1);
+  }
+
   void reset() {
     _progress = null;
-    _actualItem = "";
+    _description = "";
     _actualValue = 0;
     _maxValue = -1;
+    notifyListeners();
+  }
+
+  void finish() {
+    if (_finished) throw StateError("Loading progress already finished");
+    _finished = true;
   }
 }

@@ -164,7 +164,7 @@ class _AccountPageState extends State<AccountPage> {
         _accountList[newIndex] = modifiedSelectedAccount;
       });
     }
-    BlocProvider.of<AccountChangedCubit>(context).emit(selectedAccount.hashCode);
+    context.read<AccountChangeNotifier>().notify();
   }
 
   void deleteAccount(BuildContext context, Account account) async {

@@ -396,5 +396,17 @@ class HiveDatabase implements Database {
     standingOrderBox.putAt(index, newStandingOrder);
     print(standingOrderBox.values.toList());
   }
+
+  Future<void> reset() async {
+  _openBoxes.clear();
+  _boxes.clear();
+  (await Hive.openBox(boxesBoxName)).values.forEach((box) => _boxes.add(box));
+  _transactions.clear();
+  await getAllCategories();
+  Box? accountBox = await Hive.openBox(accountBoxName);
+  _selectedAccount = accountBox.values
+    .firstWhere((account) => account.selected);
+  _changed = true;
+  }
 }
 

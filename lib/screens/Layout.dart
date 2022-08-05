@@ -15,6 +15,9 @@ import 'package:project_ez_finance/screens/view/ViewTabBar.dart';
 import 'package:project_ez_finance/components/Keyboard.dart';
 
 class Layout extends StatefulWidget {
+
+  final ChangeNotifier homescreenChanged = ChangeNotifier();
+
   @override
   _LayoutState createState() => _LayoutState();
 }
@@ -129,7 +132,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
         layoutController: lController,
         setPage: setPage,
       );
-    if (index == 2) return HomeAppBar();
+    if (index == 2) return const HomeAppBar();
     if (index > 2)
       return NewTabBar(
         layoutController: lController,

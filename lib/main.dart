@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
@@ -11,6 +10,7 @@ import 'package:project_ez_finance/services/HiveDatabase.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeLight.dart';
 import 'package:project_ez_finance/components/routes/AccountPage.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -34,8 +34,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AccountChangedCubit(),
+    return ChangeNotifierProvider(
+      create: (_) => AccountChangeNotifier(),
       child: MaterialApp(
           localizationsDelegates: [
             GlobalWidgetsLocalizations.delegate,

@@ -28,11 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    this.context.read<AccountChangeNotifier>().changed = true;
   }
 
   @override
   Widget build(BuildContext context) {
-
     double screenWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
@@ -144,12 +144,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           )
                         ],
                       ),
-                      BlocBuilder<AccountChangedCubit, int>(
-                    bloc: BlocProvider.of<AccountChangedCubit>(context),
-                    buildWhen: (oldHash, newHash) => oldHash != newHash,
+                      AnimatedBuilder(
+                    animation: context.read<AccountChangeNotifier>(),
                     builder: (context,_) {
                       return FutureBuilder(
-                      future: CategoryChartInfo.getCategories(top: 5),
+                      future: context.read<AccountChangeNotifier>().categories,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return Center(child: CircularProgressIndicator());

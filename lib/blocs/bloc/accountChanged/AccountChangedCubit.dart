@@ -1,6 +1,22 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:project_ez_finance/models/CategoryChartInfo.dart';
+class AccountChangeNotifier extends ChangeNotifier {
+  
+  Future<List<CategoryChartInfo>> _categories 
+    = CategoryChartInfo.getCategories(top: 5);
 
-class AccountChangedCubit extends Cubit<int> {
-  AccountChangedCubit() : super(0);
+  bool changed = false;
 
+  Future<List<CategoryChartInfo>> get categories {
+    if (changed) _categories = CategoryChartInfo.getCategories(top: 5);
+    changed = false;
+    return _categories;
+  }
+
+  void notify() {
+    changed = true;
+    notifyListeners();
+  }
+
+  
 }

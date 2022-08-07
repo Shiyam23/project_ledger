@@ -97,9 +97,30 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
             if (state is GraphLoaded) {
               return Expanded(
                 child: Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: PieLabelChart.fromChartInfo(state.chartInfo)
+                  child: Card(
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 20),
+                        Text(
+                          "Category Chart", 
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                          )
+                        ),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.width * 1,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: PieLabelChart.fromChartInfo(state.chartInfo)
+                        ),
+                      ],
+                    )
                   ),
                 ),
               );

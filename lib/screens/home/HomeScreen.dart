@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/components/LoadingDialog.dart';
 import 'package:project_ez_finance/components/ResponseDialog.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
@@ -276,6 +277,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _createInvoice(BuildContext context) async {
+    final LoadingProgress loadingProgress = LoadingProgress();
+    showDialog(
+      context: context, 
+      builder: (context) => LoadingDialog(
+        loadingProgress: loadingProgress, 
+        title: "Generating PDF",
+      ),
+      barrierDismissible: false
+    );
+    loadingProgress.initialize(1, "Obtaining transactions");
     final TransactionBloc transactionBloc = 
       BlocProvider.of<TransactionBloc>(context);
     final TransactionRequest request = TransactionRequest(
@@ -293,17 +304,23 @@ class _HomeScreenState extends State<HomeScreen> {
         return !(transactionBloc.state is TransactionLoaded);
       });
     });
+
     final List<Transaction> transactions = 
       (transactionBloc.state as TransactionLoaded).transactionList;
+    
     if (transactions.isEmpty) {
       showTransactionsEmptyError(context);
       return;
     }
+    loadingProgress.reset();
+    loadingProgress.initialize(1, "Generating PDF");
     final Invoice invoice = Invoice(
       transactions: transactions,
       color: Theme.of(context).primaryColor 
     );
     invoice.openInvoice();
+    loadingProgress.forward();
+    loadingProgress.finish();
   }
 
   void showTransactionsEmptyError(BuildContext context) async {

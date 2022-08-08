@@ -206,7 +206,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     showDialog(
       context: context, 
       builder: (context) => ResponseDialog(
-        title: "Transaction added", response: Response.Success
+        description: "Transaction added", response: Response.Success
       )
     );
     this.resetInput(context);
@@ -272,7 +272,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     showDialog(
       context: context, 
       builder: (context) => ResponseDialog(
-        title: title, 
+        description: title, 
         response: Response.Error
       )
     );

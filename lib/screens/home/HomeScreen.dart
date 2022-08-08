@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    double factor = MediaQuery.of(context).size.height * 0.001;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Padding(
@@ -57,21 +57,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             "Create Invoice",
                             style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 27 * factor,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).primaryColor
                             ),
                           ),
+                          SizedBox(height: factor * 5),
                           FittedBox(
                             child: Text(_formatPreviousMonth(),
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 22 * factor,
                                 overflow: TextOverflow.fade,
                                 color: Theme.of(context).primaryColor
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: factor * 20),
                           RoundGradientButton(
                             onPressed: () => _createInvoice(context), 
                             text: "CREATE",
@@ -91,11 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            Divider(
-              color: Theme.of(context).primaryColor,
-              height: 50,
-              thickness: 2,
-            ),
+            SizedBox(height: 20,),
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               elevation: 10,
@@ -114,22 +111,23 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text("Top 5 Categories",
+                                  style: TextStyle(
+                                    fontSize: factor * 27,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).primaryColor
+                                  ),
+                                ),
+                                SizedBox(height: factor * 5),
                                 FittedBox(
                                   child: Text(
                                     _formatCurrentMonth(),
                                     overflow: TextOverflow.fade,
                                     softWrap: false,
                                     style: TextStyle(
-                                      fontSize: screenWidth * 0.06,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: factor * 22,
                                       color: Theme.of(context).primaryColor
                                     ),
-                                  ),
-                                ),
-                                Text("Top 5 Categories",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Theme.of(context).primaryColor
                                   ),
                                 ),
                               ],
@@ -175,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
               ),
-              ),
+            ),
           ],
         ),
       ),
@@ -183,7 +181,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> diagramRow(List<CategoryChartInfo> list, BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    double factor = MediaQuery.of(context).size.height * 0.001;
+    double width = MediaQuery.of(context).size.width;
     double maxAmount = list[0].amount;
     return list.map((category) {
       return Padding(
@@ -192,13 +191,13 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           SizedBox(
-            height: MediaQuery.of(context).size.width / 8,
-            width: MediaQuery.of(context).size.width / 8,
+            height: width / 8,
+            width: width / 8,
             child: CategoryIcon(
               iconData: category.categoryIconData
             ),
           ),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+          SizedBox(width: width * 0.03),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -208,7 +207,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   category.categoryName,
                   style: TextStyle(
                     inherit: true,
-                    fontSize:18,
+                    fontSize: factor * 20,
+                    color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold
                   ),
                 ),
@@ -226,9 +226,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ),
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width 
-                        *0.65 * category.amount / maxAmount, 
-                      height: screenWidth *0.65 * 0.1,
+                      width: width *0.65 * category.amount / maxAmount, 
+                      height: width *0.065,
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: Padding(
@@ -311,7 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await showDialog(
       context: context, 
       builder: (context) => ResponseDialog(
-        title: "No transactions for this month", 
+        description: "No transactions for this month", 
         response: Response.Error
       )
     );

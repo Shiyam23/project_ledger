@@ -124,7 +124,7 @@ class LoadingProgress extends ChangeNotifier{
   void initialize(int maxValue, [String? description]) {
     if (_maxValue != -1) throw StateError("Already Initialized");
     if (_finished) throw StateError("Loading progress already finished");
-    if (maxValue <= 1) throw ArgumentError.value(
+    if (maxValue < 1) throw ArgumentError.value(
       maxValue, 
       "maxValue", 
       "Must be greater than 1"

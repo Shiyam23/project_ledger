@@ -45,14 +45,16 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
     vsync: this,
   );
 
-  late final double width = MediaQuery.of(context).size.width;
-  late final double height = MediaQuery.of(context).size.height;
   static final Tween<Offset> _offset = Tween<Offset>(
-    begin: const Offset(0, 0.5),
+    begin: const Offset(0, 0.1),
     end: Offset.zero,
   );
   late final Animation<Offset> _offsetAnimation 
     = _offset.animate(_animationController);
+
+  static Size? buttonSize;
+  static double? dialogHeight;
+  static Size? okButtonSize;
 
   NewMoneyAmountController? amountController = NewMoneyAmountController.instance;
 
@@ -64,8 +66,11 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
   
   @override
   Widget build(BuildContext context) {
-    Size buttonSize = Size(this.width/4 - 5, this.height/12 - 5);
-    double height = MediaQuery.of(context).size.height / 3;
+    double width = MediaQuery.of(context).size.width;
+    double? height = MediaQuery.of(context).size.height;
+    buttonSize ??= Size(width/4 - 5, height/12 - 5);
+    dialogHeight ??= MediaQuery.of(context).size.height / 3;
+    okButtonSize ??= _getOKSize(buttonSize!, dialogHeight!);
     return SafeArea(
       bottom: true,
       left: false,
@@ -78,24 +83,24 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
             backgroundColor: Colors.white,
             fixedSize: buttonSize,
             elevation: 5,
-            textStyle: TextStyle(fontSize: height/8),
+            textStyle: TextStyle(fontSize: dialogHeight!/8),
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(10)
             )
           )
         ),
-        child: SlideTransition(
-          position: _offsetAnimation,
-          child: FadeTransition(
-            opacity: _animationController,
-            child: WillPopScope(
-              onWillPop: () {
-                closeKeyboard();
-                return Future.value(false);
-              },
+        child: WillPopScope(
+          onWillPop: () {
+            closeKeyboard();
+            return Future.value(false);
+          },
+          child: SlideTransition(
+            position: _offsetAnimation,
+            child: FadeTransition(
+              opacity: _animationController,
               child: Container(
                 color: Theme.of(context).primaryColor,
-                height: height,
+                height: dialogHeight,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -115,8 +120,8 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
                           onPressed: () => tapButton("7"),
                         ), 
                         SizedBox(
-                          width: buttonSize.width,
-                          height: buttonSize.height
+                          width: buttonSize!.width,
+                          height: buttonSize!.height
                         ), 
                       ]
                     ),
@@ -194,7 +199,7 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
                           ),
                           onPressed: closeKeyboard,
                           style: TextButton.styleFrom(
-                            fixedSize: _getOKSize(buttonSize, height),
+                            fixedSize: okButtonSize,
                             backgroundColor: Colors.white
                           ),
                         ), 

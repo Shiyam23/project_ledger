@@ -47,11 +47,12 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
 
   late final double width = MediaQuery.of(context).size.width;
   late final double height = MediaQuery.of(context).size.height;
-
-  late final Animation<Offset> _offsetAnimation = Tween<Offset>(
-    begin: const Offset(0, 1),
+  static final Tween<Offset> _offset = Tween<Offset>(
+    begin: const Offset(0, 0.5),
     end: Offset.zero,
-  ).animate(_animationController);
+  );
+  late final Animation<Offset> _offsetAnimation 
+    = _offset.animate(_animationController);
 
   NewMoneyAmountController? amountController = NewMoneyAmountController.instance;
 
@@ -85,121 +86,122 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
         ),
         child: SlideTransition(
           position: _offsetAnimation,
-          child: WillPopScope(
-            onWillPop: () {
-              closeKeyboard();
-              return Future.value(false);
-            },
-            child: Container(
-              color: Theme.of(context).primaryColor,
-              height: height,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        child: Text("1"),
-                        onPressed: () => tapButton("1"),
-                      ), 
-                      TextButton(
-                        child: Text("4"),
-                        onPressed: () => tapButton("4"),
-                      ), 
-                      TextButton(
-                        child: Text("7"),
-                        onPressed: () => tapButton("7"),
-                      ), 
-                      SizedBox(
-                        width: buttonSize.width,
-                        height: buttonSize.height
-                      ), 
-                    ]
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      TextButton(
-                        child: Text("2"),
-                        onPressed: () => tapButton("2")
-                      ), 
-                      TextButton(
-                        child: Text("5"),
-                        onPressed: () => tapButton("5")
-                      ), 
-                      TextButton(
-                        child: Text("8"),
-                        onPressed: () => tapButton("8")
-                      ), 
-                      TextButton(
-                        child: Text("0"),
-                        onPressed: () => tapButton("0")
-                      ), 
-                    ]
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        child: Text("3"),
-                        onPressed: () => tapButton("3")
-                      ), 
-                      TextButton(
-                        child: Text("6"),
-                        onPressed: () => tapButton("6")
-                      ), 
-                      TextButton(
-                        child: Text("9"),
-                        onPressed: () => tapButton("9")
-                      ), 
-                      TextButton(
-                        child: Text(amountController!.decimalSeparator!),
-                        onPressed: () => tapButton(amountController!.decimalSeparator!)
-                      ), 
-                    ]
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        child: Icon(Icons.backspace, color: Colors.white,),
-                        onPressed: () => tapButton("Backspace"),
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.red                        
-                        ),
-                      ), 
-                      TextButton(
-                        child: Text(
-                          "+ / -",
-                          style: TextStyle(
-                            inherit: true,
-                            color: Colors.black 
+          child: FadeTransition(
+            opacity: _animationController,
+            child: WillPopScope(
+              onWillPop: () {
+                closeKeyboard();
+                return Future.value(false);
+              },
+              child: Container(
+                color: Theme.of(context).primaryColor,
+                height: height,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                          child: Text("1"),
+                          onPressed: () => tapButton("1"),
+                        ), 
+                        TextButton(
+                          child: Text("4"),
+                          onPressed: () => tapButton("4"),
+                        ), 
+                        TextButton(
+                          child: Text("7"),
+                          onPressed: () => tapButton("7"),
+                        ), 
+                        SizedBox(
+                          width: buttonSize.width,
+                          height: buttonSize.height
+                        ), 
+                      ]
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        TextButton(
+                          child: const Text("2"),
+                          onPressed: () => tapButton("2")
+                        ), 
+                        TextButton(
+                          child: const Text("5"),
+                          onPressed: () => tapButton("5")
+                        ), 
+                        TextButton(
+                          child: const Text("8"),
+                          onPressed: () => tapButton("8")
+                        ), 
+                        TextButton(
+                          child: const Text("0"),
+                          onPressed: () => tapButton("0")
+                        ), 
+                      ]
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                          child: const Text("3"),
+                          onPressed: () => tapButton("3")
+                        ), 
+                        TextButton(
+                          child: const Text("6"),
+                          onPressed: () => tapButton("6")
+                        ), 
+                        TextButton(
+                          child: const Text("9"),
+                          onPressed: () => tapButton("9")
+                        ), 
+                        TextButton(
+                          child: Text(amountController!.decimalSeparator!),
+                          onPressed: () => tapButton(amountController!.decimalSeparator!)
+                        ), 
+                      ]
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                          child: Icon(Icons.backspace, color: Colors.white,),
+                          onPressed: () => tapButton("Backspace"),
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.red                        
+                          ),
+                        ), 
+                        TextButton(
+                          child: const Text(
+                            "+ / -",
+                            style: TextStyle(
+                              inherit: true,
+                            ),
+                          ),
+                          onPressed: () => tapButton("+ / -"),
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.white
                           ),
                         ),
-                        onPressed: () => tapButton("+ / -"),
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.white
-                        ),
-                      ),
-                      TextButton(
-                        child: Text(
-                          "OK",
-                          style: TextStyle(
-                            inherit: true,
-                            color: Colors.black 
+                        TextButton(
+                          child: const Text(
+                            "OK",
+                            style: TextStyle(
+                              inherit: true,
+                            ),
                           ),
-                        ),
-                        onPressed: closeKeyboard,
-                        style: TextButton.styleFrom(
-                          fixedSize: _getOKSize(buttonSize, height),
-                          backgroundColor: Colors.white
-                        ),
-                      ), 
-                    ]
-                  ),
-                ],
+                          onPressed: closeKeyboard,
+                          style: TextButton.styleFrom(
+                            fixedSize: _getOKSize(buttonSize, height),
+                            backgroundColor: Colors.white
+                          ),
+                        ), 
+                      ]
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

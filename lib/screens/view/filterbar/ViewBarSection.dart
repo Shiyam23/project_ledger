@@ -270,10 +270,14 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
           ),
           actions: <Widget>[
             SizedBox(width: _paddingWidth),
-            if (numberSelected == 1) ViewBarIcon(
-              width: _width,
-              icon: Icons.edit,
-              onTap: widget.onEdit,
+            AnimatedOpacity(
+              opacity: (numberSelected == 1 ? 1 : 0),
+              duration: const Duration(milliseconds: 150),
+              child: ViewBarIcon(
+                width: _width,
+                icon: Icons.edit,
+                onTap: widget.onEdit,
+              ),
             ),
             ViewBarIcon(
               width: _width,

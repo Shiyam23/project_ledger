@@ -24,28 +24,21 @@ class ResponseDialog extends StatelessWidget {
       ),
       content: Text(description),
       actions: [
-        TextButton(onPressed: Navigator.of(context).pop, child: Text("OK"))
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const Divider(
+              height: 2,
+              thickness: 2,
+            ),
+            TextButton(onPressed: Navigator.of(context).pop, child: Text("OK")),
+          ],
+        )
       ],
     );
   }
 
-  Widget _getImage(Response response) {
-    Image image;
-    switch (response) {
-      case Response.Error:
-        image = Image.asset("assets/icons/close.png");
-        break;
-      case Response.Success:
-        image = Image.asset("assets/icons/check.png");
-        break;
-    }
-    return Material(
-      elevation: 15,
-      borderRadius: BorderRadius.circular(70),
-      child: image
-    );
-      
-  }  
 }
 
 enum Response {

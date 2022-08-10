@@ -27,6 +27,7 @@ class TextInputDialog extends StatelessWidget {
     return SimpleDialog(
       contentPadding: const EdgeInsets.all(20),
       title: title,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       children: [
         SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,

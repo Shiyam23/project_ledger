@@ -66,21 +66,32 @@ class _LoadingDialogState extends State<LoadingDialog> with SingleTickerProvider
                 color: Color.fromRGBO(56, 100, 132, 1),
                 backgroundColor: Color.fromRGBO(56, 100, 132, 0.75),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (widget.loadingProgress.description != null) Text(widget.loadingProgress.description!),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   if (widget.loadingProgress.progress != null) Text(secondaryProgress),
                 ],
               ),
-              SizedBox(height: 10),
-              if (widget.loadingProgress.finished) okButton(context)
             ],
           );
         }
-      )
+      ),
+      actions: [
+        AnimatedBuilder(
+          animation: widget.loadingProgress,
+          builder: (context, child) {
+            if (widget.loadingProgress.finished) {
+              return okButton(context);
+            }
+            else {
+              return const SizedBox.square(dimension:0);
+            }
+          }
+        )
+      ],
     );
   }
 

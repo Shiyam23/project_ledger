@@ -258,7 +258,7 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
               ),
               SizedBox(width: 5),
               Text(
-                " " + numberSelected.toString(),
+                " " + (numberSelected == 0 ? 1 : numberSelected).toString(),
                 style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25

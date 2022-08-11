@@ -309,6 +309,8 @@ class _HomeScreenState extends State<HomeScreen> {
       (transactionBloc.state as TransactionLoaded).transactionList;
     
     if (transactions.isEmpty) {
+      loadingProgress.finish();
+      Navigator.pop(context);
       showTransactionsEmptyError(context);
       return;
     }

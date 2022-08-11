@@ -9,6 +9,7 @@ import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
+import '../ResponseDialog.dart';
 import '../TextInputDialog.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -145,9 +146,15 @@ class _CategoryPageState extends State<CategoryPage> {
         prefixIcon: const Icon(Icons.edit),
         )
     );
-    if (_categoryList.contains((account) => account.name == name)) {
-      // TODO: show proper error message
-      return;      
+    if (_categoryList.contains((category) => category.name == name)) {
+      showDialog(
+        context: context, 
+        builder: (_) => ResponseDialog(
+          description: "A category with an identical name already exists.", 
+          response: Response.Error
+        )
+      );
+      return;       
     }
     if (name != null) {
       iconName = await showIconSheet(context, false);

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/IconSelectionSheet.dart';
+import 'package:project_ez_finance/components/ResponseDialog.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import 'package:project_ez_finance/models/Account.dart';
@@ -178,7 +179,14 @@ class _AccountPageState extends State<AccountPage> {
   void deleteAccount(BuildContext context, Account account) async {
     Navigator.of(context).pop();
     if (account.selected) {
-      // TODO: show proper error message
+      showDialog(
+        context: context, 
+        builder: (_) => ResponseDialog(
+          description: "A selected account can not be deleted. Please select " + 
+            "another account before deleting this.", 
+          response: Response.Error
+        )
+      );
       return;
     }
     bool? sureToDelete = await showDialog<bool>(
@@ -271,7 +279,13 @@ class _AccountPageState extends State<AccountPage> {
         )
     );
     if (_accountList.any((account) => account.name == name)) {
-      // TODO: show proper error message
+      showDialog(
+        context: context, 
+        builder: (_) => ResponseDialog(
+          description: "An account with an identical name already exists.", 
+          response: Response.Error
+        )
+      );
       return;      
     }
     if (name != null) {

@@ -6,6 +6,8 @@ import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
+import '../../components/ResponseDialog.dart';
+
 class NewTemplateScreen extends StatefulWidget {
 
   final Future<void> Function(int) setPage;
@@ -131,8 +133,14 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
           if (_templates.isEmpty) setState(() {
           });
         } else {
-          print("Error occurred while deleting Template");
-          //TODO: show proper error message
+          showDialog(
+            context: context, 
+            builder: (_) => ResponseDialog(
+              description: "Problem occured while deleting this template. "+
+              "Please try again!", 
+              response: Response.Error
+            )
+          );
         }
       }
     }

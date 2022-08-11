@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:project_ez_finance/components/ResponseDialog.dart';
 import 'package:project_ez_finance/models/Repetition.dart';
 
 import '../NewTextField.dart';
@@ -192,7 +193,12 @@ class NewRepetitionDialog {
   }
 
   void showError(context) {
-    //TODO: show proper error message
-    return print("Error");
+    showDialog(
+      context: context, 
+      builder: (_) => ResponseDialog(
+        description: "Please select an account", 
+        response: Response.Error
+      )
+    );
   }
 }

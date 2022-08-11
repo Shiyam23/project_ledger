@@ -23,6 +23,9 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true, 
       actions: [
         PopupMenuButton<String>(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
           onSelected: (choice) =>  choiceAction(choice, context),
           itemBuilder: (BuildContext context) {
             return PopUpMenuButtonChoices.choices.map((String choice) {
@@ -76,15 +79,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         )
       );
       //createBackup();
-    }
-    if (choice == PopUpMenuButtonChoices.Setting) {
-      print('This Einstellung Page is to do.');
-    }
-    if (choice == PopUpMenuButtonChoices.RateUs) {
-      print('This BewerteUns? Page is to do.');
-    }
-    if (choice == PopUpMenuButtonChoices.AboutUs) {
-      print('This Über Page is to do.');
     }
   }
 
@@ -146,16 +140,10 @@ class PopUpMenuButtonChoices {
   static const String Accounts = 'Konten';
   static const String Categories = 'Kategorien';
   static const String Backup = 'Backup';
-  static const String Setting = 'Einstellungen';
-  static const String RateUs = 'Bewerte Uns?';
-  static const String AboutUs = 'Über';
 
   static const List<String> choices = <String>[
     Accounts,
     Categories,
     Backup,
-    Setting,
-    RateUs,
-    AboutUs
   ];
 }

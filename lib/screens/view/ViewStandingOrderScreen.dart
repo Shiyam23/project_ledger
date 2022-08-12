@@ -81,9 +81,9 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
                 Text("Name:"),
                 Text("Starting date:"),
                 Text("Next due date:"),
+                Text("End date:"),
                 Text("Total transactions:"),
                 Text("Total amount:"),
-
               ],
             ),
             SizedBox(width: MediaQuery.of(context).size.width / 20),
@@ -94,6 +94,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
                 Text(standingOrder.initialTransaction.name),
                 Text(standingOrder.initialTransaction.date.format()),
                 Text(standingOrder.nextDueDate.format()),
+                Text(standingOrder.initialTransaction.repetition.endDate!.format()),
                 Text(standingOrder.totalTransactions.toString()),
                 Text(_formatAmount(standingOrder.totalAmount)),
               ],
@@ -121,6 +122,15 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
         right: false,
         child: Wrap(
           children: [
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              title: const Text("Show details"),
+              leading: const Icon(Icons.info),
+              onTap: () {
+                Navigator.pop(context);
+                showStandingOrderDetails(context, standingOrder);
+              }
+            ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
               title: const Text("Delete standing order"),

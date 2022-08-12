@@ -66,6 +66,9 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
     showDialog(
       context: context, 
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
         title: Text("Details"),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -103,6 +103,10 @@ class NewMoneyAmountController extends TextEditingController {
       }
       else if (baseOffset < separatorIndex + 1) {
         this.text = currentText.substring(0, baseOffset - 1) + currentText.substring(baseOffset);
+        if (currentText[baseOffset] == thousandSeparator && baseOffset == 1) {
+          this.selection = TextSelection(baseOffset: baseOffset, extentOffset: baseOffset);
+          return;
+        }
       }
       this.selection = TextSelection(baseOffset: baseOffset - 1, extentOffset: baseOffset - 1);
       return;
@@ -114,7 +118,7 @@ class NewMoneyAmountController extends TextEditingController {
 
       if (currentText.length > 14) return;
 
-      if (currentText.characters.toList()[baseOffset] == decimalSeparator) {
+      if (currentText[baseOffset] == decimalSeparator) {
           if (currentText.startsWith("0") && baseOffset == 1) {
             this.text = key + currentText.substring(1);
             this.selection = TextSelection(baseOffset: baseOffset, extentOffset: baseOffset);
@@ -123,6 +127,11 @@ class NewMoneyAmountController extends TextEditingController {
           else {
             this.text = currentText.substring(0, baseOffset) + key + this.text.substring(baseOffset);
           }
+      }
+      else if (currentText[baseOffset] == thousandSeparator) {
+        this.text = currentText.replaceRange(baseOffset + 1, baseOffset + 2, key);
+        this.selection = TextSelection(baseOffset: baseOffset + 2, extentOffset: baseOffset + 2);
+        return;
       }
       else {
         this.text = currentText.replaceRange(baseOffset, baseOffset + 1, key);

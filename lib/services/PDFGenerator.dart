@@ -10,18 +10,21 @@ import 'package:project_ez_finance/models/currencies.dart';
 import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 import 'package:printing/printing.dart';
 import '../../models/Transaction.dart';
+import '../services/DateTimeFormatter.dart';
 
 class Invoice {
   Invoice({
     required this.transactions,
     required Color color
-  }) : color = PdfColor.fromInt(color.value);
+  }) : 
+  color = PdfColor.fromInt(color.value),
+  lightColor = PdfColor.fromInt(0xFF577691);
 
   final List<Transaction> transactions;
   final PdfColor color;
+  final PdfColor lightColor;
 
   static const _darkColor = PdfColors.blueGrey800;
-
 
   double get _totalExpenses => transactions
     .where((t) => t.isExpense)
@@ -41,32 +44,37 @@ class Invoice {
 
   late final pw.Font pacifico;
   late final pw.Font fontawesome;
+  late final PdfPageFormat pageFormat;
 
   Future<Uint8List> _buildPdf() async {
     // Create a PDF document.
     final doc = pw.Document();
 
-    //_logo = await rootBundle.loadString('assets/logo.svg');
-    //_bgShape = await rootBundle.loadString('assets/invoice.svg');
-    
     pacifico = await PdfGoogleFonts.pacificoRegular();
     final Uint8List fontData = (await rootBundle.load("assets/fa-solid-900.ttf")).buffer.asUint8List() ;
     fontawesome = pw.Font.ttf(fontData.buffer.asByteData());
+    final double cm = PdfPageFormat.cm;
+    pageFormat = PdfPageFormat(
+      21.0 * cm, 29.7 * cm, 
+      marginTop: 0,
+      marginBottom: 1 * cm,
+      marginLeft: 0,
+      marginRight: 0,
+    );
 
     // Add page to the PDF
     doc.addPage(
       pw.MultiPage(
         pageTheme: _buildTheme(
-          PdfPageFormat.a4,
+          pageFormat,
           await PdfGoogleFonts.robotoRegular(),
           await PdfGoogleFonts.robotoBold(),
           await PdfGoogleFonts.robotoItalic(),
         ),
         header: _buildHeader,
         footer: _buildFooter,
-        crossAxisAlignment: pw.CrossAxisAlignment.end,
+        crossAxisAlignment: pw.CrossAxisAlignment.center,
         build: (context) => [
-          _contentHeader(context),
           _contentTable(context),
           pw.SizedBox(height: 20),
           _contentFooter(context),
@@ -81,29 +89,41 @@ class Invoice {
   pw.Widget _buildHeader(pw.Context context) {
     return pw.Column(
       children: [
-        pw.Row(
-          crossAxisAlignment: pw.CrossAxisAlignment.center,
-          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-          children: [
-            pw.Container(
-              width: 60,
-              height: 60,
-              alignment: pw.Alignment.center,
-              decoration: pw.BoxDecoration(
-                    color: color,
-                    shape: pw.BoxShape.circle,
-              ),
+        pw.CustomPaint(
+          painter: _topPainter,
+          size: PdfPoint(pageFormat.width, 6 * PdfPageFormat.cm),
+          child: pw.SizedBox(
+            width: pageFormat.width,
+            height: 6 * PdfPageFormat.cm,
+            child: pw.Transform.translate(
+              offset: PdfPoint(1.5 * PdfPageFormat.cm, - 1 * PdfPageFormat.cm),
               child: pw.Text(
-                'D',
+                'Dollavu',
                 tightBounds: true,
                 style: pw.TextStyle(
                   color: PdfColors.white,
                   font: pacifico,
-                  fontSize: 40,
+                  fontSize: 50,
                 )
               )
-            ),
-            pw.Text(
+            )
+          )
+        ),
+        _getTitle(context),
+        pw.SizedBox(height: 1 * PdfPageFormat.cm)
+      ],
+    );
+  }
+
+  pw.Widget _getTitle(pw.Context context) {
+    pw.Widget sideInformation = _getSideInformation(context);
+    if (context.pageNumber == 1) {
+      return pw.Stack(
+        children: [
+          pw.Align(
+            heightFactor: 1.2,
+            alignment: pw.Alignment.center,
+            child: pw.Text(
               'INVOICE',
               tightBounds: true,
               style: pw.TextStyle(
@@ -111,33 +131,47 @@ class Invoice {
                 fontWeight: pw.FontWeight.bold,
                 fontSize: 40,
               )
-            ),
-            pw.Text(
-              'Page: ${context.pageNumber.toString()}/${context.pagesCount.toString()}',
-              tightBounds: true,
-              style: pw.TextStyle(
-                color: color,
-                fontSize: 20,
-              )
-            ),
-          ],
-        ),
-        pw.SizedBox(height: 40)
-      ],
-    );
+            )
+          ),
+          pw.Positioned(
+            right: 2 * PdfPageFormat.cm,
+            child: sideInformation
+          )
+        ]
+      );
+    } else {
+      return pw.Container(
+        alignment: pw.Alignment.centerRight,
+        margin: pw.EdgeInsets.only(right: 2 * PdfPageFormat.cm),
+        child: sideInformation
+      );
+    }
   }
 
   pw.Widget _buildFooter(pw.Context context) {
-    return pw.Expanded(
-      child: pw.Row(
-        mainAxisAlignment: pw.MainAxisAlignment.end,
-        children: [
-          pw.Text(
-            "Generated by Dollavu", 
-            textAlign: pw.TextAlign.right,
-          )
-        ]
-    )
+    return pw.Padding(
+      padding: pw.EdgeInsets.only(right: 2 * PdfPageFormat.cm),
+      child: pw.Expanded(
+        child: pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.end,
+          children: [
+            pw.RichText(
+              text: pw.TextSpan(
+                text: "Generated by ",
+                children: [
+                  pw.TextSpan(
+                    text: "Dollavu",
+                    style: pw.TextStyle(
+                      font: pacifico
+                    )
+                  )
+                ]
+              ),
+              textAlign: pw.TextAlign.right,
+            ),
+          ]
+        )
+      )
     );
   }
 
@@ -153,64 +187,58 @@ class Invoice {
     );
   }
 
-  pw.Widget _contentHeader(pw.Context context) {
-    return pw.Row(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-
-      ],
-    );
-  }
-
   pw.Widget _contentFooter(pw.Context context) {
-    return pw.Row(
-      crossAxisAlignment: pw.CrossAxisAlignment.end,
-      children: [
-        pw.Expanded(
-          flex: 1,
-          child: pw.DefaultTextStyle(
-            style: const pw.TextStyle(
-              fontSize: 10,
-              color: _darkColor,
-            ),
-            child: pw.Column(
-              crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: [
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text('Total Income:'),
-                    pw.Text(_formatCurrency(_totalIncomes)),
-                  ],
-                ),
-                pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Text('Total Expense:'),
-                    pw.Text(_formatCurrency(_totalExpenses)),
-                  ],
-                ),
-                pw.SizedBox(height: 5),
-                pw.Divider(color: color),
-                pw.DefaultTextStyle(
-                  style: pw.TextStyle(
-                    color: color,
-                    fontSize: 14,
-                    fontWeight: pw.FontWeight.bold,
-                  ),
-                  child: pw.Row(
+    return pw.SizedBox(
+      width: pageFormat.width - PdfPageFormat.cm * 4,
+      child: pw.Row(
+        crossAxisAlignment: pw.CrossAxisAlignment.end,
+        children: [
+          pw.Expanded(
+            flex: 1,
+            child: pw.DefaultTextStyle(
+              style: const pw.TextStyle(
+                fontSize: 10,
+                color: _darkColor,
+              ),
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Text('Total:'),
-                      pw.Text(_formatCurrency(_grandTotal)),
+                      pw.Text('Total Income:'),
+                      pw.Text(_formatCurrency(_totalIncomes)),
                     ],
                   ),
-                ),
-              ],
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text('Total Expense:'),
+                      pw.Text(_formatCurrency(_totalExpenses)),
+                    ],
+                  ),
+                  pw.SizedBox(height: 5),
+                  pw.Divider(color: color),
+                  pw.DefaultTextStyle(
+                    style: pw.TextStyle(
+                      color: color,
+                      fontSize: 14,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                    child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Text('Total:'),
+                        pw.Text(_formatCurrency(_grandTotal)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      )
     );
   }
 
@@ -223,111 +251,117 @@ class Invoice {
       'Amount'
     ];
 
-    return pw.Table(
-      border: null,
-      children: [
-        pw.TableRow(
-          repeat: true,
-          decoration: pw.BoxDecoration(
-            color: color
-          ),
-          children: tableHeaders.map((e) => 
-            pw.Padding(
-              padding: pw.EdgeInsets.all(5),
-              child: pw.Text(
-                e, 
-                style: pw.TextStyle(
-                  color: PdfColors.white
-                )
-              )
-            )
-          ).toList()
-        ),
-        ...transactions.map((t) {
-          pw.EdgeInsets padding = pw.EdgeInsets.symmetric(vertical: 15, horizontal: 5);
-          pw.Icon categoryIcon = pw.Icon(
-            pw.IconData(t.category.icon!.iconData.icon!.codePoint),
-            font: fontawesome,
-            color: PdfColors.white,
-            size: 10
-          );
-          int categoryBackgroundColor = t.category.icon!.iconData.backgroundColorInt ?? color.toInt();
-          pw.Icon accountIcon = pw.Icon(
-            pw.IconData(t.account.icon.iconData.icon!.codePoint),
-            font: fontawesome,
-            color: PdfColors.white,
-            size: 10
-          );
-          int accountBackgroundColor = t.account.icon.iconData.backgroundColorInt ?? color.toInt();
-          return pw.TableRow(
-            verticalAlignment: pw.TableCellVerticalAlignment.middle,
+    return pw.SizedBox(
+      width: pageFormat.width - 4 * PdfPageFormat.cm,
+      child: pw.Table(
+        border: null,
+        children: [
+          pw.TableRow(
+            repeat: true,
             decoration: pw.BoxDecoration(
-              border: pw.Border(
-                bottom: pw.BorderSide()
-              )
+              color: color
             ),
-            children: [
+            children: tableHeaders.map((e) => 
               pw.Padding(
-                padding: padding,
-                child: pw.Text(t.name)
-              ),
-              pw.Padding(
-                padding: padding,
-                child: pw.Text(t.date.format()),
-              ),
-              pw.Padding(
-                padding: padding,
-                child: pw.Row(
-                  children: [
-                    pw.Container(
-                      padding: pw.EdgeInsets.zero,
-                      height: 20,
-                      width: 20,
-                      alignment: pw.Alignment.center,
-                      decoration: pw.BoxDecoration(
-                        shape: pw.BoxShape.circle,
-                        color: PdfColor.fromInt(categoryBackgroundColor)
-                      ),
-                      child: categoryIcon
-                    ),
-                    pw.SizedBox(width: 10),
-                    pw.Text(t.category.name!)
-                  ],
-                )
-              ),
-              pw.Padding(
-                padding: padding,
-                child: pw.Row(
-                  children: [
-                    pw.Container(
-                      padding: pw.EdgeInsets.zero,
-                      height: 20,
-                      width: 20,
-                      alignment: pw.Alignment.center,
-                      decoration: pw.BoxDecoration(
-                        shape: pw.BoxShape.circle,
-                        color: PdfColor.fromInt(accountBackgroundColor)
-                      ),
-                      child: accountIcon
-                    ),
-                    pw.SizedBox(width: 10),
-                    pw.Text(t.account.name)
-                  ],
-                )
-              ),
-              pw.Padding(
-                padding: padding,
-                child: pw.Expanded(
-                  child: pw.Text(
-                    _formatCurrency(t.amount, t.isExpense),
-                    textAlign: pw.TextAlign.right
+                padding: pw.EdgeInsets.all(5),
+                child: pw.Text(
+                  e,
+                  textAlign: e == 'Amount' ? pw.TextAlign.right : pw.TextAlign.left,
+                  style: pw.TextStyle(
+                    color: PdfColors.white,
                   )
                 )
+              )
+            ).toList()
+          ),
+          ...transactions.map((t) {
+            pw.EdgeInsets padding = pw.EdgeInsets.symmetric(vertical: 15, horizontal: 5);
+            pw.Icon categoryIcon = pw.Icon(
+              pw.IconData(t.category.icon!.iconData.icon!.codePoint),
+              font: fontawesome,
+              color: PdfColors.white,
+              size: 10
+            );
+            int categoryBackgroundColor = t.category.icon!.iconData.backgroundColorInt ?? color.toInt();
+            pw.Icon accountIcon = pw.Icon(
+              pw.IconData(t.account.icon.iconData.icon!.codePoint),
+              font: fontawesome,
+              color: PdfColors.white,
+              size: 10
+            );
+            int accountBackgroundColor = t.account.icon.iconData.backgroundColorInt ?? color.toInt();
+            return pw.TableRow(
+              verticalAlignment: pw.TableCellVerticalAlignment.middle,
+              decoration: pw.BoxDecoration(
+                border: pw.Border(
+                  bottom: pw.BorderSide(
+                    color: lightColor
+                  ),
+                )
               ),
-            ]
-          );
-        }).toList()
-      ]
+              children: [
+                pw.Padding(
+                  padding: padding,
+                  child: pw.Text(t.name)
+                ),
+                pw.Padding(
+                  padding: padding,
+                  child: pw.Text(t.date.format()),
+                ),
+                pw.Padding(
+                  padding: padding,
+                  child: pw.Row(
+                    children: [
+                      pw.Container(
+                        padding: pw.EdgeInsets.zero,
+                        height: 20,
+                        width: 20,
+                        alignment: pw.Alignment.center,
+                        decoration: pw.BoxDecoration(
+                          shape: pw.BoxShape.circle,
+                          color: PdfColor.fromInt(categoryBackgroundColor)
+                        ),
+                        child: categoryIcon
+                      ),
+                      pw.SizedBox(width: 10),
+                      pw.Text(t.category.name!)
+                    ],
+                  )
+                ),
+                pw.Padding(
+                  padding: padding,
+                  child: pw.Row(
+                    children: [
+                      pw.Container(
+                        padding: pw.EdgeInsets.zero,
+                        height: 20,
+                        width: 20,
+                        alignment: pw.Alignment.center,
+                        decoration: pw.BoxDecoration(
+                          shape: pw.BoxShape.circle,
+                          color: PdfColor.fromInt(accountBackgroundColor)
+                        ),
+                        child: accountIcon
+                      ),
+                      pw.SizedBox(width: 10),
+                      pw.Text(t.account.name)
+                    ],
+                  )
+                ),
+                pw.Padding(
+                  padding: padding,
+                  child: pw.Expanded(
+                    child: pw.Text(
+                      _formatCurrency(t.amount, t.isExpense),
+                      textAlign: pw.TextAlign.right
+                    )
+                  )
+                ),
+              ]
+            );
+          }).toList()
+        ]
+      )
     );
   }
 
@@ -341,6 +375,51 @@ class Invoice {
       final file = File("${temp.path}/example.pdf");
       await file.writeAsBytes(await this._buildPdf());
       OpenFile.open('${temp.path}/example.pdf');
+  }
+
+  _topPainter(PdfGraphics canvas, PdfPoint size) {
+    canvas
+      ..saveContext()
+      ..setFillColor(color)
+      ..moveTo(0, size.y / 2)
+      ..curveTo(size.x / 5, size.y * 0, size.x/2, size.y * 0.75, size.x, size.y/2)
+      ..lineTo(size.x, size.y)
+      ..lineTo(0, size.y)
+      ..closePath()
+      ..fillPath()
+      ..restoreContext();
+  }
+
+  pw.Widget _getSideInformation(pw.Context context) {
+    return pw.DefaultTextStyle(
+      style: pw.TextStyle(
+        color: color,
+        fontSize: 15,
+      ),
+      child: pw.Table(
+        tableWidth: pw.TableWidth.min,
+        border: null,
+        children: [
+          pw.TableRow(
+            children: [
+              pw.Text('Date: ', textAlign: pw.TextAlign.right),
+              pw.SizedBox(width: 10),
+              pw.Text(DateTime.now().format(), textAlign: pw.TextAlign.right)
+            ]
+          ),
+          pw.TableRow(
+            children: [
+              pw.Text('Page: ', textAlign: pw.TextAlign.right),
+              pw.SizedBox(width: 10),
+              pw.Text(
+                '${context.pageNumber.toString()}/${context.pagesCount.toString()}',
+                textAlign: pw.TextAlign.right
+              )
+            ]
+          )
+        ]
+      )
+    );
   }
 }
 

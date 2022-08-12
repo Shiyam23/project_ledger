@@ -156,8 +156,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           List<CategoryChartInfo> chartList = 
                             snapshot.data as List<CategoryChartInfo>;
                           if (chartList.isEmpty) {
-                            return Center(
-                              child: Text("No transactions yet ..."),
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: MediaQuery.of(context).size.height * 0.12,
+                                    child: Image.asset("assets/icons/box2.png")
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text("No transactions yet ..."),
+                                ],
+                              ),
                             );
                           }
                           return ListView(

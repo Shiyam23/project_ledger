@@ -397,12 +397,16 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   Future<bool> _checkForSingleItem() async{
     if (_selectedTransactions.length != 1) {
       await showDialog(context: context, builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
         title: Text("Error"),
         content: Text("You can only edit one transaction at a time."),
         actions: [
+          const Divider(height: 2, thickness: 2),
           TextButton(
             onPressed: () => Navigator.of(context).pop(), 
-            child: Text("Got it!")
+            child: Text("OK")
           )
         ],
       ));

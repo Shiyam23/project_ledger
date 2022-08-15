@@ -68,7 +68,7 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double? height = MediaQuery.of(context).size.height;
-    buttonSize ??= Size(width/4 - 5, height/12 - 5);
+    buttonSize ??= Size(width/4 - (height / 300), height/12 - (height / 200));
     dialogHeight ??= MediaQuery.of(context).size.height / 3;
     okButtonSize ??= _getOKSize(buttonSize!, dialogHeight!);
     return SafeArea(
@@ -83,6 +83,7 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
             backgroundColor: Colors.white,
             fixedSize: buttonSize,
             elevation: 5,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             textStyle: TextStyle(fontSize: dialogHeight!/8),
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.circular(10)
@@ -110,7 +111,7 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
                         TextButton(
                           child: Text("1"),
                           onPressed: () => tapButton("1"),
-                        ), 
+                        ),
                         TextButton(
                           child: Text("4"),
                           onPressed: () => tapButton("4"),

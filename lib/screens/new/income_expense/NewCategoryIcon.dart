@@ -62,8 +62,8 @@ Widget build(BuildContext context) {
       children: <Widget>[
         _selectedCategory != null ?
           Container(
-            width: MediaQuery.of(context).size.height/15,
-            height: MediaQuery.of(context).size.height/15,
+            height: MediaQuery.of(context).size.width/6,
+            width: MediaQuery.of(context).size.width/6,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -78,13 +78,13 @@ Widget build(BuildContext context) {
               borderRadius: BorderRadius.circular(50)
             ),
             child: CategoryIcon(
-              size: MediaQuery.of(context).size.width*0.055,
+              size: MediaQuery.of(context).size.width / 14,
               onTap: onTap,
               iconData: _selectedCategory!.icon!.iconData),
           )
         : Container(
-            height: MediaQuery.of(context).size.height/15,
-            width: MediaQuery.of(context).size.height/15,
+            height: MediaQuery.of(context).size.width/6,
+            width: MediaQuery.of(context).size.width/6,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -105,7 +105,7 @@ Widget build(BuildContext context) {
               child: Transform.scale(
                 scale: 1,
                 child: CategoryIcon(
-                  size: MediaQuery.of(context).size.width*0.045,
+                  size: MediaQuery.of(context).size.width / 17,
                   onTap: onTap,
                   iconData: CategoryIconData(
                     backgroundColorInt: Colors.transparent.value,

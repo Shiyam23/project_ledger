@@ -125,19 +125,24 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
                 decimal: true,
                 signed: false
               ),
-              
               decoration: InputDecoration(
                 border: InputBorder.none,
                 isCollapsed: true,
                 suffixStyle: TextStyle(
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * fontSizeFactor
+                  fontSize: 
+                    MediaQuery.of(context).size.height 
+                    * fontSizeFactor * 0.49
+                    * MediaQuery.of(context).textScaleFactor
                 ),
                 suffixText: getSuffix(),
                 prefixText: getPrefix(),
                 prefixStyle: TextStyle(
                   color: Colors.white,
-                  fontSize: MediaQuery.of(context).size.width * fontSizeFactor
+                  fontSize: 
+                    MediaQuery.of(context).size.height 
+                    * fontSizeFactor * 0.49
+                    * MediaQuery.of(context).textScaleFactor
                 ),
               ),
               cursorColor: Colors.white,
@@ -145,7 +150,11 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
-                fontSize: MediaQuery.of(context).size.width * fontSizeFactor,
+                fontSize: 
+                  MediaQuery.of(context).size.height 
+                  * fontSizeFactor * 0.49
+                  * MediaQuery.of(context).textScaleFactor
+                  ,
               ),
             ),
           ),

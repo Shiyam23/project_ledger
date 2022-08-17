@@ -63,6 +63,7 @@ import 'package:project_ez_finance/services/HiveDatabase.dart';
       (category) => Column(
         children: [
           CategoryIcon(
+            size: MediaQuery.of(context).size.width / 15,
             iconData: category.icon!.iconData,
             onTap: () => Navigator.pop<Category>(context, category)
           ,),

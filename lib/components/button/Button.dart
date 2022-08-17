@@ -30,19 +30,16 @@ class RoundGradientButton extends StatelessWidget {
       ),
       child: TextButton(
         style: TextButton.styleFrom(
-          //minimumSize: Size(150,40),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
+          padding: EdgeInsets.zero
         ),
-        onPressed: onPressed, 
+        onPressed: onPressed,
         child: Text(
           text,
           style: TextStyle(
             color: Colors.white,
             fontFamily: "Roboto",
             fontStyle: FontStyle.normal,
-            fontSize: width * 0.035
+            fontSize: width * widthRatio * 0.1
           ),
           textAlign: TextAlign.center,
         )
@@ -78,7 +75,7 @@ class RoundButton extends StatelessWidget {
       ),
       child: TextButton(
         style: TextButton.styleFrom(
-          //minimumSize: Size(150,40),
+          padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50),
           ),
@@ -90,7 +87,7 @@ class RoundButton extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             fontFamily: "Roboto",
             fontStyle: FontStyle.normal,
-            fontSize: screenWidth * 0.035
+            fontSize: screenWidth * widthRatio * 0.08
           ),
           textAlign: TextAlign.center,
         )

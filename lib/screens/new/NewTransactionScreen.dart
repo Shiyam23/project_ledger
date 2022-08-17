@@ -52,63 +52,61 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
-      children: <Widget>[
-        NewMoneyAmount(
-          setController: setAmountController,
-        ),
-        Transform.translate(
-          offset: Offset(0,-30),
-          child: Transform.scale(
-            scale: 1.25,
+    return  SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          NewMoneyAmount(
+            setController: setAmountController,
+          ),
+          Transform.translate(
+            offset: Offset(0,- MediaQuery.of(context).size.width/12,),
             child: NewCategoryIcon(
               onSelect: (category) => setCategory(context, category)
             ),
           ),
-        ),
-        Container(
-          child: NewTitleTextField(
-            setTitleController: (controller) => _titleController = controller,
-          )
-        ),
-        SizedBox(height: MediaQuery.of(context).size.height/40),
-        Container(
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width * 0.85,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              NewDateField(
-                onTap: () => selectDate(context)
-              ),
-              const Spacer(),
-              FutureBuilder(
-                future: futureAllAccounts,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    refreshAccounts(context, snapshot.data as List<Account>);
-                  } 
-                  return NewAccountField(
-                    onTap: () => selectAccount(context),
-                  );
-                },
-              ),
-            ],
+          Container(
+            child: NewTitleTextField(
+              setTitleController: (controller) => _titleController = controller,
+            )
           ),
-        ),
-        SizedBox(height: MediaQuery.of(context).size.height/40),
-        NewRepetitionField(
-          onTap: () => selectRepetition(context)
-        ),
-        SizedBox(height: MediaQuery.of(context).size.height/40),
-        NewSaveAsTemplate(
-          (bool checked) => _templateChecked = checked, 
-          _templateChecked),
-        NewBottonButtons(
-          onSave: () => saveTransaction(context), 
-          onReset: () => resetInput(context)),
-        Spacer(flex: 1)
-      ],
+          SizedBox(height: MediaQuery.of(context).size.height/40),
+          Container(
+            alignment: Alignment.center,
+            width: MediaQuery.of(context).size.width * 0.85,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                NewDateField(
+                  onTap: () => selectDate(context)
+                ),
+                const Spacer(),
+                FutureBuilder(
+                  future: futureAllAccounts,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      refreshAccounts(context, snapshot.data as List<Account>);
+                    } 
+                    return NewAccountField(
+                      onTap: () => selectAccount(context),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height/40),
+          NewRepetitionField(
+            onTap: () => selectRepetition(context)
+          ),
+          SizedBox(height: MediaQuery.of(context).size.height/40),
+          NewSaveAsTemplate(
+            (bool checked) => _templateChecked = checked, 
+            _templateChecked),
+          NewBottonButtons(
+            onSave: () => saveTransaction(context), 
+            onReset: () => resetInput(context)),
+        ],
+      ),
     );
   }
 

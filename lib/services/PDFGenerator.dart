@@ -370,11 +370,12 @@ class Invoice {
   return (isExpense ? "- " : "+ ") + formatCurrency(currencyCode, amount.abs());
   }
 
-  void openInvoice() async {
+  Future<void> openInvoice() async {
     Directory temp = await getTemporaryDirectory();
-      final file = File("${temp.path}/example.pdf");
-      await file.writeAsBytes(await this._buildPdf());
-      OpenFile.open('${temp.path}/example.pdf');
+    final file = File("${temp.path}/example.pdf");
+    Uint8List pdfData = await this._buildPdf();
+    await file.writeAsBytes(pdfData);
+    OpenFile.open('${temp.path}/example.pdf');
   }
 
   _topPainter(PdfGraphics canvas, PdfPoint size) {

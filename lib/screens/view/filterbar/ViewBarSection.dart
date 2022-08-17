@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/components/LoadingDialog.dart';
+import 'package:project_ez_finance/components/ResponseDialog.dart';
 import 'package:project_ez_finance/components/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:project_ez_finance/services/AdmobHelper.dart';
@@ -161,7 +163,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               tooltip: "Generate PDF",
               width: _width,
               icon: FontAwesomeIcons.filePdf,
-              onTap: _generatePDF,
+              onTap: _loadRewardedAd,
             ),
             SizedBox(width: _paddingWidth),
           ],
@@ -186,31 +188,66 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
             },
+            onAdWillDismissFullScreenContent: (ad) {
+              _generatePDF();
+            },
             onAdFailedToShowFullScreenContent: (ad, error) {
               ad.dispose();
-            },
+              _generatePDF();
+            }
           );
           _interstitialAd = ad;
         }, 
-        onAdFailedToLoad: (ad) => print("Failed"),
+        onAdFailedToLoad: (error) => _generatePDF(),
       )
     );
+    _interstitialAd?.show();
   }
 
   void _generatePDF() async {
-    //_showRewardedAd();
+    final LoadingProgress loadingProgress = LoadingProgress();
+    showDialog(
+      context: context, 
+      builder: (context) => LoadingDialog(
+        loadingProgress: loadingProgress, 
+        title: "Generating PDF",
+      ),
+      barrierDismissible: false
+    );
     TransactionState state = BlocProvider.of<TransactionBloc>(context).state;
     if (state is TransactionLoaded) {
-      Invoice invoice = Invoice(
+      if (state.transactionList.isNotEmpty) {
+        Invoice invoice = Invoice(
         transactions: state.transactionList, 
         color: Theme.of(context).primaryColor,
-      );
-      invoice.openInvoice();
+        );
+        await invoice.openInvoice();
+        loadingProgress.initialize(1);
+        loadingProgress.forward();
+        loadingProgress.finish();
+      }
+      else {
+        Navigator.of(context).pop();
+        showDialog(
+          context: context, 
+          builder: (context) => ResponseDialog(
+            description: "List of transactions is empty!", 
+            response: Response.Error
+          )
+        );
+      }
+      
     }
-  }
-
-  void _showRewardedAd() async {
-    _interstitialAd?.show();
+    else {
+      Navigator.of(context).pop();
+      showDialog(
+        context: context, 
+        builder: (context) => ResponseDialog(
+          description: "Something went wrong. Please try again!", 
+          response: Response.Error
+        )
+      );
+    }
   }
 }
 

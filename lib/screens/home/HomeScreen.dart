@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
@@ -296,7 +297,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       barrierDismissible: false
     );
-    loadingProgress.initialize(1, "Obtaining transactions");
     final TransactionBloc transactionBloc = 
       BlocProvider.of<TransactionBloc>(context);
     final TransactionRequest request = TransactionRequest(
@@ -324,13 +324,12 @@ class _HomeScreenState extends State<HomeScreen> {
       showTransactionsEmptyError(context);
       return;
     }
-    loadingProgress.reset();
-    loadingProgress.initialize(1, "Generating PDF");
     final Invoice invoice = Invoice(
       transactions: transactions,
       color: Theme.of(context).primaryColor 
     );
-    invoice.openInvoice();
+    await invoice.openInvoice();
+    loadingProgress.initialize(1);
     loadingProgress.forward();
     loadingProgress.finish();
   }

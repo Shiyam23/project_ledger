@@ -10,6 +10,7 @@ import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart
 import 'package:project_ez_finance/components/CategorySelectionSheet.dart';
 import 'package:project_ez_finance/components/PieChart.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
+import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
 import 'package:project_ez_finance/components/dialogs/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/models/Modes.dart';
@@ -204,6 +205,17 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   }
 
   void onDelete() async {
+    int number = _selectedTransactions.length;
+    bool? sureToDelete = await showDialog<bool>(
+      context: context, 
+      builder: (context) => ConfirmDeleteDialog(
+        title: "Delete transaction(s) ?", 
+        content: 
+        "Are you sure that you want to delete the $number selected transaction(s)? " +
+        "This operation cannot be reversed!"
+      )
+    );
+    if (!sureToDelete!) return;
     _databaseBloc?.add(
       DeleteTransaction(_selectedTransactions.toList())
     );
@@ -214,7 +226,18 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     _flipToViewBar();
   }
 
-  void onDeleteAll() {
+  void onDeleteAll() async {
+    int number = (_databaseBloc!.state as TransactionLoaded).transactionList.length;
+    bool? sureToDelete = await showDialog<bool>(
+      context: context, 
+      builder: (context) => ConfirmDeleteDialog(
+        title: "Delete all transaction(s) ?", 
+        content: 
+        "This will delete all currently shown $number transactions on this list, " + 
+        "not only the selected ones! You really want to delete all of them?"
+      )
+    );
+    if (!sureToDelete!) return;
     _databaseBloc?.add(const DeleteAllShownTransactions());
     _selectedTransactions.clear();
     transactionKeys.clear();

@@ -14,8 +14,15 @@ class ConfirmDeleteDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
       title: Text(title),
-      content: Text(content),
+      content: Text(
+        content, 
+        textAlign: TextAlign.justify,
+        textWidthBasis: TextWidthBasis.longestLine,
+      ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),

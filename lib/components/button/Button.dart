@@ -22,8 +22,8 @@ class RoundGradientButton extends StatelessWidget {
       width: width * widthRatio,
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [
-            Color.fromRGBO(56, 100, 132, 0.75),
-            Color.fromRGBO(56, 100, 132, 1),
+            Theme.of(context).colorScheme.tertiary,
+            Theme.of(context).colorScheme.secondary,
           ]
         ),
         borderRadius: BorderRadius.circular(50),

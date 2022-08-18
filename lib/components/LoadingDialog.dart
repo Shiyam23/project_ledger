@@ -63,8 +63,8 @@ class _LoadingDialogState extends State<LoadingDialog> with SingleTickerProvider
             children: [
               LinearProgressIndicator(
                 value: progress == null ? null : _controller.value,
-                color: Color.fromRGBO(56, 100, 132, 1),
-                backgroundColor: Color.fromRGBO(56, 100, 132, 0.75),
+                color: Theme.of(context).colorScheme.secondary,
+                backgroundColor: Theme.of(context).colorScheme.tertiary,
               ),
               const SizedBox(height: 10),
               Row(

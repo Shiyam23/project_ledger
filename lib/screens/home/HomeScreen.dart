@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).primaryColor,
-                          Color.fromRGBO(56, 100, 132, 1)
+                          Theme.of(context).colorScheme.secondary,
                         ]
                       )
                     ),

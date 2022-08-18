@@ -4,7 +4,10 @@ import 'package:flutter/services.dart';
 import 'DTheme.dart';
 
 class DThemeLight implements DTheme {
+  
   static Color primaryColor = Color(0xff2f3840);
+  static Color secondaryColor = Color(0xFF386484);
+  static Color tertiaryColor = Color(0xBF386484);
 
   final ThemeData _themeData = ThemeData(
     appBarTheme: AppBarTheme(
@@ -32,5 +35,11 @@ class DThemeLight implements DTheme {
         labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
   );
 
-  ThemeData get themeData => _themeData;
+  ThemeData get themeData => _themeData.copyWith(
+    colorScheme: _themeData.colorScheme.copyWith(
+      primary: primaryColor,
+      secondary: secondaryColor,
+      tertiary: tertiaryColor
+    )
+  );
 }

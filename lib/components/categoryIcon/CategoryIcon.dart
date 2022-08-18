@@ -67,7 +67,7 @@ class _CategoryIconState extends State<CategoryIcon>
       height: MediaQuery.of(context).size.width / 7.5,
       width: MediaQuery.of(context).size.width / 7.5,
       decoration: BoxDecoration(
-          shape: BoxShape.circle, color: Theme.of(context).colorScheme.primary),
+          shape: BoxShape.circle, color: Theme.of(context).colorScheme.secondary),
       child: backSideIcon,
     );
 

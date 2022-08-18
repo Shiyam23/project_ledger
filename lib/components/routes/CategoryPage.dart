@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/IconSelectionSheet.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
+import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
@@ -259,21 +260,12 @@ class _CategoryPageState extends State<CategoryPage> {
     Navigator.of(context).pop();
     bool? sureToDelete = await showDialog<bool>(
       context: context, 
-      builder: (context) => AlertDialog(
-        title: const Text("Delete category?"),
-        content: const Text("Are you sure that you want to delete this category? " + 
-        "All transactions associated with this category will be deleted permanently!"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text("Cancel")
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text("Delete")
-          ),
-        ],
-      ));
+      builder: (context) => ConfirmDeleteDialog(
+        title: "Delete category?",
+        content: "Are you sure that you want to delete this category? " + 
+        "All transactions associated with this category will be deleted permanently!",
+      )
+    );
     if (sureToDelete ?? false) {
       int index = _categoryList.indexOf(category);
       _listKey.currentState!.removeItem(

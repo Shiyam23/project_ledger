@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/IconSelectionSheet.dart';
+import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
 import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
@@ -191,21 +192,12 @@ class _AccountPageState extends State<AccountPage> {
     }
     bool? sureToDelete = await showDialog<bool>(
       context: context, 
-      builder: (context) => AlertDialog(
-        title: const Text("Delete account?"),
-        content: const Text("Are you sure that you want to delete this account? " + 
-        "All transactions associated with this account will be deleted permanently!"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text("Cancel")
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text("Delete")
-          ),
-        ],
-      ));
+      builder: (context) => ConfirmDeleteDialog(
+        title: "Delete account?",
+        content: "Are you sure that you want to delete this account? " + 
+        "All transactions associated with this account will be deleted permanently!",
+      )
+    );
     if (sureToDelete ?? false) {
       int index = _accountList.indexOf(account);
       _listKey.currentState!.removeItem(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
 import 'package:project_ez_finance/components/EmptyNotification.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
+import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
@@ -105,20 +106,11 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
       Navigator.of(context).pop();
       bool? sureToDelete = await showDialog<bool>(
         context: context, 
-        builder: (context) => AlertDialog(
-          title: const Text("Delete template?"),
-          content: const Text("Are you sure that you want to delete this template?"),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text("Cancel")
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text("Delete")
-            ),
-          ],
-        ));
+        builder: (context) => ConfirmDeleteDialog(
+          title: "Delete template?",
+          content: "Are you sure that you want to delete this template?",
+        )
+      );
       if (sureToDelete ?? false) {
         bool noError = await _database.deleteTemplate(template);
         if (noError) {

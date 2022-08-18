@@ -1,3 +1,4 @@
+import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
 import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/models/StandingOrder.dart';
@@ -146,23 +147,13 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
       Navigator.of(context).pop();
       bool? sureToDelete = await showDialog<bool>(
         context: context, 
-        builder: (context) => AlertDialog(
-          title: const Text("Delete standing Order?"),
-          content: const Text(
+        builder: (context) => ConfirmDeleteDialog(
+          title: "Delete standing Order?",
+          content: 
             "Are you sure that you want to delete this standing order? " + 
             "Transactions added by this standing order will not be deleted.",
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text("Cancel")
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text("Delete")
-            ),
-          ],
-        ));
+        )
+      );
       if (sureToDelete ?? false) {
         bool noError = await HiveDatabase().deleteStandingOrder(standingOrder);
         if (noError) {

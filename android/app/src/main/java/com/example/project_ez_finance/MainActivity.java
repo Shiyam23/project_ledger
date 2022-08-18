@@ -1,4 +1,4 @@
-package com.example.project_ez_finance;
+package com.shadowswitch.project_ez_finance;
 
 import io.flutter.embedding.android.FlutterActivity;
 

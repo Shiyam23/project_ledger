@@ -6,8 +6,7 @@ import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
-import '../../components/ResponseDialog.dart';
-
+import '../../components/dialogs/ResponseDialog.dart';
 class NewTemplateScreen extends StatefulWidget {
 
   final Future<void> Function(int) setPage;

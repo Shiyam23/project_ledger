@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
-import 'package:project_ez_finance/components/LoadingDialog.dart';
+import 'package:project_ez_finance/components/dialogs/LoadingDialog.dart';
 import 'package:project_ez_finance/services/Backup.dart';
 import 'package:provider/provider.dart';
 

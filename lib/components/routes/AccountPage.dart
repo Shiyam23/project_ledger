@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/IconSelectionSheet.dart';
-import 'package:project_ez_finance/components/ResponseDialog.dart';
+import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
 import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
-import '../TextInputDialog.dart';
+import '../dialogs/TextInputDialog.dart';
 
 class AccountPage extends StatefulWidget {
 

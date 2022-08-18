@@ -9,7 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import '../components/LoadingDialog.dart';
+import '../components/dialogs/LoadingDialog.dart';
 import 'package:convert/convert.dart';
 
 import 'HiveDatabase.dart';

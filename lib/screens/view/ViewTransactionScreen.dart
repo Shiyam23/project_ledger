@@ -10,7 +10,7 @@ import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart
 import 'package:project_ez_finance/components/CategorySelectionSheet.dart';
 import 'package:project_ez_finance/components/PieChart.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
-import 'package:project_ez_finance/components/TextInputDialog.dart';
+import 'package:project_ez_finance/components/dialogs/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:collection/collection.dart' show ListEquality;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/components/DollavuDialog.dart';
+import 'package:project_ez_finance/components/dialogs/DollavuDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart' show SortMode;
 
 class ViewFilterBarSortDialog extends StatefulWidget {

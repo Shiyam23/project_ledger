@@ -5,8 +5,7 @@ import 'package:project_ez_finance/models/currencies.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 import '../../components/EmptyNotification.dart';
 import '../../components/IconListTile.dart';
-import '../../components/ResponseDialog.dart';
-
+import '../../components/dialogs/ResponseDialog.dart';
 class ViewStandingOrderScreen extends StatefulWidget {
   ViewStandingOrderScreen({Key? key}) : super(key: key);
 

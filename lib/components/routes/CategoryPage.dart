@@ -9,8 +9,8 @@ import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 
-import '../ResponseDialog.dart';
-import '../TextInputDialog.dart';
+import '../dialogs/ResponseDialog.dart';
+import '../dialogs/TextInputDialog.dart';
 
 class CategoryPage extends StatefulWidget {
 

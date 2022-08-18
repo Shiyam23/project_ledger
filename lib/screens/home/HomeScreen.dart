@@ -3,8 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
-import 'package:project_ez_finance/components/LoadingDialog.dart';
-import 'package:project_ez_finance/components/ResponseDialog.dart';
+import 'package:project_ez_finance/components/dialogs/LoadingDialog.dart';
+import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
+
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/services/DateTimeFormatter.dart';

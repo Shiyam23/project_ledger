@@ -30,11 +30,12 @@ class NewRepetitionDialog {
           return StatefulBuilder(
               builder: (context, StateSetter setDialogState) {
             return SimpleDialog(
-              contentPadding: EdgeInsets.symmetric(horizontal: 0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20)
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
               title: Text("Select Repetition"),
               children: <Widget>[
-                Divider(
-                    color: Theme.of(context).colorScheme.primary, thickness: 2),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: Container(
@@ -152,6 +153,7 @@ class NewRepetitionDialog {
                   }),
                 ),
                 ButtonBar(
+                  
                   children: <Widget>[
                     TextButton(
                       child: Text(

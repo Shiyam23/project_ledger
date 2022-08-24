@@ -87,7 +87,7 @@ class RoundButton extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             fontFamily: "Roboto",
             fontStyle: FontStyle.normal,
-            fontSize: screenWidth * widthRatio * 0.08
+            fontSize: screenWidth * widthRatio * 0.1
           ),
           textAlign: TextAlign.center,
         )

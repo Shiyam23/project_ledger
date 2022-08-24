@@ -187,8 +187,6 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
-            },
-            onAdWillDismissFullScreenContent: (ad) {
               _generatePDF();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {

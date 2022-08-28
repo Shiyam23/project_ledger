@@ -14,6 +14,9 @@ import 'package:project_ez_finance/screens/view/ViewTransactionScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewTabBar.dart';
 import 'package:project_ez_finance/components/Keyboard.dart';
 
+import '../services/HiveDatabase.dart';
+import 'new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
+
 class Layout extends StatefulWidget {
 
   final ChangeNotifier homescreenChanged = ChangeNotifier();
@@ -28,12 +31,11 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   TransactionBloc transactionBloc = TransactionBloc(TransactionLoading());
   
   bool keyboardOpen = false;
-  late KeyBoard keyboard = KeyBoard(
-    triggerKeyboard: triggerKeyboard,
-  );
+  late KeyBoard keyboard;
 
   @override
   void initState() {
+    keyboard = KeyBoard(triggerKeyboard: triggerKeyboard);
     super.initState();
     transactionBloc.add(UpdateStandingOrderTransactions());
     lController = LayoutController(

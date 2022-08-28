@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewTabBar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(int index)? setPage;
@@ -19,11 +20,11 @@ class ViewTabBar extends StatelessWidget implements PreferredSizeWidget {
         controller: layoutController!.overViewTabController,
         tabs: <Widget>[
           Text(
-            "Standing orders",
+            AppLocalizations.of(context)!.repetition_tab,
             style: TextStyle(fontSize: 18.0),
           ),
           Text(
-            "Transactions",
+            AppLocalizations.of(context)!.transactions_tab,
             style: TextStyle(fontSize: 18.0),
           ),
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class DollavuDialog extends StatelessWidget {
   const DollavuDialog({
     Key? key,
@@ -29,15 +30,15 @@ class DollavuDialog extends StatelessWidget {
           child: child,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             TextButton(
               onPressed: onPressedCancel as void Function()? ?? () {},
-              child: Text("Cancel"),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
             ),
             TextButton(
               onPressed: onPressedSave as void Function()? ?? () {},
-              child: Text("Save"),
+              child:Text(MaterialLocalizations.of(context).okButtonLabel),
             ),
           ],
         ),

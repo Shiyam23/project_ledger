@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:project_ez_finance/models/Repetition.dart';
 
@@ -34,7 +35,7 @@ class NewRepetitionDialog {
                 borderRadius: BorderRadius.circular(20)
               ),
               contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              title: Text("Select Repetition"),
+              title: Text(AppLocalizations.of(context)!.selectRepetition),
               children: <Widget>[
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
@@ -54,11 +55,15 @@ class NewRepetitionDialog {
                                   setDialogState(() => isEnabled = enabled),
                               items: [
                                 DropdownMenuItem(
-                                  child: Center(child: Text("Never")),
+                                  child: Center(child: Text(
+                                    AppLocalizations.of(context)!.never
+                                  )),
                                   value: false,
                                 ),
                                 DropdownMenuItem(
-                                  child: Center(child: Text("Every")),
+                                  child: Center(child: Text(
+                                    AppLocalizations.of(context)!.every
+                                  )),
                                   value: true,
                                 ),
                               ],
@@ -98,15 +103,21 @@ class NewRepetitionDialog {
                                     ? null
                                     : [
                                         DropdownMenuItem(
-                                          child: Text("Day(s)"),
+                                          child: Text(
+                                            AppLocalizations.of(context)!.day_s
+                                          ),
                                           value: CalenderUnit.daily,
                                         ),
                                         DropdownMenuItem(
-                                          child: Text("Month(s)"),
+                                          child: Text(
+                                            AppLocalizations.of(context)!.month_s
+                                          ),
                                           value: CalenderUnit.monthly,
                                         ),
                                         DropdownMenuItem(
-                                          child: Text("Year(s)"),
+                                          child: Text(
+                                            AppLocalizations.of(context)!.year_s
+                                          ),
                                           value: CalenderUnit.yearly,
                                         ),
                                       ],
@@ -153,11 +164,10 @@ class NewRepetitionDialog {
                   }),
                 ),
                 ButtonBar(
-                  
                   children: <Widget>[
                     TextButton(
                       child: Text(
-                        "CANCEL",
+                        MaterialLocalizations.of(context).cancelButtonLabel,
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       ),
@@ -165,7 +175,7 @@ class NewRepetitionDialog {
                     ),
                     TextButton(
                       child: Text(
-                        "OK",
+                        MaterialLocalizations.of(context).okButtonLabel,
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       ),
@@ -199,7 +209,7 @@ class NewRepetitionDialog {
     showDialog(
       context: context, 
       builder: (_) => ResponseDialog(
-        description: "Please select an account", 
+        description: AppLocalizations.of(context)!.repetition_number_error, 
         response: Response.Error
       )
     );

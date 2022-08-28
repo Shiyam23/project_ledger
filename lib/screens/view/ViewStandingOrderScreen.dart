@@ -7,6 +7,8 @@ import 'package:project_ez_finance/services/HiveDatabase.dart';
 import '../../components/EmptyNotification.dart';
 import '../../components/IconListTile.dart';
 import '../../components/dialogs/ResponseDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class ViewStandingOrderScreen extends StatefulWidget {
   ViewStandingOrderScreen({Key? key}) : super(key: key);
 
@@ -69,7 +71,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20)
         ),
-        title: Text("Details"),
+        title: Text(AppLocalizations.of(context)!.repetition_details_title),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
@@ -78,12 +80,12 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Name:"),
-                Text("Starting date:"),
-                Text("Next due date:"),
-                Text("End date:"),
-                Text("Total transactions:"),
-                Text("Total amount:"),
+                Text(AppLocalizations.of(context)!.repetition_name),
+                Text(AppLocalizations.of(context)!.repetition_starting_date),
+                Text(AppLocalizations.of(context)!.repetition_next_due_date),
+                Text(AppLocalizations.of(context)!.repetition_end_date),
+                Text(AppLocalizations.of(context)!.repetition_total_transactions),
+                Text(AppLocalizations.of(context)!.repetition_total_amount),
               ],
             ),
             SizedBox(width: MediaQuery.of(context).size.width / 20),
@@ -124,7 +126,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
           children: [
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Show details"),
+              title: Text(AppLocalizations.of(context)!.repetition_show_details),
               leading: const Icon(Icons.info),
               onTap: () {
                 Navigator.pop(context);
@@ -133,7 +135,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Delete standing order"),
+              title: Text(AppLocalizations.of(context)!.repetition_delete),
               leading: const Icon(Icons.delete),
               onTap: () => deleteStandingOrder(context, standingOrder)
             ),
@@ -148,10 +150,8 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
       bool? sureToDelete = await showDialog<bool>(
         context: context, 
         builder: (context) => ConfirmDeleteDialog(
-          title: "Delete standing Order?",
-          content: 
-            "Are you sure that you want to delete this standing order? " + 
-            "Transactions added by this standing order will not be deleted.",
+          title: AppLocalizations.of(context)!.repetition_delete_title,
+          content: AppLocalizations.of(context)!.repetition_delete_description
         )
       );
       if (sureToDelete ?? false) {
@@ -168,8 +168,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
           showDialog(
             context: context, 
             builder: (_) => ResponseDialog(
-              description: "Problem occured while deleting this standing order. "+
-              "Please try again!", 
+              description: AppLocalizations.of(context)!.repetition_delete_error_description, 
               response: Response.Error
             )
           );
@@ -179,10 +178,8 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
 
   Widget _standingOrdersEmptyNotification() {
     return Center(child: EmptyNotification(
-      title: "No standing orders available",
-      information: 
-        "Add new standing order by creating a new transaction" + 
-        " and selecting the corresponding repetition.",
+      title: AppLocalizations.of(context)!.no_repetition_available,
+      information: AppLocalizations.of(context)!.no_repetition_available_description
     ));
   }
 }

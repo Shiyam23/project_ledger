@@ -7,6 +7,7 @@ import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewCategoryIcon extends StatefulWidget {
   final Database _database = HiveDatabase();
@@ -120,7 +121,7 @@ Widget build(BuildContext context) {
           child: Container(
             alignment: Alignment.center,
             child: Text(
-              _selectedCategory?.name ?? "Category",
+              _selectedCategory?.name ?? AppLocalizations.of(context)!.category,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,

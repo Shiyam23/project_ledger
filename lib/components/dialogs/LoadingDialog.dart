@@ -97,12 +97,12 @@ class _LoadingDialogState extends State<LoadingDialog> with SingleTickerProvider
 
   TextButton get abortButton => TextButton(
     onPressed: () {}, 
-    child: Text("Abort")
+    child: Text(MaterialLocalizations.of(context).cancelButtonLabel)
   );
 
   TextButton okButton(BuildContext context) => TextButton(
     onPressed: () => Navigator.of(context).pop(), 
-    child: Text("OK")
+    child: Text(MaterialLocalizations.of(context).okButtonLabel)
   );
 
   String get secondaryProgress {

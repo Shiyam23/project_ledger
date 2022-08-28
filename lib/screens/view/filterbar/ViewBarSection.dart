@@ -12,6 +12,7 @@ import 'package:project_ez_finance/services/PDFGenerator.dart';
 import 'ViewFilterBarViewDialog.dart';
 import 'ViewFilterBarSortDialog.dart';
 import 'ViewBarIcon.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewFilterBarSection extends StatefulWidget {
   final TransactionRequest request;
@@ -52,14 +53,14 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                   showIndicatorNotifier: showIndicator,
                   width: _width,
                   icon: Icons.search,
-                  tooltip: "Search",
+                  tooltip: AppLocalizations.of(context)!.search,
                   onTap: () async {
                     String? searchText = await showDialog(
                       context: context, 
                       builder: (context) => TextInputDialog(
                         prefixIcon: Icon(Icons.search),
                         controller: _searchController,
-                        title: Text("Search"),
+                        title: Text(AppLocalizations.of(context)!.search),
                       )
                     );
                     if (searchText != null) {
@@ -76,7 +77,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
-              tooltip: "Date",
+              tooltip: AppLocalizations.of(context)!.date,
               icon: Icons.calendar_today,
               onTap: () async {
                 DateTime start = DateTime.now().subtract(Duration(days: 365));
@@ -100,7 +101,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
-              tooltip: "Viewmode",
+              tooltip: AppLocalizations.of(context)!.view_mode,
               icon: Icons.list,
               onTap: () async {
                 ViewMode? viewOption = await showDialog(
@@ -119,7 +120,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
-              tooltip: "Sort",
+              tooltip: AppLocalizations.of(context)!.sort,
               icon: Icons.sort,
               onTap: () async {
                 SortMode? sortOption = await showDialog(
@@ -138,7 +139,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             ),
             ViewBarIcon(
               width: _width,
-              tooltip: "Reset",
+              tooltip: AppLocalizations.of(context)!.reset,
               icon: Icons.history,
               onTap: () async {
                 final TransactionRequest request = TransactionRequest(
@@ -160,7 +161,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               },
             ),
             ViewBarIcon(
-              tooltip: "Generate PDF",
+              tooltip: AppLocalizations.of(context)!.create_invoice,
               width: _width,
               icon: FontAwesomeIcons.filePdf,
               onTap: _loadRewardedAd,
@@ -195,7 +196,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             }
           );
           _interstitialAd = ad;
-        }, 
+        },
         onAdFailedToLoad: (error) => _generatePDF(),
       )
     );
@@ -208,7 +209,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
       context: context, 
       builder: (context) => LoadingDialog(
         loadingProgress: loadingProgress, 
-        title: "Generating PDF",
+        title: AppLocalizations.of(context)!.generating_invoice,
       ),
       barrierDismissible: false
     );
@@ -229,7 +230,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
         showDialog(
           context: context, 
           builder: (context) => ResponseDialog(
-            description: "List of transactions is empty!", 
+            description: AppLocalizations.of(context)!.list_empty, 
             response: Response.Error
           )
         );
@@ -241,7 +242,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
       showDialog(
         context: context, 
         builder: (context) => ResponseDialog(
-          description: "Something went wrong. Please try again!", 
+          description: AppLocalizations.of(context)!.something_went_wrong, 
           response: Response.Error
         )
       );

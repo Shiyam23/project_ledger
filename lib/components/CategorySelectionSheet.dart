@@ -3,6 +3,7 @@ import 'package:project_ez_finance/components/Keyboard.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
  
  Future<Category?> showCategorySelectionSheet(BuildContext context) async {
     Future<List<Category>> allCategories = HiveDatabase().getAllCategories();
@@ -26,9 +27,8 @@ import 'package:project_ez_finance/services/HiveDatabase.dart';
                   if ((snapshot.data as List<Category>).isEmpty) {
                     return Center(
                       child: Text(
-                        "No Categories available. " + 
-                        "Please create a category to add a new transaction!",
-                        ),
+                        AppLocalizations.of(context)!.no_category_error
+                      ),
                     );
                   }
                   return Container(

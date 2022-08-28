@@ -201,8 +201,8 @@ class KeyBoardState extends State<KeyBoard> with SingleTickerProviderStateMixin{
                               ),
                             ),
                             TextButton(
-                              child: const Text(
-                                "OK",
+                              child: Text(
+                                MaterialLocalizations.of(context).okButtonLabel,
                                 style: TextStyle(
                                   inherit: true,
                                 ),

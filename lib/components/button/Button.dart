@@ -34,7 +34,7 @@ class RoundGradientButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: Text(
-          text,
+          text.toUpperCase(),
           style: TextStyle(
             color: Colors.white,
             fontFamily: "Roboto",
@@ -82,7 +82,7 @@ class RoundButton extends StatelessWidget {
         ),
         onPressed: onPressed, 
         child: Text(
-          text,
+          text.toUpperCase(),
           style: TextStyle(
             color: Theme.of(context).primaryColor,
             fontFamily: "Roboto",

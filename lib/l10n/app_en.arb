@@ -1,0 +1,186 @@
+{
+    "@_GENERAL": {},
+    "category": "Category",
+    "categories": "Categories",
+    "date": "Date",
+    "repetition": "Repetition",
+    "account": "Account",
+    "accounts": "Accounts",
+    "template": "Template",
+    "templates": "Templates",
+    "create": "Create",
+    "see_more": "See more",
+    "something_went_wrong": "Something went wrong. Please try again!",
+    "selected": "selected",
+    "response_success": "Success",
+    "response_error": "Error",
+    "no_category_error": "No Categories available. Please create a category to add a new transaction!",
+    "next": "Next",
+
+    "@_REPETITION": {},
+    "noRepetition": "No Repetition",
+    "everyDay": "Every day",
+    "everyMonth": "Every month",
+    "everyYear": "Every year",
+    "every": "Every",
+    "never": "Never",
+    "day_s": "day(s)",
+    "month_s": "month(s)",
+    "year_s": "year(s)",
+    "days": "days",
+    "months": "months",
+    "years": "years",
+    "until": "until",
+
+    "@_NEW_TRANSACTION_SCREEN": {},
+    "income_expense": "Income/Expense",
+    "@income_expense" : {
+        "description": "Label for 'Income/Expense' tab on the top of 'New Transaction' screen. Should be short to not force resize or wrap."
+    },
+    "reset": "Reset",
+    "@reset": {
+       "description": "Label for 'Reset' button on 'New Transaction' screen. Must be upper case if possible."
+    },
+    "saveAsTemplate": "Save as template",
+    "@saveAsTemplate": {
+        "description": "Label for 'Save as template' checkbox on 'New Transaction' screen"
+    },
+    "nameTextFieldLabel": "Name",
+    "@nameTextFieldLabel": {
+        "description": "Label for 'Name' textfield on 'New Transaction' screen"
+    },
+    "endDate": "End date",
+    "@endDate": {
+        "description": "Label for 'End date' textfield on 'New Transaction' screen"
+    },
+    "selectRepetition": "Select Repetition",
+    "@selectRepetition": {
+        "description": "Label for 'Select Repetition' title on 'New Transaction' screen"
+    },
+    "transaction_added": "Transaction added",
+    "transaction_noname": "Please enter a name!",
+    "transaction_nocategory": "Please choose a category!",
+    "transaction_nodate": "Please choose a date!",
+    "transaction_noaccount": "Please choose an account!",
+    "transaction_general_error": "Something went wrong! Please try again.",
+    "repetition_number_error": "Please provide a number",
+
+    "@_NEW_TEMPLATE_SCREEN": {},
+    "no_templates_available": "No templates available",
+    "no_templates_available_description": "Add new templates by creating a new transaction and checking the \"Save as template\" box.",
+    "@no_templates_available_description": {
+        "description": "Description for 'No template available on template screen which appears after clicking on the information button. The reference 'Save as template' should be consistent with 'saveAsNewTemplate' in this file."
+    },
+    "delete_template": "Delete template",
+    "delete_template_error_description": "Problem occured while deleting this template. Please try again!",
+
+    "@_VIEW_REPETITION_SCREEN": {},
+    "no_repetition_available": "No repetition available",
+    "no_repetition_available_description": "Add new repetition by creating a new transaction and selecting the corresponding repetition.",
+    "@no_repetition_available_description": {
+        "description": "Description for 'No repetition available on repetition screen which appears after clicking on the information button."
+    },
+
+
+    "@_HOME_SCREEN": {},
+    "no_transactions_yet" : "No transactions available",
+    "create_invoice": "Create Invoice",
+    "top_five_categories": "Top 5 categories",
+    "backup": "Backup",
+    "create_backup": "Create backup",
+    "import_backup": "Import backup",
+    "creating_backup": "Creating backup",
+    "importing_backup": "Importing backup",
+    "backup_corrupted": "Backup File corrupted",
+    "backup_corrupted_description": "The Backup File you chose is corrupted. Please choose another backup file.",
+    "no_transactions_this_month": "No transactions for this month",
+
+    "@_VIEW_SCREEN": {},
+    "transactions_tab" : "Transactions",
+    "search": "Search",
+    "view_mode": "View Mode",
+    "sort": "Sort",
+    "viewmode_list": "List",
+    "viewmode_graph": "Graph",
+    "sort_date_desc": "Date descending",
+    "sort_date_asc": "Date ascending",
+    "sort_amount_desc": "Amount descending",
+    "sort_amount_asc": "Amount ascending",
+    "sort_name_desc": "Name descending",
+    "sort_name_asc": "Name ascending",
+    "sort_category_desc": "Category descending",
+    "sort_category_asc": "Category ascending",
+    "list_empty": "List of transactions is empty!",
+    "generating_invoice": "Generating invoice",
+    "category_chart": "Category Chart",
+    "delete_transaction_s": "Delete transaction(s) ?",
+    "delete_transaction_description_prefix": "Are you sure that you want to delete the",
+    "@delete_transaction_description_prefix": {
+        "description": "Information for the user for delete confirmation. This is the string shown before the number of selected transactions. Must not include space at the end."
+    },
+    "delete_transaction_description_suffix": "selected transaction(s)? This operation cannot be reversed!",
+    "@delete_transaction_description_suffix": {
+        "description": "Information for the user for delete confirmation. This is the string shown after the number of selected transactions. Must not include space in the beginning."
+    },
+    "delete_all_transactions": "Delete all transactions ?",
+    "delete_all_transactions_description_prefix": "This will delete all currently shown",
+    "@delete_all_transactions_description_prefix": {
+        "description": "Information for the user for delete confirmation. This is the string shown before the number of all transactions. Must not include space at the end."
+    },
+    "delete_all_transactions_description_suffix": "transactions on this list, not only the selected ones! You really want to delete all of them?",
+    "@delete_all_transactions_description_suffix": {
+        "description": "Information for the user for delete confirmation. This is the string shown after the number of all transactions. Must not include space in the beginning."
+    },
+    "edit_name": "Edit name",
+    "change_category": "Change category",
+    "change_date": "Change date",
+    "change_amount": "Change amount",
+    "enter_new_name": "Enter new name",
+    "new_amount": "New amount",
+    "only_one_edit_description": "You can only edit one transaction at a time.",
+    "empty_amount_not_allowed": "Empty amount not allowed",
+    "required_format": "Required format:",
+    
+    "@_PAGE": {},
+    "change_icon": "Change icon",
+    "new_name": "Enter a new name",
+
+    "@_ACCOUNT_PAGE": {},
+    "add_new_account": "Add new account",
+    "delete_account": "Delete account",
+    "delete_selected_account_description": "A selected account can not be deleted. Please select another account before deleting this.",
+    "delete_account_title": "Delete account?",
+    "delete_account_description": "Are you sure that you want to delete this account? All transactions associated with this account will be deleted permanently!",
+    "account_already_exists_title": "Account with this name already exists",
+    "account_already_exists_prefix": "You already have an account with the name ",
+    "account_already_exists_suffix": ". You can not have two accounts with the same name.",
+    "account_template_name": "My Account",
+    "account_already_exists": "An account with an identical name already exists.",
+    "currency_prefix": "Currency: ",
+
+    "@_CATEGORY_PAGE": {},
+    "add_new_category": "Add new category",
+    "delete_category": "Delete category",
+    "category_template_name": "My Category",
+    "category_already_exists": "A category with an identical name already exists.",
+    "category_already_exists_title": "Category with this name already exists",
+    "category_already_exists_prefix": "You already have a category with the name ",
+    "category_already_exists_suffix": ". You can not have two categories with the same name.",
+    "delete_category_title": "Delete category?",
+    "delete_category_description": "Are you sure that you want to delete this category? All transactions associated with this category will be deleted permanently!",
+
+    "@VIEW_REPETITION": {},
+    "repetition_tab": "Standing orders",
+    "repetition_details_title": "Details",
+    "repetition_name": "Name",
+    "repetition_starting_date": "Starting date:",
+    "repetition_next_due_date": "Next due date:",
+    "repetition_end_date": "End date:",
+    "repetition_total_transactions": "Total transactions:",
+    "repetition_total_amount": "Total amount:",
+    "repetition_show_details": "Show details",
+    "repetition_delete": "Delete standing order",
+    "repetition_delete_title": "Delete standing order?",
+    "repetition_delete_description": "Are you sure that you want to delete this standing order? Transactions added by this standing order will not be deleted.",
+    "repetition_delete_error_description": "Problem occured while deleting this standing order. Please try again!"
+}   

@@ -6,7 +6,7 @@ import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../components/dialogs/ResponseDialog.dart';
 class NewTemplateScreen extends StatefulWidget {
 
@@ -92,7 +92,7 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
           children: [
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Delete template"),
+              title: Text(AppLocalizations.of(context)!.delete_template),
               leading: const Icon(Icons.delete),
               onTap: () => deleteTemplate(context, template)
             ),
@@ -127,8 +127,7 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
           showDialog(
             context: context, 
             builder: (_) => ResponseDialog(
-              description: "Problem occured while deleting this template. "+
-              "Please try again!", 
+              description: AppLocalizations.of(context)!.delete_template_error_description, 
               response: Response.Error
             )
           );
@@ -138,10 +137,8 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
 
   Widget _templatesEmptyNotification() {
     return Center(child: EmptyNotification(
-      title: "No templates available",
-      information: 
-        "Add new templates by creating a new transaction" + 
-        " and checking the \"Save as template\" box.",
+      title: AppLocalizations.of(context)!.no_templates_available,
+      information: AppLocalizations.of(context)!.no_templates_available_description
     ));
   } 
 }

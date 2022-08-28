@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/dialogs/LoadingDialog.dart';
 import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
-
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/services/DateTimeFormatter.dart';
@@ -13,6 +11,7 @@ import '../../models/CategoryChartInfo.dart';
 import '../../models/Modes.dart';
 import '../../models/Transaction.dart';
 import '../../services/PDFGenerator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -37,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     double factor = MediaQuery.of(context).size.height * 0.001;
+    String categoriesLabel = AppLocalizations.of(context)!.top_five_categories;
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Padding(
@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Create Invoice",
+                            AppLocalizations.of(context)!.create_invoice,
                             style: TextStyle(
                               fontSize: 27 * factor,
                               fontWeight: FontWeight.bold,
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(height: factor * 20),
                           RoundGradientButton(
                             onPressed: () => _createInvoice(context), 
-                            text: "CREATE",
+                            text: AppLocalizations.of(context)!.create,
                             widthRatio: 0.3,
                           )
                         ],
@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Top 5 Categories",
+                                Text(categoriesLabel,
                                   style: TextStyle(
                                     fontSize: factor * 27,
                                     fontWeight: FontWeight.bold,
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             onPressed: () {
                               widget.setPage(0);
                             }, 
-                            text: "SEE MORE",
+                            text: AppLocalizations.of(context)!.see_more,
                             widthRatio: 0.3
                           )
                         ],
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Image.asset("assets/icons/box2.png")
                                   ),
                                   const SizedBox(height: 10),
-                                  Text("No transactions yet ..."),
+                                  Text(AppLocalizations.of(context)!.no_transactions_yet),
                                 ],
                               ),
                             );
@@ -339,7 +339,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await showDialog(
       context: context, 
       builder: (context) => ResponseDialog(
-        description: "No transactions for this month", 
+        description: AppLocalizations.of(context)!.no_transactions_this_month, 
         response: Response.Error
       )
     );

@@ -4,6 +4,7 @@ import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/dialogs/LoadingDialog.dart';
 import 'package:project_ez_finance/services/Backup.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
@@ -28,7 +29,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           onSelected: (choice) =>  choiceAction(choice, context),
           itemBuilder: (BuildContext context) {
-            return PopUpMenuButtonChoices.choices.map((String choice) {
+            return PopUpMenuButtonChoices.choices(context).map((String choice) {
               return PopupMenuItem<String>(
                 value: choice,
                 child: Text(choice),
@@ -41,20 +42,20 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   choiceAction(String choice, BuildContext rootContext) {
-    if (choice == PopUpMenuButtonChoices.Accounts) {
+    if (choice == PopUpMenuButtonChoices.accounts(rootContext)) {
       Navigator.of(rootContext).pushNamed("account");
     }
-    if (choice == PopUpMenuButtonChoices.Categories) {
+    if (choice == PopUpMenuButtonChoices.categories(rootContext)) {
       Navigator.of(rootContext).pushNamed("category");
     }
-    if (choice == PopUpMenuButtonChoices.Backup) {
+    if (choice == PopUpMenuButtonChoices.backup(rootContext)) {
       showModalBottomSheet(context: rootContext, builder: (context) => 
         SafeArea(
           child: Wrap(
             children: [
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                title: const Text("Create Backup"),
+                title: Text(AppLocalizations.of(context)!.create_backup),
                 leading: const Icon(Icons.arrow_upward),
                 onTap: () {
                   Navigator.pop(context);
@@ -67,7 +68,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-                title: const Text("Import Backup"),
+                title: Text(AppLocalizations.of(context)!.import_backup),
                 leading: const Icon(Icons.arrow_downward),
                 onTap: () {
                   Navigator.pop(context);
@@ -93,7 +94,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (context) { 
         return LoadingDialog(
         loadingProgress: progress, 
-        title: "Creating Backup");
+        title: AppLocalizations.of(context)!.creating_backup);
       }
     );
     createBackup(progress);
@@ -109,7 +110,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (context) { 
         return LoadingDialog(
         loadingProgress: progress, 
-        title: "Creating Backup");
+        title: AppLocalizations.of(context)!.importing_backup);
       }
     );
     List<File>? backupFiles = await checksum(backupFilePath, progress);
@@ -117,13 +118,12 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       showDialog(
         context: context, 
         builder: (context) => AlertDialog(
-          title: Text("Backup File corrupted"), 
-          content: Text("The Backup File you chose is corrupted. Please choose" + 
-            " another backup file."),
+          title: Text(AppLocalizations.of(context)!.backup_corrupted), 
+          content: Text(AppLocalizations.of(context)!.backup_corrupted_description),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context), 
-              child: Text("OK")
+              child: Text(MaterialLocalizations.of(context).okButtonLabel)
             )
           ],
         )
@@ -137,13 +137,13 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class PopUpMenuButtonChoices {
-  static const String Accounts = 'Konten';
-  static const String Categories = 'Kategorien';
-  static const String Backup = 'Backup';
+  static String accounts(BuildContext context) => AppLocalizations.of(context)!.account;
+  static String categories(BuildContext context) => AppLocalizations.of(context)!.categories;
+  static String backup(BuildContext context) => AppLocalizations.of(context)!.backup;
 
-  static const List<String> choices = <String>[
-    Accounts,
-    Categories,
-    Backup,
+  static List<String> choices(BuildContext context) => <String>[
+    accounts(context),
+    categories(context),
+    backup(context),
   ];
 }

@@ -73,10 +73,10 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
         this.accountDifferent = c.account != null && c.account != p.account;
         this.amountDifferent = c.amount != p.amount;
         this.isExpenseDifferent = c.isExpense != p.isExpense;
-        return accountDifferent! || amountDifferent! || isExpenseDifferent!;
+        return accountDifferent! || amountDifferent! || isExpenseDifferent! || !controller.initialized;
       },
       listener: (context, state) {
-        if (accountDifferent!) {
+        if (accountDifferent! || !controller.initialized) {
           selectedAccount = state.account!;
           controller.setupController(
             selectedAccount!,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewSaveAsTemplate extends StatelessWidget {
 
@@ -37,7 +38,7 @@ class NewSaveAsTemplate extends StatelessWidget {
             alignment: Alignment.centerLeft,
             scale: 1,
             child: Text(
-              "Save as template",
+              AppLocalizations.of(context)!.saveAsTemplate,
               textAlign: TextAlign.left, 
               style: TextStyle(fontSize: 15)
             ),

@@ -6,12 +6,13 @@ import 'package:hive/hive.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/routes/CategoryPage.dart';
 import 'package:project_ez_finance/screens/Layout.dart';
+import 'package:project_ez_finance/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
 import 'package:project_ez_finance/themes/DThemeLight.dart';
 import 'package:project_ez_finance/components/routes/AccountPage.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 void main() async {
@@ -37,15 +38,8 @@ class _MyAppState extends State<MyApp> {
     return ChangeNotifierProvider(
       create: (_) => AccountChangeNotifier(),
       child: MaterialApp(
-          localizationsDelegates: [
-            GlobalWidgetsLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate
-          ],
-          supportedLocales: [
-            Locale("de"),
-            Locale("en"),
-          ],
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           title: 'Dollavu',
           theme: DTheme.of(context)?.themeData,
           home: Layout(),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/dialogs/DollavuDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart' show ViewMode;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ViewFilterBarViewDialog extends StatefulWidget {
   ViewFilterBarViewDialog({
@@ -26,13 +28,13 @@ class _ViewFilterBarViewDialogState extends State<ViewFilterBarViewDialog> {
   @override
   Widget build(BuildContext context) {
     return DollavuDialog(
-      title: Text("View Mode"),
+      title: Text(AppLocalizations.of(context)!.view_mode),
       onPressedSave: () => Navigator.pop(context, _option),
       onPressedCancel: () => Navigator.pop(context),
       child: Column(
         children: <Widget>[
           RadioListTile(
-            title: Text("List"),
+            title: Text(AppLocalizations.of(context)!.viewmode_list),
             value: ViewMode.List,
             groupValue: _option,
             onChanged: (dynamic option) {
@@ -42,7 +44,7 @@ class _ViewFilterBarViewDialogState extends State<ViewFilterBarViewDialog> {
             },
           ),
           RadioListTile(
-            title: Text("Graph"),
+            title: Text(AppLocalizations.of(context)!.viewmode_graph),
             value: ViewMode.Graph,
             groupValue: _option,
             onChanged: (dynamic option) {

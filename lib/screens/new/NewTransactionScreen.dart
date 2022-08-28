@@ -16,6 +16,7 @@ import './income_expense/NewSaveAsTemplate.dart';
 import './income_expense/NewTextField.dart';
 import './income_expense/./newMoneyAmountWidgets/NewMoneyAmount.dart';
 import 'income_expense/newTextFieldController/NewRepetitionDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewTransactionScreen extends StatefulWidget {
   
@@ -203,7 +204,8 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     showDialog(
       context: context, 
       builder: (context) => ResponseDialog(
-        description: "Transaction added", response: Response.Success
+        description: AppLocalizations.of(context)!.transaction_added, 
+        response: Response.Success
       )
     );
     this.resetInput(context);
@@ -251,19 +253,19 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     String title;
     switch (error) {
       case NewTransactionError.NoName:
-        title = "Please enter a name!";
+        title = AppLocalizations.of(context)!.transaction_noaccount;
         break;
       case NewTransactionError.NoCategory:
-        title = "Please choose a category!";
+        title = AppLocalizations.of(context)!.transaction_nocategory;
         break;
       case NewTransactionError.NoDate:
-        title = "Please choose a date!";
+        title = AppLocalizations.of(context)!.transaction_nodate;
         break;
       case NewTransactionError.NoAccount:
-        title = "Please choose an account!";
+        title = AppLocalizations.of(context)!.transaction_noaccount;
         break;
       case NewTransactionError.GeneralError:
-        title = "Something went wrong! Please try again...";
+        title = AppLocalizations.of(context)!.transaction_general_error;
         break;
     }
     showDialog(

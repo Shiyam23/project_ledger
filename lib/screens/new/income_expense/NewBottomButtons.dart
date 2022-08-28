@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class NewBottonButtons extends StatelessWidget {
   final void Function()? onSave;
@@ -15,13 +17,13 @@ class NewBottonButtons extends StatelessWidget {
       children: <Widget>[
         RoundButton(
           onPressed: onReset, 
-          text: "RESET",
+          text: AppLocalizations.of(context)!.reset,
           widthRatio: 0.4,
         ),
         RoundGradientButton(
           widthRatio: 0.4,
           onPressed: onSave, 
-          text: "SAVE"
+          text: MaterialLocalizations.of(context).saveButtonLabel
         )
       ],
     );

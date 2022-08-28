@@ -22,6 +22,7 @@ import 'package:project_ez_finance/screens/view/filterbar/ViewBarSection.dart';
 import 'package:project_ez_finance/services/AdmobHelper.dart';
 import 'dart:math' as math;
 import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ViewTransactionScreen extends StatefulWidget {
   final Function _eq = const ListEquality().equals;
@@ -109,7 +110,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                       children: [
                         SizedBox(height: 20),
                         Text(
-                          "Category Chart", 
+                          AppLocalizations.of(context)!.category_chart, 
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold
@@ -207,13 +208,13 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   void onDelete() async {
     int number = _selectedTransactions.length;
+    String deletePrefix = AppLocalizations.of(context)!.delete_transaction_description_prefix;
+    String deleteSuffix = AppLocalizations.of(context)!.delete_transaction_description_suffix;
     bool? sureToDelete = await showDialog<bool>(
       context: context, 
       builder: (context) => ConfirmDeleteDialog(
-        title: "Delete transaction(s) ?", 
-        content: 
-        "Are you sure that you want to delete the $number selected transaction(s)? " +
-        "This operation cannot be reversed!"
+        title: AppLocalizations.of(context)!.delete_transaction_s, 
+        content: "$deletePrefix $number $deleteSuffix"
       )
     );
     if (!sureToDelete!) return;
@@ -229,13 +230,14 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   void onDeleteAll() async {
     int number = (_databaseBloc!.state as TransactionLoaded).transactionList.length;
+    String deletePrefix = AppLocalizations.of(context)!.delete_all_transactions_description_prefix;
+    String deleteSuffix = AppLocalizations.of(context)!.delete_all_transactions_description_suffix;
+
     bool? sureToDelete = await showDialog<bool>(
       context: context, 
       builder: (context) => ConfirmDeleteDialog(
-        title: "Delete all transaction(s) ?", 
-        content: 
-        "This will delete all currently shown $number transactions on this list, " + 
-        "not only the selected ones! You really want to delete all of them?"
+        title: AppLocalizations.of(context)!.delete_all_transactions, 
+        content: "$deletePrefix $number $deleteSuffix"
       )
     );
     if (!sureToDelete!) return;
@@ -278,7 +280,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
           children: [
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Edit name"),
+              title: Text(AppLocalizations.of(context)!.edit_name),
               leading: const Icon(Icons.edit),
               onTap: _onEditName,
             ),
@@ -288,7 +290,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Change category"),
+              title: Text(AppLocalizations.of(context)!.change_category),
               leading: const Icon(Icons.circle),
               onTap: _onEditCategory,
             ),
@@ -298,7 +300,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Change date"),
+              title: Text(AppLocalizations.of(context)!.change_date),
               leading: const Icon(Icons.calendar_today),
               onTap: _onEditDate,
             ),
@@ -308,7 +310,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Change amount"),
+              title: Text(AppLocalizations.of(context)!.change_amount),
               leading: const Icon(Icons.money),
               onTap: _onEditAmount,
             ),
@@ -334,7 +336,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
       builder: (context) => TextInputDialog(
         controller: controller,
         prefixIcon: Icon(FontAwesomeIcons.pen), 
-        title: Text("Enter new name"))
+        title: Text(AppLocalizations.of(context)!.enter_new_name))
     );
     if (newName != null && newName != "" && newName != oldName) {
       Transaction newTransaction = selectedTransaction.copyWith(
@@ -388,7 +390,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
         controller: controller,
         useNumberKeyboard: true,
         prefixIcon: Icon(FontAwesomeIcons.moneyBill),
-        title: Text("New amount"),
+        title: Text(AppLocalizations.of(context)!.new_amount),
       )
     );
     bool isExpense = true;
@@ -422,7 +424,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     if (_selectedTransactions.length != 1) {
       await showDialog(context: context, builder: (context) => ResponseDialog(
         response: Response.Error,
-        description: "You can only edit one transaction at a time.",
+        description: AppLocalizations.of(context)!.only_one_edit_description,
       ));
       return false;
     }
@@ -430,7 +432,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   }
 
   String? validateAmount(String? amount) {
-    if (amount == null) return "Empty amount not allowed";
+    if (amount == null) return AppLocalizations.of(context)!.empty_amount_not_allowed;
     String currencyCode = HiveDatabase().selectedAccount!.currencyCode;
     Map<String, dynamic> currency = currencies[currencyCode]!;
     int decimalDigits = currency["decimal_digits"];
@@ -440,7 +442,8 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
       RegExp("^[+,-] [0-9]{1,$intDigits}\\$decimalSeparator[0-9]{$decimalDigits}\$");
     if (!amount.contains(regex)) {
       String suffix = "0" + decimalSeparator + "0"*decimalDigits;
-      return "Format has to be: + " + suffix + " or - " + suffix;
+      String errorPrefix = AppLocalizations.of(context)!.required_format;
+      return "$errorPrefix + " + suffix + " or - " + suffix;
     } 
     return null;
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewTabBar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(int index)? setPage;
@@ -19,11 +20,11 @@ class NewTabBar extends StatelessWidget implements PreferredSizeWidget {
         controller: layoutController!.newTabController,
         tabs: <Widget>[
           Text(
-            "Income / Expense",
+            AppLocalizations.of(context)!.income_expense,
             style: TextStyle(fontSize: 18.0),
           ),
           Text(
-            "Templates",
+            AppLocalizations.of(context)!.templates,
             style: TextStyle(fontSize: 18.0),
           ),
         ],

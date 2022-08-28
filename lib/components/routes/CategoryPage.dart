@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/components/IconSelectionSheet.dart';
@@ -9,6 +8,7 @@ import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../dialogs/ResponseDialog.dart';
 import '../dialogs/TextInputDialog.dart';
@@ -38,7 +38,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Categories"),
+        title: Text(AppLocalizations.of(context)!.categories),
       ),
       body: FutureBuilder(
         future: allCategories,
@@ -55,7 +55,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 Card(
                   child: ListTile(
                     contentPadding: EdgeInsets.all(15),
-                    title: const Text("Add new account"),
+                    title: Text(AppLocalizations.of(context)!.add_new_category),
                     onTap: () => addCategory(context),
                     leading: DottedBorder(
                       color: Colors.black,
@@ -106,7 +106,7 @@ class _CategoryPageState extends State<CategoryPage> {
         children: [
           ListTile(
             contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Edit name"),
+            title: Text(AppLocalizations.of(context)!.edit_name),
             leading: const Icon(Icons.edit),
             onTap: () => saveNewName(context, category, listSetState)
           ),
@@ -116,7 +116,7 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
           ListTile(
             contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Change Icon"),
+            title: Text(AppLocalizations.of(context)!.change_icon),
             leading: const Icon(Icons.circle),
             onTap: () => saveNewIcon(context, category, listSetState)
           ),
@@ -126,7 +126,7 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
           ListTile(
             contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-            title: const Text("Delete account"),
+            title: Text(AppLocalizations.of(context)!.delete_category),
             leading: const Icon(Icons.delete),
             onTap: () => deleteCategory(context, category)
           ),
@@ -136,13 +136,13 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   void addCategory(BuildContext context) async {
-    _controller.text = "My Category";
+    _controller.text = AppLocalizations.of(context)!.category_template_name;
     String? iconName;
     int? colorInt;
     String? name = await showDialog<String>(
       context: context, 
       builder: (context) => TextInputDialog(
-        title: const Text("Enter a name for the new category"),
+        title: Text(AppLocalizations.of(context)!.new_name),
         controller: _controller,
         prefixIcon: const Icon(Icons.edit),
         )
@@ -151,7 +151,7 @@ class _CategoryPageState extends State<CategoryPage> {
       showDialog(
         context: context, 
         builder: (_) => ResponseDialog(
-          description: "A category with an identical name already exists.", 
+          description: AppLocalizations.of(context)!.category_already_exists, 
           response: Response.Error
         )
       );
@@ -195,12 +195,13 @@ class _CategoryPageState extends State<CategoryPage> {
       .map((Category category) => category.name!.toLowerCase())
       .contains(newName?.toLowerCase())) 
     {
+      String errorPrefix = AppLocalizations.of(context)!.category_already_exists_prefix;
+      String errorSuffix = AppLocalizations.of(context)!.category_already_exists_suffix;
       showDialog(
         context: context, 
         builder: (context) => AlertDialog(
-          title: const Text("Category with this name already exists"),
-          content: Text("You already have a category with the name \"$newName\"." + 
-            "You can not have two categories with the same name."),
+          title: Text(AppLocalizations.of(context)!.category_already_exists_title),
+          content: Text("$errorPrefix\"$newName\"$errorSuffix"),
         )
       );
       return;
@@ -225,10 +226,10 @@ class _CategoryPageState extends State<CategoryPage> {
     String? name = await showDialog<String>(
       context: context, 
       builder: (context) => TextInputDialog(
-        title: const Text("Enter a name for a category"),
+        title: Text(AppLocalizations.of(context)!.new_name),
         controller: _controller,
         prefixIcon: const Icon(Icons.edit),
-        )
+      )
     );
     return Future.value(name);
   }
@@ -261,9 +262,8 @@ class _CategoryPageState extends State<CategoryPage> {
     bool? sureToDelete = await showDialog<bool>(
       context: context, 
       builder: (context) => ConfirmDeleteDialog(
-        title: "Delete category?",
-        content: "Are you sure that you want to delete this category? " + 
-        "All transactions associated with this category will be deleted permanently!",
+        title: AppLocalizations.of(context)!.delete_category_title,
+        content: AppLocalizations.of(context)!.delete_category_description
       )
     );
     if (sureToDelete ?? false) {

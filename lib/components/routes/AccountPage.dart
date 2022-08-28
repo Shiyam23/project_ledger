@@ -13,6 +13,7 @@ import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 import '../dialogs/TextInputDialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AccountPage extends StatefulWidget {
 
@@ -38,7 +39,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Accounts"),
+        title: Text(AppLocalizations.of(context)!.accounts),
       ),
       body: FutureBuilder(
         future: allAcounts,
@@ -55,7 +56,9 @@ class _AccountPageState extends State<AccountPage> {
                 Card(
                   child: ListTile(
                     contentPadding: EdgeInsets.all(15),
-                    title: const Text("Add new account"),
+                    title: Text(
+                      AppLocalizations.of(context)!.add_new_account
+                    ),
                     onTap: () => addAccount(context),
                     leading: DottedBorder(
                       color: Colors.black,
@@ -99,7 +102,7 @@ class _AccountPageState extends State<AccountPage> {
             trailing: account.selected ? 
               Padding(
                 padding: const EdgeInsets.only(right: 15.0),
-                child: const Text("Selected"),
+                child: Text(AppLocalizations.of(context)!.selected),
               ) : null,
           ),
         ),
@@ -117,7 +120,7 @@ class _AccountPageState extends State<AccountPage> {
           children: [
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Edit name"),
+              title: Text(AppLocalizations.of(context)!.edit_name),
               leading: const Icon(Icons.edit),
               onTap: () => saveNewName(context, account)
             ),
@@ -127,7 +130,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Change Icon"),
+              title: Text(AppLocalizations.of(context)!.change_icon),
               leading: const Icon(Icons.circle),
               onTap: () => saveNewIcon(context, account)
             ),
@@ -150,7 +153,7 @@ class _AccountPageState extends State<AccountPage> {
             ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
-              title: const Text("Delete account"),
+              title: Text(AppLocalizations.of(context)!.delete_account),
               leading: const Icon(Icons.delete),
               onTap: () => deleteAccount(context, account)
             ),
@@ -183,8 +186,7 @@ class _AccountPageState extends State<AccountPage> {
       showDialog(
         context: context, 
         builder: (_) => ResponseDialog(
-          description: "A selected account can not be deleted. Please select " + 
-            "another account before deleting this.", 
+          description: AppLocalizations.of(context)!.delete_selected_account_description, 
           response: Response.Error
         )
       );
@@ -193,9 +195,8 @@ class _AccountPageState extends State<AccountPage> {
     bool? sureToDelete = await showDialog<bool>(
       context: context, 
       builder: (context) => ConfirmDeleteDialog(
-        title: "Delete account?",
-        content: "Are you sure that you want to delete this account? " + 
-        "All transactions associated with this account will be deleted permanently!",
+        title: AppLocalizations.of(context)!.delete_account_title,
+        content: AppLocalizations.of(context)!.delete_account_description
       )
     );
     if (sureToDelete ?? false) {
@@ -214,7 +215,7 @@ class _AccountPageState extends State<AccountPage> {
     String? name = await showDialog<String>(
       context: context, 
       builder: (context) => TextInputDialog(
-        title: const Text("Enter a new name for this account"),
+        title: Text(AppLocalizations.of(context)!.new_name),
         controller: _controller,
         prefixIcon: const Icon(Icons.edit),
         )
@@ -234,12 +235,13 @@ class _AccountPageState extends State<AccountPage> {
       .map((Account account) => account.name.toLowerCase())
       .contains(newName?.toLowerCase())) 
     {
+      String errorPrefix = AppLocalizations.of(context)!.account_already_exists_prefix;
+      String errorSuffix = AppLocalizations.of(context)!.account_already_exists_suffix;
       showDialog(
         context: context, 
         builder: (context) => AlertDialog(
-          title: const Text("Account with this name already exists"),
-          content: Text("You already have an account with the name \"$newName\"." + 
-            "You can not have two accounts with the same name."),
+          title: Text(AppLocalizations.of(context)!.account_already_exists_title),
+          content: Text("$errorPrefix\"$newName\"$errorSuffix"),
         )
       );
       return;
@@ -259,13 +261,13 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void addAccount(BuildContext context) async {
-    _controller.text = "My Account";
+    _controller.text = AppLocalizations.of(context)!.account_template_name;
     String? iconName;
     int? colorInt;
     String? name = await showDialog<String>(
       context: context, 
       builder: (context) => TextInputDialog(
-        title: const Text("Enter a name for the new account"),
+        title: Text(AppLocalizations.of(context)!.new_name),
         controller: _controller,
         prefixIcon: const Icon(Icons.edit),
         )
@@ -274,7 +276,7 @@ class _AccountPageState extends State<AccountPage> {
       showDialog(
         context: context, 
         builder: (_) => ResponseDialog(
-          description: "An account with an identical name already exists.", 
+          description: AppLocalizations.of(context)!.account_already_exists, 
           response: Response.Error
         )
       );
@@ -351,10 +353,9 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  
-
   String _getCurrencyText(String code) {
-    return "Currency: $code";
+    String currencyPrefix = AppLocalizations.of(context)!.currency_prefix;
+    return currencyPrefix + code;
   }
 
   @override

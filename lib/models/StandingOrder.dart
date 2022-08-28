@@ -43,9 +43,11 @@ class StandingOrder extends SelectableTile with EquatableMixin {
   }
 
   @override
-  Text get secondaryTitle => Text(
-    "${initialTransaction.category.name}\nNext: ${nextDueDate.format()}"
-  );
+  Text get secondaryTitle {
+    return Text(
+    "${initialTransaction.category.name}\n${nextDueDate.format()}"
+    );
+  }
 
   @override
   Text get title => Text(initialTransaction.name);

@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/models/currencies.dart';
-import 'package:project_ez_finance/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmountFormatter.dart';
 
 
 class NewMoneyAmountController extends TextEditingController {
   
   static NewMoneyAmountController? instance;
+  bool initialized = false;
   String? decimalSeparator;
   String? thousandSeparator;
   String? symbol;
@@ -28,10 +27,11 @@ class NewMoneyAmountController extends TextEditingController {
     return instance!;
   } 
 
-  TextInputFormatter setupController(
+  void setupController(
     Account account, 
     double? initialAmount
     ) {
+    initialized = true;
     NewMoneyAmountController();
     Map<String, dynamic> currencyMap = currencies[account.currencyCode]!;
     symbol = currencyMap["symbol"];
@@ -41,14 +41,7 @@ class NewMoneyAmountController extends TextEditingController {
     spaceBetweenAmountAndSymbol = 
       currencyMap["space_between_amount_and_symbol"];
     symbolOnLeft = currencyMap["symbol_on_left"];
-
     buildInitialText(initialAmount);
-    return RightSpaceFormatter(
-      decimalSeparator: decimalSeparator!,
-      symbol: symbol,
-      thousandSeparator: thousandSeparator,
-      precision: precision!,
-    );
   }
 
   void buildInitialText(double? initialAmount) {

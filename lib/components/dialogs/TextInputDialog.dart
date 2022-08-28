@@ -64,7 +64,9 @@ class TextInputDialog extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: Navigator.of(context).pop,
-                    child: const Text("Cancel"),
+                    child: Text(
+                      MaterialLocalizations.of(context).cancelButtonLabel
+                    ),
                   ),
                   TextButton(
                     onPressed: () {
@@ -72,7 +74,9 @@ class TextInputDialog extends StatelessWidget {
                         Navigator.of(context).pop(controller.text);
                       }
                     },
-                    child: const Text("Save"),
+                    child: Text(
+                      MaterialLocalizations.of(context).okButtonLabel
+                    ),
                   ),
                 ],
               ),

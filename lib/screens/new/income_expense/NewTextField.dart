@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
 import 'package:project_ez_finance/components/Keyboard.dart';
 import 'package:project_ez_finance/services/DateTimeFormatter.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class _NewTextField extends StatefulWidget {
   final double widthRatio;
@@ -85,7 +87,7 @@ class _NewDateFieldState extends State<NewDateField> {
       builder: (context, state) {
         return _NewTextField(
           key: ObjectKey(state.date),
-          labelText: "Date",
+          labelText: AppLocalizations.of(context)!.date,
           widthRatio: 0.3,
           onTap: widget.onTap,
           content: state.date?.format(),
@@ -115,7 +117,7 @@ class NewRepetitionDateField extends StatelessWidget {
     return _NewTextField(
       key: ValueKey(content),
       enabled: enabled,
-      labelText: "End date",
+      labelText: AppLocalizations.of(context)!.endDate,
       widthRatio: 0.5,
       onTap: onTap,
       content: content,
@@ -141,7 +143,7 @@ class _NewAccountFieldState extends State<NewAccountField> {
       builder: (context, state) {
         return _NewTextField(
           key: ObjectKey(state.account),
-          labelText: "Account",
+          labelText: AppLocalizations.of(context)!.account,
           onTap: widget.onTap,
           widthRatio: 0.5,
           content: state.account.toString(),
@@ -169,9 +171,9 @@ class _NewRepetitionFieldState extends State<NewRepetitionField> {
       builder: (context, state) {
         return _NewTextField(
           key: ObjectKey(state.repetition),
-          labelText: "Repetition",
+          labelText: AppLocalizations.of(context)!.repetition,
           onTap: widget.onTap,
-          content: state.repetition.toString(),
+          content: state.repetition!.toLocalizedString(context),
           icon: FontAwesomeIcons.repeat
         );
       },

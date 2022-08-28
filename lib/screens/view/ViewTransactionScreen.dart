@@ -11,6 +11,7 @@ import 'package:project_ez_finance/components/CategorySelectionSheet.dart';
 import 'package:project_ez_finance/components/PieChart.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
 import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
+import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
 import 'package:project_ez_finance/components/dialogs/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/models/Modes.dart';
@@ -419,19 +420,9 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   Future<bool> _checkForSingleItem() async{
     if (_selectedTransactions.length != 1) {
-      await showDialog(context: context, builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        title: Text("Error"),
-        content: Text("You can only edit one transaction at a time."),
-        actions: [
-          const Divider(height: 2, thickness: 2),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(), 
-            child: Text("OK")
-          )
-        ],
+      await showDialog(context: context, builder: (context) => ResponseDialog(
+        response: Response.Error,
+        description: "You can only edit one transaction at a time.",
       ));
       return false;
     }

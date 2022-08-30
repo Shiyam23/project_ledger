@@ -176,10 +176,28 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   @override
   void dispose() {
     _searchController.dispose();
+    _interstitialAd?.dispose();
     super.dispose();
   }
 
-  void _showRewardedAd() {
+  void _showRewardedAd() async {
+    if (_interstitialAd == null) {
+      LoadingProgress adloadingProgress = LoadingProgress();
+      showDialog(
+        context: context, 
+        builder: (context) => LoadingDialog(
+          loadingProgress: adloadingProgress, 
+          title: AppLocalizations.of(context)!.loading_ad
+        )
+      );
+      await Future.doWhile(() {
+        return Future.delayed(
+          Duration(milliseconds: 100), 
+          () => Future.value(_interstitialAd == null)
+        );
+      });
+      Navigator.pop(context);
+    }
     _interstitialAd?.show();
     _loadRewardedAd();
   }

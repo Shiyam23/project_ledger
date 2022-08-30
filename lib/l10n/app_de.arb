@@ -103,6 +103,7 @@
     "only_one_edit_description": "Sie können nur eine Transaktion gleichzeitig bearbeiten.",
     "empty_amount_not_allowed": "Leerer Betrag nicht erlaubt",
     "required_format": "Erforderliches Format:",
+    "loading_ad": "Lade Werbung",
 
     "@_PAGE": {},
     "change_icon": "Icon ändern",

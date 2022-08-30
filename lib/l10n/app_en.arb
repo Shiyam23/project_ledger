@@ -140,6 +140,7 @@
     "only_one_edit_description": "You can only edit one transaction at a time.",
     "empty_amount_not_allowed": "Empty amount not allowed",
     "required_format": "Required format:",
+    "loading_ad": "Loading ad",
     
     "@_PAGE": {},
     "change_icon": "Change icon",

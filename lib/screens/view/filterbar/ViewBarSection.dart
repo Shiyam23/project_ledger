@@ -164,7 +164,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
               tooltip: AppLocalizations.of(context)!.create_invoice,
               width: _width,
               icon: FontAwesomeIcons.filePdf,
-              onTap: _loadRewardedAd,
+              onTap: _showRewardedAd,
             ),
             SizedBox(width: _paddingWidth),
           ],
@@ -179,7 +179,12 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
     super.dispose();
   }
 
-  void _loadRewardedAd() async {
+  void _showRewardedAd() {
+    _interstitialAd?.show();
+    _loadRewardedAd();
+  }
+
+  Future<void> _loadRewardedAd() async {
     await InterstitialAd.load(
       adUnitId: AdmobHelper.getInterstitialVideoId, 
       request: AdRequest(), 
@@ -200,7 +205,6 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
         onAdFailedToLoad: (error) => _generatePDF(),
       )
     );
-    _interstitialAd?.show();
   }
 
   void _generatePDF() async {

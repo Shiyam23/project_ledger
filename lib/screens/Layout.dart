@@ -14,9 +14,6 @@ import 'package:project_ez_finance/screens/view/ViewTransactionScreen.dart';
 import 'package:project_ez_finance/screens/view/ViewTabBar.dart';
 import 'package:project_ez_finance/components/Keyboard.dart';
 
-import '../services/HiveDatabase.dart';
-import 'new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
-
 class Layout extends StatefulWidget {
 
   final ChangeNotifier homescreenChanged = ChangeNotifier();

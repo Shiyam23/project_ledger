@@ -7,12 +7,9 @@ import 'NewMoneyAmountController.dart';
 
 class NewMoneyAmount extends StatefulWidget {
 
-  final void Function(NewMoneyAmountController controller) setController;
   static final GlobalKey<State<NewMoneyAmount>> globalKey = GlobalKey<State<NewMoneyAmount>>();
 
-  NewMoneyAmount({
-    required this.setController, 
-  }) : 
+  NewMoneyAmount() : 
   super(key: globalKey);
 
   @override
@@ -22,7 +19,7 @@ class NewMoneyAmount extends StatefulWidget {
 
 class _NewMoneyAmountState extends State<NewMoneyAmount> {
   
-  late NewMoneyAmountController controller;
+  NewMoneyAmountController controller = NewMoneyAmountController.instance;
   late final TransactionDetailsCubit cubit = TransactionDetailsCubit.of(context);
   double fontSizeFactor = 0.15;
   Account? selectedAccount;
@@ -32,10 +29,9 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
 
   @override
   void initState() {
-    controller = NewMoneyAmountController(initialString: "0,00");
-    widget.setController(controller);
     controller.setSign = setSign;
     controller.updateFontSize = updateFontSize;
+    controller.buildInitialText(0);
     super.initState();
   }
 

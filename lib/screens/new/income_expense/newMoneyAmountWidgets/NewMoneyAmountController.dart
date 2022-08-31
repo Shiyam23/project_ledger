@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/models/Account.dart';
 import 'package:project_ez_finance/models/currencies.dart';
+import 'package:project_ez_finance/services/HiveDatabase.dart';
 
 
 class NewMoneyAmountController extends TextEditingController {
   
-  static NewMoneyAmountController? instance;
+  static NewMoneyAmountController instance = NewMoneyAmountController._internal();
   bool initialized = false;
   String? decimalSeparator;
   String? thousandSeparator;
@@ -19,20 +20,16 @@ class NewMoneyAmountController extends TextEditingController {
   void Function(int)? updateFontSize;
   void Function(bool)? setSign;
 
-  NewMoneyAmountController._internal();
-
-  factory NewMoneyAmountController({String? initialString}) {
-    instance ??= NewMoneyAmountController._internal();
-    if (initialString != null) instance?.initialString = initialString;
-    return instance!;
-  } 
+  NewMoneyAmountController._internal() {
+    this.initialString = initialString;
+    setupController(HiveDatabase().selectedAccount!, 0);
+  }
 
   void setupController(
     Account account, 
     double? initialAmount
     ) {
     initialized = true;
-    NewMoneyAmountController();
     Map<String, dynamic> currencyMap = currencies[account.currencyCode]!;
     symbol = currencyMap["symbol"];
     precision = currencyMap["decimal_digits"];
@@ -41,7 +38,6 @@ class NewMoneyAmountController extends TextEditingController {
     spaceBetweenAmountAndSymbol = 
       currencyMap["space_between_amount_and_symbol"];
     symbolOnLeft = currencyMap["symbol_on_left"];
-    buildInitialText(initialAmount);
   }
 
   void buildInitialText(double? initialAmount) {

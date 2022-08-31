@@ -28,7 +28,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
   bool _templateChecked = false;
   List<Account>? allAccounts;
   Account? mainAccount;
-  NewMoneyAmountController? _amountController;
+  NewMoneyAmountController _amountController = NewMoneyAmountController.instance;
   TextEditingController? _titleController;
   TransactionDetails? previousDetails;
 
@@ -55,9 +55,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     return  SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          NewMoneyAmount(
-            setController: setAmountController,
-          ),
+          NewMoneyAmount(),
           Transform.translate(
             offset: Offset(0,- MediaQuery.of(context).size.width/12,),
             child: NewCategoryIcon(
@@ -110,10 +108,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     );
   }
 
-  void setAmountController(NewMoneyAmountController controller) {
-    _amountController = controller;
-  }
-
   void selectDate(BuildContext context) async {
     TransactionDetails details = TransactionDetailsCubit.of(context).state;
     FocusScope.of(context).unfocus();
@@ -128,7 +122,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     details = details.copyWith(
       date: pickedDateTime ?? details.date,
       name: _titleController!.text,
-      amount: _amountController!.getAmount()
+      amount: _amountController.getAmount()
     );
     TransactionDetailsCubit.of(context).projectDetails(details);
   }
@@ -143,7 +137,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     details = details.copyWith(
       repetition: selectedRepetition ?? details.repetition,
       name: _titleController!.text,
-      amount: _amountController!.getAmount()
+      amount: _amountController.getAmount()
     );
     TransactionDetailsCubit.of(context).projectDetails(details);
   }
@@ -158,7 +152,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       details = details.copyWith(
         account: account,
         name: _titleController!.text,
-        amount: _amountController!.getAmount()
+        amount: _amountController.getAmount()
       );
       TransactionDetailsCubit.of(context).projectDetails(details);
     }
@@ -189,10 +183,10 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     Transaction transaction = Transaction(
       addDateTime: DateTime.now(),
       account: details.account!,
-      amount: _amountController!.getAmount(),
-      amountString: _amountController!.getAmountString(),
+      amount: _amountController.getAmount(),
+      amountString: _amountController.getAmountString(),
       category: details.category!,
-      isExpense: _amountController!.isExpense,
+      isExpense: _amountController.isExpense,
       name: _titleController!.text,
       repetition: details.repetition!,
       date: details.date!
@@ -234,7 +228,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       repetition : Repetition.none,
       isExpense: true
     );
-    _amountController!.buildInitialText(null);
+    _amountController.buildInitialText(null);
     TransactionDetailsCubit.of(context).projectDetails(details);
   }
   
@@ -244,7 +238,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     details = details.copyWith(
       category: category,
       name: _titleController!.text,
-      amount: _amountController!.getAmount()
+      amount: _amountController.getAmount()
     ); 
     BlocProvider.of<TransactionDetailsCubit>(context).projectDetails(details);
   }

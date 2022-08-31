@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
+import 'package:flutter/src/foundation/diagnostics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
@@ -36,13 +38,17 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
     super.initState();
     transactionBloc.add(UpdateStandingOrderTransactions());
     lController = LayoutController(
-        bottomSelectedIndex: 1,
-        currentPage: 2,
-        newTabController:
-            TabController(length: 2, initialIndex: 0, vsync: this),
-        overViewTabController:
-            TabController(length: 2, initialIndex: 1, vsync: this),
-        pageController: PageController(initialPage: 2, keepPage: true));
+      bottomSelectedIndex: 1,
+      currentPage: 2,
+      newTabController:
+          TabController(length: 2, initialIndex: 0, vsync: this),
+      overViewTabController:
+          TabController(length: 2, initialIndex: 1, vsync: this),
+      pageController: PageController(
+        initialPage: 2, 
+        keepPage: true,
+      )
+    );
   }
 
   @override
@@ -61,7 +67,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
     List<Widget> stackList = [
       Scaffold(
             resizeToAvoidBottomInset: false,
-            appBar: getTopBar(lController!.currentPage!) as PreferredSizeWidget?,
+            appBar: getTopBar(lController!.currentPage!) as PreferredSizeWidget? ,
             body: buildPageView(),
             bottomNavigationBar: MainBottomNaviationBar(
               layoutController: lController,
@@ -82,6 +88,8 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
       child: PageView(
         controller: lController!.pageController,
         onPageChanged: pageChanged,
+        physics: CustomPageViewScrollPhysics(parent: ClampingScrollPhysics()),
+        pageSnapping: true,
         children: <Widget>[
           ViewStandingOrderScreen(),
           ViewTransactionScreen(),
@@ -151,3 +159,21 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   }
 
 }
+
+class CustomPageViewScrollPhysics extends ScrollPhysics {
+  const CustomPageViewScrollPhysics({ScrollPhysics? parent})
+      : super(parent: parent);
+
+  @override
+  CustomPageViewScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return CustomPageViewScrollPhysics(parent: buildParent(ancestor)!);
+  }
+
+  @override
+  SpringDescription get spring => SpringDescription.withDampingRatio(
+    mass: 0.5,
+    stiffness: 1000,
+    ratio: 1.1,
+  );
+}
+

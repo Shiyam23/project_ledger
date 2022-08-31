@@ -6,7 +6,6 @@ class DollavuDialog extends StatelessWidget {
     Key? key,
     this.child,
     this.title,
-    this.padding = const EdgeInsets.symmetric(horizontal: 25.0, vertical: 5.0),
     this.withButtons = true,
     this.onPressedSave,
     this.onPressedCancel,
@@ -14,7 +13,6 @@ class DollavuDialog extends StatelessWidget {
 
   final Widget? child;
   final Widget? title;
-  final EdgeInsetsGeometry padding;
   final bool withButtons;
   final Function? onPressedSave;
   final Function? onPressedCancel;
@@ -23,12 +21,12 @@ class DollavuDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return SimpleDialog(
       title: title,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)
+      ),
       children: <Widget>[
         Divider(thickness: 2.0),
-        Padding(
-          padding: padding,
-          child: child,
-        ),
+        child!,
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[

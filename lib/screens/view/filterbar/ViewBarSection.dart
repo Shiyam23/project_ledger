@@ -306,7 +306,7 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
     double _width = (MediaQuery.of(context).size.width - _paddingWidth * 2) / 6;
     return ValueListenableBuilder(
       valueListenable: widget.selectedTransactionsNotifier,
-      builder: (context, numberSelected, _) {
+      builder: (context, int numberSelected, _) {
         return AppBar(
           title: Row(
             children: [
@@ -328,13 +328,12 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
           ),
           actions: <Widget>[
             SizedBox(width: _paddingWidth),
-            AnimatedOpacity(
-              opacity: (numberSelected == 1 ? 1 : 0),
+            AnimatedSwitcher(
               duration: const Duration(milliseconds: 150),
-              child: ViewBarIcon(
-                width: _width,
-                icon: Icons.edit,
-                onTap: widget.onEdit,
+              child: getEditButton(_width, numberSelected),
+              transitionBuilder: (child, animation) => FadeTransition(
+                opacity: animation,
+                child: child,
               ),
             ),
             ViewBarIcon(
@@ -352,5 +351,18 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
         );
       }
     );
+  }
+
+  Widget getEditButton(double width, int selectedTransactions) {
+    if (selectedTransactions == 1) {
+      return ViewBarIcon(
+        width: width,
+        icon: Icons.edit,
+        onTap: widget.onEdit,
+      );
+    } else {
+      return SizedBox(width: width);
+    }
+    
   }
 }

@@ -129,6 +129,10 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
               );
             }
             if (state is TransactionLoaded) {
+              for (Transaction transaction in state.transactionList) {
+                GlobalObjectKey key = GlobalObjectKey(transaction);
+                transactionKeys[transaction.hashCode] = key;
+              }
               return Flexible(
                 child: Scrollbar(
                   child: ListView.builder(
@@ -149,8 +153,6 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                       }
                       index = index - 1;
                       Transaction transaction = state.transactionList[index];
-                      GlobalObjectKey key = GlobalObjectKey(transaction);
-                      transactionKeys[transaction.hashCode] = key;
                       return Card(
                         elevation: 10.0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -159,7 +161,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                           onTap: () => onTransactionSelect(transaction),
                           selectable: true,
                           selected: _selectedTransactions.contains(transaction),
-                          key: key,
+                          key: transactionKeys[transaction.hashCode],
                           tile: transaction,
                         ),
                       );

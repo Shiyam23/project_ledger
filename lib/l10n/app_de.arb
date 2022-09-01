@@ -69,6 +69,7 @@
     "backup_corrupted": "Backup-Datei beschädigt",
     "backup_corrupted_description": "Die von Ihnen ausgewählte Backupdatei ist beschädigt. Bitte wählen Sie eine andere Backupdatei aus.",
     "no_transactions_this_month": "Keine Transaktionen für diesen Monat",
+    "ad": "Werbung",
 
     "@_VIEW_SCREEN": {},
     "transactions_tab" : "Transaktionen",

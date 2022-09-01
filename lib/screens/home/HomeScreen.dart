@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/dialogs/LoadingDialog.dart';
 import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
 import 'package:project_ez_finance/components/button/Button.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
+import 'package:project_ez_finance/services/AdmobHelper.dart';
 import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 import '../../models/CategoryChartInfo.dart';
 import '../../models/Modes.dart';
@@ -27,9 +29,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  late BannerAd _bottomBannerAd;
+
   @override
   void initState() {
     super.initState();
+    _createInlineBannerAd();
     this.context.read<AccountChangeNotifier>().changed = true;
   }
 
@@ -49,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.zero,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                padding: EdgeInsets.all(20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -95,13 +100,39 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(height: 20),
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              elevation: 10,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(AppLocalizations.of(context)!.ad,
+                      style: TextStyle(
+                        fontSize: factor * 27,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor
+                      ),
+                    ),
+                    SizedBox(height: factor * 20),
+                    Container(
+                      height: _bottomBannerAd.size.height.toDouble(),
+                      width: _bottomBannerAd.size.width.toDouble(),
+                      child: AdWidget(ad: _bottomBannerAd)
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               elevation: 10,
               margin: EdgeInsets.zero,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                padding: EdgeInsets.all(20),
                 child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -191,6 +222,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+   void _createInlineBannerAd() {
+    _bottomBannerAd = BannerAd(
+      adUnitId: AdmobHelper.getInlineBannerId,
+      size: AdSize.largeBanner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdFailedToLoad: (ad, _) => ad.dispose(),
+      )
+    );
+    _bottomBannerAd.load();
   }
 
   List<Widget> diagramRow(List<CategoryChartInfo> list, BuildContext context) {
@@ -345,5 +388,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
+  @override
+  void dispose() {
+    super.dispose();
+    _bottomBannerAd.dispose();
+  }
 }

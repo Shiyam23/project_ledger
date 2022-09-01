@@ -66,12 +66,10 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   final ValueNotifier<int> selectedTransactionsNotifier = ValueNotifier<int>(0);
   final HashMap<int, GlobalObjectKey> transactionKeys = new HashMap();
-  late BannerAd _bottomBannerAd;
 
   @override
   void initState() {
     super.initState();
-    _createInlineBannerAd();
     _databaseBloc?.add(GetTransaction(widget.request));
   }
 
@@ -88,14 +86,13 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
             child: topBar
           ),
         ),
-        BlocConsumer<TransactionBloc, TransactionState>(
+        BlocBuilder<TransactionBloc, TransactionState>(
           buildWhen: (previousState, currentState) {
             return !(previousState is TransactionLoaded &&
                     currentState is TransactionLoaded) ||
                 !widget._eq(previousState.transactionList,
                     currentState.transactionList);
           },
-          listener: (_, __) => _createInlineBannerAd(),
           builder: (BuildContext context, TransactionState state) {
             if (state is GraphLoaded) {
               return Expanded(
@@ -139,19 +136,10 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                     key: ValueKey(state.transactionList.length),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: state.transactionList.length + 1,
+                    itemCount: state.transactionList.length,
                     physics: BouncingScrollPhysics(),
                     dragStartBehavior: DragStartBehavior.down,
                     itemBuilder: (BuildContext context, int index) {
-                      if (index == 0) {
-                        return Card(
-                          child: Container(
-                            height: _bottomBannerAd.size.height.toDouble(),
-                            width: _bottomBannerAd.size.width.toDouble(),
-                            child: AdWidget(ad: _bottomBannerAd)),
-                        );
-                      }
-                      index = index - 1;
                       Transaction transaction = state.transactionList[index];
                       return Card(
                         elevation: 10.0,
@@ -177,17 +165,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     );
   }
 
-  void _createInlineBannerAd() {
-    _bottomBannerAd = BannerAd(
-      adUnitId: AdmobHelper.getInlineBannerId,
-      size: AdSize.largeBanner,
-      request: AdRequest(),
-      listener: BannerAdListener(
-        onAdFailedToLoad: (ad, _) => ad.dispose(),
-      )
-    );
-    _bottomBannerAd.load();
-  }
+ 
 
   Future<void> onTransactionSelect(Transaction transaction) async {
     if (_selectedTransactions.contains(transaction)) {
@@ -454,7 +432,6 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
   void dispose() {
     _animationController.dispose();
     _selectedTransactions.clear();
-    _bottomBannerAd.dispose();
     super.dispose();
   }
 }

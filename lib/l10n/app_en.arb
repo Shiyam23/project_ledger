@@ -94,6 +94,7 @@
     "backup_corrupted": "Backup File corrupted",
     "backup_corrupted_description": "The Backup File you chose is corrupted. Please choose another backup file.",
     "no_transactions_this_month": "No transactions for this month",
+    "ad": "Werbung",
 
     "@_VIEW_SCREEN": {},
     "transactions_tab" : "Transactions",

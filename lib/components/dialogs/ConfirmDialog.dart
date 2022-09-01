@@ -20,8 +20,7 @@ class ConfirmDeleteDialog extends StatelessWidget {
       title: Text(title),
       content: Text(
         content, 
-        textAlign: TextAlign.justify,
-        textWidthBasis: TextWidthBasis.longestLine,
+        textAlign: TextAlign.left,
       ),
       actions: [
         TextButton(

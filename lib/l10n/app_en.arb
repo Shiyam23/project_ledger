@@ -18,6 +18,11 @@
     "no_category_error": "No Categories available. Please create a category to add a new transaction!",
     "next": "Next",
 
+    "@_NAVIGATIONBAR": {},
+    "tab_overview": "Overview",
+    "tab_home": "Home",
+    "tab_new": "New",
+
     "@_REPETITION": {},
     "noRepetition": "No Repetition",
     "everyDay": "Every day",

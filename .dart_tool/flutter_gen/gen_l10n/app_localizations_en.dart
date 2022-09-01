@@ -59,6 +59,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get next => 'Next';
 
   @override
+  String get tab_overview => 'Overview';
+
+  @override
+  String get tab_home => 'Home';
+
+  @override
+  String get tab_new => 'New';
+
+  @override
   String get noRepetition => 'No Repetition';
 
   @override

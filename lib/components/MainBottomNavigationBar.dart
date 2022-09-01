@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/components/LayoutController.dart';
 import 'package:project_ez_finance/themes/DTheme.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainBottomNaviationBar extends StatefulWidget {
   //
@@ -20,29 +21,31 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
   final LayoutController? lController;
   final void Function(int index) setPage;
 
-  final List<BottomNavigationBarItem> bottomNavBarItems = [
-    BottomNavigationBarItem(
-      icon: Padding(
-        padding: const EdgeInsets.only(bottom: 5),
-        child: new Icon(FontAwesomeIcons.book),
+  List<BottomNavigationBarItem> bottomNavBarItems(context) {
+    return [
+      BottomNavigationBarItem(
+        icon: Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: new Icon(FontAwesomeIcons.book),
+        ),
+        label: AppLocalizations.of(context)!.tab_overview
       ),
-      label: 'Overview'
-    ),
-    BottomNavigationBarItem(
-      icon: Padding(
-        padding: const EdgeInsets.only(bottom: 5),
-        child: Icon(FontAwesomeIcons.house),
+      BottomNavigationBarItem(
+        icon: Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: Icon(FontAwesomeIcons.house),
+        ),
+        label: AppLocalizations.of(context)!.tab_home
       ),
-      label: 'Home'
-    ),
-    BottomNavigationBarItem(
-      icon: Padding(
-        padding: const EdgeInsets.only(bottom: 5),
-        child: Icon(FontAwesomeIcons.circlePlus),
-      ),
-      label: 'New',
-    )
-  ];
+      BottomNavigationBarItem(
+        icon: Padding(
+          padding: const EdgeInsets.only(bottom: 5),
+          child: Icon(FontAwesomeIcons.circlePlus),
+        ),
+        label: AppLocalizations.of(context)!.tab_new,
+      )
+    ];
+  }
 
   _MainBottomNaviationBarState(this.lController, this.setPage);
 
@@ -53,7 +56,7 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
         currentIndex: lController!.bottomSelectedIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white38,
-        items: bottomNavBarItems,
+        items: bottomNavBarItems(context),
         onTap: (index) {
           lController!.bottomSelectedIndex = index;
           setPage(index);

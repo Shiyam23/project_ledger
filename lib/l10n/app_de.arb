@@ -18,6 +18,11 @@
     "no_category_error": "Keine Kategorien verfügbar. Erstellen Sie eine neue Kategorie, um eine Transaktion hinzuzufügen.",
     "next": "Demnächst",
 
+    "@_NAVIGATIONBAR": {},
+    "tab_overview": "Übersicht",
+    "tab_home": "Home",
+    "tab_new": "Neu",
+
     "@_REPETITION": {},
     "noRepetition": "Keine Wiederholung",
     "everyDay": "Jeden Tag",

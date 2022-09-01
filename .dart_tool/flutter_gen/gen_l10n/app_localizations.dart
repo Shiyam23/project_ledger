@@ -196,6 +196,24 @@ abstract class AppLocalizations {
   /// **'Next'**
   String get next;
 
+  /// No description provided for @tab_overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get tab_overview;
+
+  /// No description provided for @tab_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tab_home;
+
+  /// No description provided for @tab_new.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get tab_new;
+
   /// No description provided for @noRepetition.
   ///
   /// In en, this message translates to:

@@ -8,6 +8,7 @@
     "accounts": "Konten",
     "template": "Vorlage",
     "templates": "Vorlagen",
+    "amount": "Betrag",
     "create": "Erstellen",
     "see_more": "Siehe mehr",
     "something_went_wrong": "Irgendwas ging schief. Versuchen Sie es nocheinmal!",
@@ -147,5 +148,10 @@
     "repetition_delete": "Lösche Wiederholung",
     "repetition_delete_title": "Lösche Wiederholung?",
     "repetition_delete_description": "Sind Sie sicher, dass Sie diese Wiederholung löschen möchten? Die von dieser Wiederholung hinzugefügten Transaktionen werden nicht gelöscht.",
-    "repetition_delete_error_description": "Beim Löschen dieser Wiederholung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    "repetition_delete_error_description": "Beim Löschen dieser Wiederholung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+
+    "@PDF": {},
+    "invoice": "Abrechnung",
+    "generated_by": "Erstellt mithilfe von ",
+    "page": "Seite"
 }

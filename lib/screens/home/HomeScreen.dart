@@ -372,7 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
       transactions: transactions,
       color: Theme.of(context).primaryColor 
     );
-    await invoice.openInvoice();
+    await invoice.openInvoice(context);
     loadingProgress.initialize(1);
     loadingProgress.forward();
     loadingProgress.finish();

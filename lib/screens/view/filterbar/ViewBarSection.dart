@@ -242,7 +242,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
         transactions: state.transactionList, 
         color: Theme.of(context).primaryColor,
         );
-        await invoice.openInvoice();
+        await invoice.openInvoice(context);
         loadingProgress.initialize(1);
         loadingProgress.forward();
         loadingProgress.finish();

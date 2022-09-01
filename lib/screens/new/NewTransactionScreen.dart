@@ -176,7 +176,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
       _showError(context, NewTransactionError.NoAccount);
       return;
     }
-    if (details.repetition == null || _amountController == null) {
+    if (details.repetition == null) {
       _showError(context, NewTransactionError.GeneralError);
       return;
     }

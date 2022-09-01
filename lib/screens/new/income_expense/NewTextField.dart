@@ -12,10 +12,7 @@ class _NewTextField extends StatefulWidget {
   final String labelText;
   final String? content;
   final void Function()? onTap;
-  final double fontSize;
   final bool enabled;
-  final bool readOnly;
-  final TextEditingController? controller;
   final IconData icon;
 
   _NewTextField({
@@ -23,10 +20,7 @@ class _NewTextField extends StatefulWidget {
     required this.labelText,
     this.content,
     this.enabled = true,
-    this.fontSize = 15,
     this.onTap,
-    this.readOnly = true,
-    this.controller,
     required this.icon,
     Key? key,
   }) : super(key: key);
@@ -43,13 +37,10 @@ class _NewTextFieldState extends State<_NewTextField> {
       child: TextFormField(
         enableInteractiveSelection: false,
         onTap: widget.onTap,
-        controller: widget.controller,
         initialValue: widget.content,
-        readOnly: widget.readOnly,
         enabled: widget.enabled,
         style: TextStyle(
           height: 1.5,
-            fontSize: widget.fontSize,
             color: Theme.of(context).colorScheme.primary),
         decoration: InputDecoration(
           border: OutlineInputBorder(),

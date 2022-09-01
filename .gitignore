@@ -20,7 +20,8 @@
 
 # Flutter/Dart/Pub related
 **/doc/api/
-.dart_tool/
+.dart_tool/*
+!.dart_tool/flutter_gen
 .flutter-plugins
 .packages
 .pub-cache/

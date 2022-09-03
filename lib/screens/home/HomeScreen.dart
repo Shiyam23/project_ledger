@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Padding(
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Card(
               elevation: 10,
@@ -58,36 +58,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.create_invoice,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.create_invoice,
+                          style: TextStyle(
+                            fontSize: 27 * factor,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor
+                          ),
+                        ),
+                        SizedBox(height: factor * 5),
+                        FittedBox(
+                          child: Text(_formatPreviousMonth(),
                             style: TextStyle(
-                              fontSize: 27 * factor,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 22 * factor,
+                              overflow: TextOverflow.fade,
                               color: Theme.of(context).primaryColor
                             ),
                           ),
-                          SizedBox(height: factor * 5),
-                          FittedBox(
-                            child: Text(_formatPreviousMonth(),
-                              style: TextStyle(
-                                fontSize: 22 * factor,
-                                overflow: TextOverflow.fade,
-                                color: Theme.of(context).primaryColor
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: factor * 20),
-                          RoundGradientButton(
-                            onPressed: () => _createInvoice(context), 
-                            text: AppLocalizations.of(context)!.create,
-                            widthRatio: 0.3,
-                          )
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: factor * 20),
+                        RoundGradientButton(
+                          onPressed: () => _createInvoice(context), 
+                          text: AppLocalizations.of(context)!.create,
+                          widthRatio: 0.3,
+                        )
+                      ],
                     ),
                     Container(
                       padding: EdgeInsets.only(right: 10),
@@ -115,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor
                       ),
-                    ),
+                    ),  
                     SizedBox(height: factor * 20),
                     Container(
                       height: _bottomBannerAd.size.height.toDouble(),

@@ -87,8 +87,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
       child: PageView(
         controller: lController!.pageController,
         onPageChanged: pageChanged,
-        physics: CustomPageViewScrollPhysics(parent: ClampingScrollPhysics()),
-        pageSnapping: true,
+        physics: ClampingScrollPhysics(),
         children: <Widget>[
           ViewStandingOrderScreen(),
           ViewTransactionScreen(),

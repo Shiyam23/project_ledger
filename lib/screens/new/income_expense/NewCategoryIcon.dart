@@ -123,7 +123,7 @@ Widget build(BuildContext context) {
             child: Text(
               _selectedCategory?.name ?? AppLocalizations.of(context)!.category,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: MediaQuery.of(context).size.height / 50,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).primaryColor
               ),

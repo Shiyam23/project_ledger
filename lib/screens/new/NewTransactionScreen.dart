@@ -100,6 +100,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
           NewSaveAsTemplate(
             (bool checked) => _templateChecked = checked, 
             _templateChecked),
+          SizedBox(height: MediaQuery.of(context).size.height/40),
           NewBottonButtons(
             onSave: () => saveTransaction(context), 
             onReset: () => resetInput(context)),

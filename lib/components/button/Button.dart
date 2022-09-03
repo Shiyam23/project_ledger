@@ -5,13 +5,14 @@ class RoundGradientButton extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
   final double widthRatio;
+  final double fontSizeFactor;
 
   const RoundGradientButton({
     Key? key,
     required this.onPressed,
     required this.text,
-    required this.widthRatio
-
+    required this.widthRatio,
+    this.fontSizeFactor = 1
   }) : super(key: key);
 
   @override
@@ -39,7 +40,7 @@ class RoundGradientButton extends StatelessWidget {
             color: Colors.white,
             fontFamily: "Roboto",
             fontStyle: FontStyle.normal,
-            fontSize: width * widthRatio * 0.1
+            fontSize: width * widthRatio * 0.1 * fontSizeFactor
           ),
           textAlign: TextAlign.center,
         )
@@ -53,12 +54,14 @@ class RoundButton extends StatelessWidget {
   final String text;
   final void Function()? onPressed;
   final double widthRatio;
+  final double fontSizeFactor;
 
   const RoundButton({
     Key? key,
     required this.onPressed,
     required this.text,
-    required this.widthRatio
+    required this.widthRatio,
+    this.fontSizeFactor = 1
   }) : super(key: key);
 
   @override
@@ -87,7 +90,7 @@ class RoundButton extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             fontFamily: "Roboto",
             fontStyle: FontStyle.normal,
-            fontSize: screenWidth * widthRatio * 0.1
+            fontSize: screenWidth * widthRatio * 0.1 * fontSizeFactor
           ),
           textAlign: TextAlign.center,
         )

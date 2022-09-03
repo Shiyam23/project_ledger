@@ -19,11 +19,13 @@ class NewBottonButtons extends StatelessWidget {
           onPressed: onReset, 
           text: AppLocalizations.of(context)!.reset,
           widthRatio: 0.4,
+          fontSizeFactor: 0.8,
         ),
         RoundGradientButton(
+          onPressed: onSave,
+          text: MaterialLocalizations.of(context).saveButtonLabel,
           widthRatio: 0.4,
-          onPressed: onSave, 
-          text: MaterialLocalizations.of(context).saveButtonLabel
+          fontSizeFactor: 0.8,
         )
       ],
     );

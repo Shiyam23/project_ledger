@@ -46,7 +46,7 @@ class Repetition extends Equatable{
       String days = AppLocalizations.of(context)!.days;
       String months = AppLocalizations.of(context)!.months;
       String years = AppLocalizations.of(context)!.years;
-      buffer.write("$every $amount");
+      buffer.write("$every $amount ");
       switch (time!) {
         case CalenderUnit.daily:
           buffer.write(days);

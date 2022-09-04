@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Text(
                           AppLocalizations.of(context)!.create_invoice,
+                          softWrap: false,
                           style: TextStyle(
                             fontSize: 27 * factor,
                             fontWeight: FontWeight.bold,
@@ -87,18 +88,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       ],
                     ),
-                    Container(
-                      padding: EdgeInsets.only(right: 10),
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      child: const Image(
+                    Flexible(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height * 0.12,
+                        ),
+                        child: const Image(
                           image: AssetImage('assets/icons/invoice_new.png')
                         ),
+                      ),
                     )
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               elevation: 10,
@@ -124,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               elevation: 10,
@@ -202,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           }
                           return ListView(
-                            physics: BouncingScrollPhysics(),
+                            physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             children: 
                               diagramRow((snapshot.data as List<CategoryChartInfo>), context)

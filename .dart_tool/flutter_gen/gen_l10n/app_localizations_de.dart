@@ -125,7 +125,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get selectRepetition => 'Wähle Wiederholung aus';
 
   @override
-  String get transaction_added => 'Transaction hinzugefügt';
+  String get transaction_added => 'Transaktion hinzugefügt';
 
   @override
   String get transaction_noname => 'Bitte geben Sie einen Namen ein!';

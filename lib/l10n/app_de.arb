@@ -45,7 +45,7 @@
     "nameTextFieldLabel": "Name",
     "endDate": "Enddatum",
     "selectRepetition": "Wähle Wiederholung aus",
-    "transaction_added": "Transaction hinzugefügt",
+    "transaction_added": "Transaktion hinzugefügt",
     "transaction_noname": "Bitte geben Sie einen Namen ein!",
     "transaction_nocategory": "Bitte wählen Sie eine Kategorie aus!",
     "transaction_nodate": "Bitte wählen Sie ein Datum aus!",

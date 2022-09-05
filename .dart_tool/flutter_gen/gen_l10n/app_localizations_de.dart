@@ -299,10 +299,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get loading_ad => 'Lade Werbung';
 
   @override
-  String get change_icon => 'Icon ändern';
+  String get change_icon => 'Symbol ändern';
 
   @override
-  String get new_name => 'Einen neuen Namen eingeben';
+  String get new_name => 'Neuen Namen eingeben';
+
+  @override
+  String get select_background => 'Wähle Hintergrundfarbe';
+
+  @override
+  String get select_icon => 'Wähle Symbol';
 
   @override
   String get add_new_account => 'Neues Konto hinzufügen';

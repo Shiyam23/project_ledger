@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'categoryIcon/CategoryIcon.dart';
 import 'categoryIcon/CategoryIconData.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
   
   Future<dynamic> showIconSheet(BuildContext context, bool showOnlyColor) async {
@@ -18,7 +19,9 @@ import 'categoryIcon/CategoryIconData.dart';
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                showOnlyColor ? "Select background color" : "Select icon",
+                showOnlyColor ? 
+                AppLocalizations.of(context)!.select_background : 
+                AppLocalizations.of(context)!.select_icon,
                 style: const TextStyle(
                   fontSize: 20
                 ),

@@ -113,8 +113,10 @@
     "loading_ad": "Lade Werbung",
 
     "@_PAGE": {},
-    "change_icon": "Icon ändern",
-    "new_name": "Einen neuen Namen eingeben",
+    "change_icon": "Symbol ändern",
+    "new_name": "Neuen Namen eingeben",
+    "select_background": "Wähle Hintergrundfarbe",
+    "select_icon": "Wähle Symbol",
 
     "@_ACCOUNT_PAGE": {},
     "add_new_account": "Neues Konto hinzufügen",

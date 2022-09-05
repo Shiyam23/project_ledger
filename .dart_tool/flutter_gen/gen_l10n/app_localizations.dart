@@ -688,6 +688,18 @@ abstract class AppLocalizations {
   /// **'Enter a new name'**
   String get new_name;
 
+  /// No description provided for @select_background.
+  ///
+  /// In en, this message translates to:
+  /// **'Select background color'**
+  String get select_background;
+
+  /// No description provided for @select_icon.
+  ///
+  /// In en, this message translates to:
+  /// **'Select icon'**
+  String get select_icon;
+
   /// No description provided for @add_new_account.
   ///
   /// In en, this message translates to:

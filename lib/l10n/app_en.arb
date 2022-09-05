@@ -152,6 +152,8 @@
     "@_PAGE": {},
     "change_icon": "Change icon",
     "new_name": "Enter a new name",
+    "select_background": "Select background color",
+    "select_icon": "Select icon",
 
     "@_ACCOUNT_PAGE": {},
     "add_new_account": "Add new account",

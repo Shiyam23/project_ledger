@@ -305,6 +305,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get new_name => 'Enter a new name';
 
   @override
+  String get select_background => 'Select background color';
+
+  @override
+  String get select_icon => 'Select icon';
+
+  @override
   String get add_new_account => 'Add new account';
 
   @override

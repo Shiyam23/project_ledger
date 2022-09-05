@@ -383,13 +383,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get repetition_starting_date => 'Startdatum:';
 
   @override
-  String get repetition_next_due_date => 'Nächstes Fälligkeitsdatum:';
+  String get repetition_next_due_date => 'Fällig:';
 
   @override
   String get repetition_end_date => 'Enddatum:';
 
   @override
-  String get repetition_total_transactions => 'Anzahl Transaktionen:';
+  String get repetition_total_transactions => 'Transaktionen:';
 
   @override
   String get repetition_total_amount => 'Gesamtbetrag:';

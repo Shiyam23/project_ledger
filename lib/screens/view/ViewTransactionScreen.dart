@@ -22,6 +22,8 @@ import 'dart:math' as math;
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../components/EmptyNotification.dart';
+
 class ViewTransactionScreen extends StatefulWidget {
   final Function _eq = const ListEquality().equals;
   final TransactionRequest request = TransactionRequest(
@@ -124,6 +126,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
               );
             }
             if (state is TransactionLoaded) {
+              if (state.transactionList.isEmpty) return _transactionsEmptyNotification();
               for (Transaction transaction in state.transactionList) {
                 GlobalObjectKey key = GlobalObjectKey(transaction);
                 transactionKeys[transaction.hashCode] = key;
@@ -424,6 +427,15 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
       return "$errorPrefix + " + suffix + " or - " + suffix;
     } 
     return null;
+  }
+
+  Widget _transactionsEmptyNotification() {
+    return Expanded(
+      child: Center(child: EmptyNotification(
+        title: AppLocalizations.of(context)!.no_transactions_available,
+        information: AppLocalizations.of(context)!.no_transactions_available_description
+      )),
+    );
   }
 
   @override

@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _createInlineBannerAd();
-    this.context.read<AccountChangeNotifier>().changed = true;
   }
 
   @override

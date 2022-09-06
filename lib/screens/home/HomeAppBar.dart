@@ -131,7 +131,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       return;
     }
     await copyBackupFiles(progress, backupFiles);
-    
     context.read<AccountChangeNotifier>().notify();
   }
 }

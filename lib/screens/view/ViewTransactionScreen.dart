@@ -45,10 +45,11 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   late final TransactionBloc? _databaseBloc = BlocProvider.of<TransactionBloc>(context);
   final HashSet<Transaction> _selectedTransactions = HashSet();
+  List<Transaction> _transactions = [];
   late final Widget topViewBar = ViewFilterBarSection(request: widget.request);
   late final Widget topSelectionBar = ViewSelectionBarSection(
     onDelete: onDelete,
-    onDeleteAll: onDeleteAll,
+    onSelectAll: onSelectAll,
     onEdit: onEdit,
     onReset: onReset,
     selectedTransactionsNotifier: selectedTransactionsNotifier
@@ -127,6 +128,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
             }
             if (state is TransactionLoaded) {
               if (state.transactionList.isEmpty) return _transactionsEmptyNotification();
+              _transactions = state.transactionList;
               for (Transaction transaction in state.transactionList) {
                 GlobalObjectKey key = GlobalObjectKey(transaction);
                 transactionKeys[transaction.hashCode] = key;
@@ -209,23 +211,13 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     _flipToViewBar();
   }
 
-  void onDeleteAll() async {
-    int number = (_databaseBloc!.state as TransactionLoaded).transactionList.length;
-    String deletePrefix = AppLocalizations.of(context)!.delete_all_transactions_description_prefix;
-    String deleteSuffix = AppLocalizations.of(context)!.delete_all_transactions_description_suffix;
-
-    bool? sureToDelete = await showDialog<bool>(
-      context: context, 
-      builder: (context) => ConfirmDeleteDialog(
-        title: AppLocalizations.of(context)!.delete_all_transactions, 
-        content: "$deletePrefix $number $deleteSuffix"
-      )
-    );
-    if (!sureToDelete!) return;
-    _databaseBloc?.add(const DeleteAllShownTransactions());
-    _selectedTransactions.clear();
-    transactionKeys.clear();
-    _flipToViewBar();
+  void onSelectAll() async {
+    _transactions.forEach((transaction) {
+      (transactionKeys[transaction.hashCode]?.currentWidget as IconListTile)
+      .selectedNotifier?.value = true;
+    });
+    _selectedTransactions.addAll(_transactions);
+    selectedTransactionsNotifier.value = _selectedTransactions.length;
   }
 
   void onReset() {

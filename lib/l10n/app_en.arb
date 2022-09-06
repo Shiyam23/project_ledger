@@ -129,15 +129,6 @@
     "@delete_transaction_description_suffix": {
         "description": "Information for the user for delete confirmation. This is the string shown after the number of selected transactions. Must not include space in the beginning."
     },
-    "delete_all_transactions": "Delete all transactions ?",
-    "delete_all_transactions_description_prefix": "This will delete all currently shown",
-    "@delete_all_transactions_description_prefix": {
-        "description": "Information for the user for delete confirmation. This is the string shown before the number of all transactions. Must not include space at the end."
-    },
-    "delete_all_transactions_description_suffix": "transactions on this list, not only the selected ones! You really want to delete all of them?",
-    "@delete_all_transactions_description_suffix": {
-        "description": "Information for the user for delete confirmation. This is the string shown after the number of all transactions. Must not include space in the beginning."
-    },
     "edit_name": "Edit name",
     "change_category": "Change category",
     "change_date": "Change date",

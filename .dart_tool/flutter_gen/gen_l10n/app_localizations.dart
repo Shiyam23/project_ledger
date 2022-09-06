@@ -598,24 +598,6 @@ abstract class AppLocalizations {
   /// **'selected transaction(s)? This operation cannot be reversed!'**
   String get delete_transaction_description_suffix;
 
-  /// No description provided for @delete_all_transactions.
-  ///
-  /// In en, this message translates to:
-  /// **'Delete all transactions ?'**
-  String get delete_all_transactions;
-
-  /// Information for the user for delete confirmation. This is the string shown before the number of all transactions. Must not include space at the end.
-  ///
-  /// In en, this message translates to:
-  /// **'This will delete all currently shown'**
-  String get delete_all_transactions_description_prefix;
-
-  /// Information for the user for delete confirmation. This is the string shown after the number of all transactions. Must not include space in the beginning.
-  ///
-  /// In en, this message translates to:
-  /// **'transactions on this list, not only the selected ones! You really want to delete all of them?'**
-  String get delete_all_transactions_description_suffix;
-
   /// No description provided for @edit_name.
   ///
   /// In en, this message translates to:

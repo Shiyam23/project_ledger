@@ -260,15 +260,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get delete_transaction_description_suffix => 'selected transaction(s)? This operation cannot be reversed!';
 
   @override
-  String get delete_all_transactions => 'Delete all transactions ?';
-
-  @override
-  String get delete_all_transactions_description_prefix => 'This will delete all currently shown';
-
-  @override
-  String get delete_all_transactions_description_suffix => 'transactions on this list, not only the selected ones! You really want to delete all of them?';
-
-  @override
   String get edit_name => 'Edit name';
 
   @override

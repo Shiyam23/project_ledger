@@ -283,7 +283,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
 class ViewSelectionBarSection extends StatefulWidget {
   
   final void Function() onDelete;
-  final void Function() onDeleteAll;
+  final void Function() onSelectAll;
   final void Function() onEdit;
   final void Function() onReset;
   final ValueNotifier<int> selectedTransactionsNotifier;
@@ -291,7 +291,7 @@ class ViewSelectionBarSection extends StatefulWidget {
   const ViewSelectionBarSection({
     Key? key,
     required this.onDelete,
-    required this.onDeleteAll,
+    required this.onSelectAll,
     required this.onEdit,
     required this.onReset,
     required this.selectedTransactionsNotifier
@@ -345,14 +345,14 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
               ),
             ),
             ViewBarIcon(
+              width: _width * 1.15,
+              icon: Icons.checklist,
+              onTap: widget.onSelectAll,
+            ),
+            ViewBarIcon(
               width: _width,
               icon: Icons.delete_forever,
               onTap: widget.onDelete,
-            ),
-            ViewBarIcon(
-              width: _width * 1.15,
-              icon: Icons.delete_sweep,
-              onTap: widget.onDeleteAll,
             ),
             SizedBox(width: _paddingWidth),
           ],

@@ -260,15 +260,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get delete_transaction_description_suffix => 'ausgewählten Transaktionen löschen möchten? Dieser Vorgang kann nicht rückgängig gemacht werden.';
 
   @override
-  String get delete_all_transactions => 'Alle Transaktionen löschen ?';
-
-  @override
-  String get delete_all_transactions_description_prefix => 'Hiermit werden alle';
-
-  @override
-  String get delete_all_transactions_description_suffix => 'angezeigten Transaktionen auf dieser Liste gelöscht, nicht nur die ausgewählten Transaktionen! Wollen Sie wirklich alle löschen?';
-
-  @override
   String get edit_name => 'Name bearbeiten';
 
   @override

@@ -28,6 +28,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   String? _searchText;
   TextEditingController _searchController = TextEditingController();
   InterstitialAd? _interstitialAd;
+  bool adFailedToLoad = false;
 
   @override
   void initState() {
@@ -181,7 +182,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   }
 
   void _showRewardedAd() async {
-    if (_interstitialAd == null) {
+    if (_interstitialAd == null && !adFailedToLoad) {
       LoadingProgress adloadingProgress = LoadingProgress();
       showDialog(
         context: context, 
@@ -193,12 +194,16 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
       await Future.doWhile(() {
         return Future.delayed(
           Duration(milliseconds: 100), 
-          () => Future.value(_interstitialAd == null)
+          () => _interstitialAd == null && !adFailedToLoad
         );
-      });
+      }).timeout(Duration(seconds: 5), onTimeout: () => false);
       Navigator.pop(context);
     }
-    _interstitialAd?.show();
+    if (_interstitialAd != null) {
+      _interstitialAd?.show();
+    } else {
+      _generatePDF();
+    }
     _loadRewardedAd();
   }
 
@@ -208,6 +213,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
       request: AdRequest(), 
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (InterstitialAd ad) async {
+          adFailedToLoad = false;
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
               ad.dispose();
@@ -220,7 +226,9 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
           );
           _interstitialAd = ad;
         },
-        onAdFailedToLoad: (error) => _generatePDF(),
+        onAdFailedToLoad: (error) {
+          adFailedToLoad = true;
+        },
       )
     );
   }

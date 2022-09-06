@@ -164,6 +164,7 @@ class _ViewScreenState extends State<ViewStandingOrderScreen> {
             (context, animation) => _listBuilder(context, standingOrder, animation)
           );
           _standingOrders.removeAt(index);
+          if (_standingOrders.isEmpty) setState(() {});
         } else {
           showDialog(
             context: context, 

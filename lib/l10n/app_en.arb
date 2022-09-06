@@ -82,7 +82,7 @@
 
     "@_VIEW_REPETITION_SCREEN": {},
     "no_repetition_available": "No repetition available",
-    "no_repetition_available_description": "Add new repetition by creating a new transaction and selecting the corresponding repetition.",
+    "no_repetition_available_description": "Create a new transaction and choose the corresponding repetition.",
     "@no_repetition_available_description": {
         "description": "Description for 'No repetition available on repetition screen which appears after clicking on the information button."
     },
@@ -148,6 +148,8 @@
     "empty_amount_not_allowed": "Empty amount not allowed",
     "required_format": "Required format:",
     "loading_ad": "Loading ad",
+    "no_transactions_available": "No transactions available",
+    "no_transactions_available_description": "Please change the filter settings, the account or add new transactions.",
     
     "@_PAGE": {},
     "change_icon": "Change icon",

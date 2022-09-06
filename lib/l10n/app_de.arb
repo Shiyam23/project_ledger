@@ -61,7 +61,7 @@
 
     "@_VIEW_REPETITION_SCREEN": {},
     "no_repetition_available": "Keine Wiederholungen verfügbar",
-    "no_repetition_available_description": "Fügen Sie eine Wiederholung hinzu, indem Sie eine neue Transaktion erstellen und die entsprechende Wiederholung auswählen.",
+    "no_repetition_available_description": "Erstellen Sie eine Transaktion und wählen die entsprechende Wiederholung aus.",
 
     "@_HOME_SCREEN": {},
     "no_transactions_yet" : "Keine Transaktionen verfügbar",
@@ -111,6 +111,9 @@
     "empty_amount_not_allowed": "Leerer Betrag nicht erlaubt",
     "required_format": "Erforderliches Format:",
     "loading_ad": "Lade Werbung",
+    "no_transactions_available": "Keine Transaktionen verfügbar",
+    "no_transactions_available_description": "Bitte ändern Sie die Filter-Einstellung, das Konto oder fügen neue Transaktionen hinzu.",
+    
 
     "@_PAGE": {},
     "change_icon": "Symbol ändern",

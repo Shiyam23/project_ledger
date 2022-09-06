@@ -161,7 +161,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get no_repetition_available => 'No repetition available';
 
   @override
-  String get no_repetition_available_description => 'Add new repetition by creating a new transaction and selecting the corresponding repetition.';
+  String get no_repetition_available_description => 'Create a new transaction and choose the corresponding repetition.';
 
   @override
   String get no_transactions_yet => 'No transactions available';
@@ -297,6 +297,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading_ad => 'Loading ad';
+
+  @override
+  String get no_transactions_available => 'No transactions available';
+
+  @override
+  String get no_transactions_available_description => 'Please change the filter settings, the account or add new transactions.';
 
   @override
   String get change_icon => 'Change icon';

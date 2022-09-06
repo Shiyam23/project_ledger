@@ -403,7 +403,7 @@ abstract class AppLocalizations {
   /// Description for 'No repetition available on repetition screen which appears after clicking on the information button.
   ///
   /// In en, this message translates to:
-  /// **'Add new repetition by creating a new transaction and selecting the corresponding repetition.'**
+  /// **'Create a new transaction and choose the corresponding repetition.'**
   String get no_repetition_available_description;
 
   /// No description provided for @no_transactions_yet.
@@ -675,6 +675,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading ad'**
   String get loading_ad;
+
+  /// No description provided for @no_transactions_available.
+  ///
+  /// In en, this message translates to:
+  /// **'No transactions available'**
+  String get no_transactions_available;
+
+  /// No description provided for @no_transactions_available_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Please change the filter settings, the account or add new transactions.'**
+  String get no_transactions_available_description;
 
   /// No description provided for @change_icon.
   ///

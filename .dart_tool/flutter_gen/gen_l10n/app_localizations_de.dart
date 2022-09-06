@@ -161,7 +161,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get no_repetition_available => 'Keine Wiederholungen verfügbar';
 
   @override
-  String get no_repetition_available_description => 'Fügen Sie eine Wiederholung hinzu, indem Sie eine neue Transaktion erstellen und die entsprechende Wiederholung auswählen.';
+  String get no_repetition_available_description => 'Erstellen Sie eine Transaktion und wählen die entsprechende Wiederholung aus.';
 
   @override
   String get no_transactions_yet => 'Keine Transaktionen verfügbar';
@@ -297,6 +297,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get loading_ad => 'Lade Werbung';
+
+  @override
+  String get no_transactions_available => 'Keine Transaktionen verfügbar';
+
+  @override
+  String get no_transactions_available_description => 'Bitte ändern Sie die Filter-Einstellung, das Konto oder fügen neue Transaktionen hinzu.';
 
   @override
   String get change_icon => 'Symbol ändern';

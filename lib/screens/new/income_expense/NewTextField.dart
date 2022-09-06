@@ -41,7 +41,10 @@ class _NewTextFieldState extends State<_NewTextField> {
         enabled: widget.enabled,
         style: TextStyle(
           height: 1.5,
-            color: Theme.of(context).colorScheme.primary),
+          color: widget.enabled ? 
+          Theme.of(context).colorScheme.primary : 
+          Colors.black26
+        ),
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           prefixIcon: Transform.scale(
@@ -112,7 +115,7 @@ class NewRepetitionDateField extends StatelessWidget {
       widthRatio: 0.5,
       onTap: onTap,
       content: content,
-      icon: FontAwesomeIcons.repeat
+      icon: FontAwesomeIcons.repeat,
     );
   }
 }

@@ -82,6 +82,9 @@ class NewRepetitionDialog {
                               FilteringTextInputFormatter.digitsOnly
                             ],
                             maxLength: 2,
+                            style: TextStyle(
+                              color: isEnabled! ? Theme.of(context).colorScheme.primary : Colors.black26
+                            ),
                             maxLengthEnforcement: MaxLengthEnforcement.enforced,
                             textAlign: TextAlign.center,
                             keyboardType: TextInputType.number,

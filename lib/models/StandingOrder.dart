@@ -53,5 +53,5 @@ class StandingOrder extends SelectableTile with EquatableMixin {
   Text get title => Text(initialTransaction.name);
 
   @override
-  List<Object?> get props => []; 
+  List<Object?> get props => [this.initialTransaction]; 
 }

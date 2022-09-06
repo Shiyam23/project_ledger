@@ -113,7 +113,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get reset => 'Zurücksetzen';
 
   @override
-  String get saveAsTemplate => 'Speichere als Vorlage';
+  String get saveAsTemplate => 'Als Vorlage speichern';
 
   @override
   String get nameTextFieldLabel => 'Name';
@@ -149,7 +149,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get no_templates_available => 'Keine Vorlagen verfügbar';
 
   @override
-  String get no_templates_available_description => 'Fügen Sie neue Vorlagen hinzu, indem Sie eine neue Transaktion erstellen und \"Speichere als Vorlage\" auswählen.';
+  String get no_templates_available_description => 'Fügen Sie neue Vorlagen hinzu, indem Sie eine neue Transaktion erstellen und \"Als Vorlage speichern\" auswählen.';
 
   @override
   String get delete_template => 'Vorlage löschen';

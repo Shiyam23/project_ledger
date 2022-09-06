@@ -41,7 +41,7 @@
     "@_NEW TRANSACTION SCREEN": {},
     "income_expense": "Transaktion",
     "reset": "Zurücksetzen",
-    "saveAsTemplate": "Speichere als Vorlage",
+    "saveAsTemplate": "Als Vorlage speichern",
     "nameTextFieldLabel": "Name",
     "endDate": "Enddatum",
     "selectRepetition": "Wähle Wiederholung aus",
@@ -55,7 +55,7 @@
 
     "@_NEW_TEMPLATE_SCREEN": {},
     "no_templates_available": "Keine Vorlagen verfügbar",
-    "no_templates_available_description": "Fügen Sie neue Vorlagen hinzu, indem Sie eine neue Transaktion erstellen und \"Speichere als Vorlage\" auswählen.",
+    "no_templates_available_description": "Fügen Sie neue Vorlagen hinzu, indem Sie eine neue Transaktion erstellen und \"Als Vorlage speichern\" auswählen.",
     "delete_template": "Vorlage löschen",
     "delete_template_error_description": "Beim Löschen dieser Vorlage ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
 

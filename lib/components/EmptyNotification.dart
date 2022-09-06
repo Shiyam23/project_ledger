@@ -53,10 +53,10 @@ class EmptyNotification extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20)
         ),
-        title: Text(title),
+        title: Text(title, textAlign: TextAlign.center,),
         content: Text(
           information,
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.center,
         ),
       )
     );

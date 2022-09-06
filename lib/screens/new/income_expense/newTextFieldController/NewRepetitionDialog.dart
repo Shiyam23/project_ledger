@@ -5,6 +5,7 @@ import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:project_ez_finance/models/Repetition.dart';
+import 'package:project_ez_finance/services/DateTimeFormatter.dart';
 
 import '../NewTextField.dart';
 
@@ -148,7 +149,7 @@ class NewRepetitionDialog {
                           width: MediaQuery.of(context).size.width * 0.5,
                           child: NewRepetitionDateField(
                             enabled: endDateEnabled && isEnabled!,
-                            content: DateFormat("yMd").format(_selectedEndDate),
+                            content: _selectedEndDate.format(),
                             onTap: () async {
                               DateTime? temp = await showDatePicker(
                                 context: context, 

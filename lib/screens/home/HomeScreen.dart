@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.create_invoice,
+                          AppLocalizations.of(context)!.invoice,
                           softWrap: false,
                           style: TextStyle(
                             fontSize: 27 * factor,

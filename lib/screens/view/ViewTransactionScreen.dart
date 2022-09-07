@@ -3,9 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction/transaction_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction/transaction_event.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart';
+import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/CategorySelectionSheet.dart';
 import 'package:project_ez_finance/components/PieChart.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
@@ -209,6 +207,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     });
     _selectedTransactions.clear();
     _flipToViewBar();
+    context.read<AccountChangeNotifier>().notify();
   }
 
   void onSelectAll() async {
@@ -349,6 +348,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
       );
       _changeTransaction(selectedTransaction, newTransaction);
     }
+    context.read<AccountChangeNotifier>().notify();
   }
 
   void _onEditAmount() async {
@@ -380,6 +380,7 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
       );
       _changeTransaction(selectedTransaction, newTransaction);
     }
+    context.read<AccountChangeNotifier>().notify();
   }
 
   void _changeTransaction(

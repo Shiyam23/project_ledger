@@ -17,6 +17,7 @@
     "response_error": "Fehler",
     "no_category_error": "Keine Kategorien verfügbar. Erstellen Sie eine neue Kategorie, um eine Transaktion hinzuzufügen.",
     "next": "Demnächst",
+    "or": "oder",
 
     "@_NAVIGATIONBAR": {},
     "tab_overview": "Übersicht",
@@ -106,7 +107,7 @@
     "new_amount": "Neuer Betrag",
     "only_one_edit_description": "Sie können nur eine Transaktion gleichzeitig bearbeiten.",
     "empty_amount_not_allowed": "Leerer Betrag nicht erlaubt",
-    "required_format": "Erforderliches Format:",
+    "required_format": "Format:",
     "loading_ad": "Lade Werbung",
     "no_transactions_available": "Keine Transaktionen verfügbar",
     "no_transactions_available_description": "Bitte ändern Sie die Filter-Einstellung, das Konto oder fügen neue Transaktionen hinzu.",

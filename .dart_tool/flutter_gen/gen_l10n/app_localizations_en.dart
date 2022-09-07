@@ -59,6 +59,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get next => 'Next';
 
   @override
+  String get or => 'or';
+
+  @override
   String get tab_overview => 'Overview';
 
   @override
@@ -284,7 +287,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get empty_amount_not_allowed => 'Empty amount not allowed';
 
   @override
-  String get required_format => 'Required format:';
+  String get required_format => 'Format:';
 
   @override
   String get loading_ad => 'Loading ad';

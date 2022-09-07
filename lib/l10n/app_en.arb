@@ -17,6 +17,7 @@
     "response_error": "Error",
     "no_category_error": "No Categories available. Please create a category to add a new transaction!",
     "next": "Next",
+    "or": "or",
 
     "@_NAVIGATIONBAR": {},
     "tab_overview": "Overview",
@@ -137,7 +138,7 @@
     "new_amount": "New amount",
     "only_one_edit_description": "You can only edit one transaction at a time.",
     "empty_amount_not_allowed": "Empty amount not allowed",
-    "required_format": "Required format:",
+    "required_format": "Format:",
     "loading_ad": "Loading ad",
     "no_transactions_available": "No transactions available",
     "no_transactions_available_description": "Please change the filter settings, the account or add new transactions.",

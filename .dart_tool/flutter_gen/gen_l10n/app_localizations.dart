@@ -196,6 +196,12 @@ abstract class AppLocalizations {
   /// **'Next'**
   String get next;
 
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get or;
+
   /// No description provided for @tab_overview.
   ///
   /// In en, this message translates to:
@@ -649,7 +655,7 @@ abstract class AppLocalizations {
   /// No description provided for @required_format.
   ///
   /// In en, this message translates to:
-  /// **'Required format:'**
+  /// **'Format:'**
   String get required_format;
 
   /// No description provided for @loading_ad.

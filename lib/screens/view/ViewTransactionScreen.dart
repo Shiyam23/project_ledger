@@ -417,7 +417,8 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
     if (!amount.contains(regex)) {
       String suffix = "0" + decimalSeparator + "0"*decimalDigits;
       String errorPrefix = AppLocalizations.of(context)!.required_format;
-      return "$errorPrefix + " + suffix + " or - " + suffix;
+      String or = AppLocalizations.of(context)!.or;
+      return "$errorPrefix \"+ $suffix\" $or \"- $suffix\"";
     } 
     return null;
   }

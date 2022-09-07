@@ -399,7 +399,7 @@ class HiveDatabase implements Database {
   Future<void> reset() async {
   _openBoxes.clear();
   _boxes.clear();
-  (await Hive.openBox(boxesBoxName)).values.forEach((box) => _boxes.add(box));
+  (await Hive.openBox<String>(boxesBoxName)).values.forEach((box) => _boxes.add(box));
   _transactions.clear();
   await getAllCategories();
   Box<Account>? accountBox = await Hive.openBox(accountBoxName);

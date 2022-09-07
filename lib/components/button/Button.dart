@@ -17,37 +17,48 @@ class RoundGradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    return Container(
-      height: width* widthRatio * 0.25,
-      width: width * widthRatio,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [
-            Theme.of(context).colorScheme.tertiary,
-            Theme.of(context).colorScheme.secondary,
-          ]
-        ),
-        borderRadius: BorderRadius.circular(50),
+
+    return RoundButton(
+      onPressed: onPressed, 
+      text: text, 
+      widthRatio: widthRatio,
+      fontSizeFactor: fontSizeFactor,
+      gradient: LinearGradient(
+        colors: [
+          Theme.of(context).colorScheme.tertiary,
+          Theme.of(context).colorScheme.secondary,
+        ]
       ),
-      child: TextButton(
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.zero
-        ),
-        onPressed: onPressed,
-        child: Text(
-          text.toUpperCase(),
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: "Roboto",
-            fontStyle: FontStyle.normal,
-            fontSize: width * widthRatio * 0.1 * fontSizeFactor
-          ),
-          textAlign: TextAlign.center,
-        )
-      ),
+      textColor: Colors.white,
     );
   }
 }
+
+class WhiteRoundButton extends StatelessWidget {
+  
+  final void Function()? onPressed;
+  final String text;
+  final double widthRatio;
+  final double fontSizeFactor;
+  
+  WhiteRoundButton({
+    required this.onPressed,
+    required this.text, 
+    required this.widthRatio,
+    this.fontSizeFactor = 1
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return RoundButton(
+      onPressed: onPressed, 
+      text: text, 
+      widthRatio: widthRatio,
+      borderColor: Theme.of(context).primaryColor,
+      fontSizeFactor: this.fontSizeFactor,
+      textColor: Theme.of(context).primaryColor,
+    );
+  }}
 
 class RoundButton extends StatelessWidget {
 
@@ -55,13 +66,21 @@ class RoundButton extends StatelessWidget {
   final void Function()? onPressed;
   final double widthRatio;
   final double fontSizeFactor;
+  final LinearGradient? gradient;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final Color? textColor;
 
   const RoundButton({
     Key? key,
     required this.onPressed,
     required this.text,
     required this.widthRatio,
-    this.fontSizeFactor = 1
+    required this.textColor,
+    this.gradient,
+    this.backgroundColor,
+    this.borderColor,
+    this.fontSizeFactor = 1,
   }) : super(key: key);
 
   @override
@@ -72,9 +91,10 @@ class RoundButton extends StatelessWidget {
       width: screenWidth * widthRatio,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
-        border: Border.all(
-          color: Theme.of(context).primaryColor
-        )
+        border: borderColor == null ? null : Border.all(
+          color: borderColor!
+        ),
+        gradient: gradient
       ),
       child: TextButton(
         style: TextButton.styleFrom(
@@ -87,7 +107,7 @@ class RoundButton extends StatelessWidget {
         child: Text(
           text.toUpperCase(),
           style: TextStyle(
-            color: Theme.of(context).primaryColor,
+            color: textColor,
             fontFamily: "Roboto",
             fontStyle: FontStyle.normal,
             fontSize: screenWidth * widthRatio * 0.1 * fontSizeFactor

@@ -15,7 +15,7 @@ class NewBottonButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       alignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        RoundButton(
+        WhiteRoundButton(
           onPressed: onReset, 
           text: AppLocalizations.of(context)!.reset,
           widthRatio: 0.4,

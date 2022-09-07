@@ -182,6 +182,18 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   }
 
   void _showRewardedAd() async {
+    TransactionState state = BlocProvider.of<TransactionBloc>(context).state;
+    if (state is! TransactionLoaded || state.transactionList.isEmpty) {
+      showDialog(
+        context: context, 
+        builder: (context) => ResponseDialog(
+          description: AppLocalizations.of(context)!.list_empty, 
+          response: Response.Error
+        )
+      );
+      return;
+    }
+
     if (_interstitialAd == null && !adFailedToLoad) {
       LoadingProgress adloadingProgress = LoadingProgress();
       showDialog(
@@ -234,6 +246,9 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   }
 
   void _generatePDF() async {
+    TransactionState state = BlocProvider.of<TransactionBloc>(context).state;
+    assert(state is TransactionLoaded);
+    assert((state as TransactionLoaded).transactionList.isNotEmpty);
     final LoadingProgress loadingProgress = LoadingProgress();
     showDialog(
       context: context, 
@@ -243,40 +258,14 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
       ),
       barrierDismissible: false
     );
-    TransactionState state = BlocProvider.of<TransactionBloc>(context).state;
-    if (state is TransactionLoaded) {
-      if (state.transactionList.isNotEmpty) {
-        Invoice invoice = Invoice(
-        transactions: state.transactionList, 
-        color: Theme.of(context).primaryColor,
-        );
-        await invoice.openInvoice(context);
-        loadingProgress.initialize(1);
-        loadingProgress.forward();
-        loadingProgress.finish();
-      }
-      else {
-        Navigator.of(context).pop();
-        showDialog(
-          context: context, 
-          builder: (context) => ResponseDialog(
-            description: AppLocalizations.of(context)!.list_empty, 
-            response: Response.Error
-          )
-        );
-      }
-      
-    }
-    else {
-      Navigator.of(context).pop();
-      showDialog(
-        context: context, 
-        builder: (context) => ResponseDialog(
-          description: AppLocalizations.of(context)!.something_went_wrong, 
-          response: Response.Error
-        )
-      );
-    }
+    Invoice invoice = Invoice(
+    transactions: (state as TransactionLoaded).transactionList, 
+    color: Theme.of(context).primaryColor,
+    );
+    await invoice.openInvoice(context);
+    loadingProgress.initialize(1);
+    loadingProgress.forward();
+    loadingProgress.finish();
   }
 }
 

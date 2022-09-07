@@ -250,7 +250,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     String title;
     switch (error) {
       case NewTransactionError.NoName:
-        title = AppLocalizations.of(context)!.transaction_noaccount;
+        title = AppLocalizations.of(context)!.transaction_noname;
         break;
       case NewTransactionError.NoCategory:
         title = AppLocalizations.of(context)!.transaction_nocategory;

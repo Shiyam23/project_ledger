@@ -9,13 +9,21 @@ String formatCurrency(String currencycode, double amount) {
   String symbol = currencies[currencycode]!["symbol"];
   bool hasSpace = currencies[currencycode]!["space_between_amount_and_symbol"];
   int decimalDigits = currencies[currencycode]!["decimal_digits"];
-  StringBuffer buffer = StringBuffer();
-  if (symbolOnLeft) buffer.write(symbol);
-  if (hasSpace && symbolOnLeft) buffer.write(" ");
-  buffer.write(amount.toStringAsFixed(decimalDigits));
-  if (hasSpace && !symbolOnLeft) buffer.write(" ");
-  if (!symbolOnLeft) buffer.write(symbol);
-  return buffer.toString();
+  String decimalSeparator = currencies[currencycode]!["decimal_separator"];
+  String thousandsSeparator = currencies[currencycode]!["thousands_separator"];
+  List<String> chars = [];
+  chars.addAll(amount.toStringAsFixed(decimalDigits).split(""));
+  int separatorIndex = chars.indexOf(".");
+  chars[separatorIndex] = decimalSeparator;
+  while ((separatorIndex -= 3) > 0) {
+    chars.insert(separatorIndex, thousandsSeparator);
+  }
+  if (symbolOnLeft) {
+    chars.insert(0, symbol + (hasSpace ? " " : ""));
+  } else {
+    chars.add((hasSpace ? " " : "") + symbol);
+  }
+  return chars.join();
 }
 
 Map<String, Map<String, dynamic>> currencies = {

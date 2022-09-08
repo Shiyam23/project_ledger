@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 
 import '../Transaction.dart';
@@ -11,6 +12,7 @@ class TransactionFilter {
     List<Transaction> filteredlist = list;
     if (request == null) return filteredlist;
     filteredlist = _filterNames(filteredlist);
+    filteredlist = _filterCategory(filteredlist);
     filteredlist = _filterDateRange(filteredlist);
     filteredlist = _sortTransactions(filteredlist);
     return filteredlist;
@@ -21,6 +23,14 @@ class TransactionFilter {
     if (searchText == null || searchText.isEmpty) return list;
     return list
         .where((t) => t.name.toLowerCase().contains(searchText.toLowerCase()))
+        .toList();
+  }
+
+  List<Transaction> _filterCategory(List<Transaction> list) {
+    Category? category = request!.categoryFilter;
+    if (category == null) return list;
+    return list
+        .where((t) => t.category == category)
         .toList();
   }
 

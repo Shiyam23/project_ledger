@@ -346,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
       BlocProvider.of<TransactionBloc>(context);
     final TransactionRequest request = TransactionRequest(
       searchText: null,
-      viewMode: ViewMode.List,
+      categoryFilter: null,
       timeMode: TimeMode.Individual,
       sortMode: SortMode.DateAsc,
       dateRange: DateTimeRange(

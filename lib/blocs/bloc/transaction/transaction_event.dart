@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:project_ez_finance/models/Transaction.dart';
+import '../../../models/Category.dart';
 
 abstract class TransactionEvent extends Equatable {
   const TransactionEvent();
@@ -69,19 +70,19 @@ class DeleteAllShownTransactions extends TransactionEvent {
 
 class TransactionRequest extends Equatable {
   final String? searchText;
-  final ViewMode viewMode;
+  final Category? categoryFilter;
   final TimeMode timeMode;
   final SortMode sortMode;
   final DateTimeRange dateRange;
 
   TransactionRequest(
       {required String? searchText,
-      required ViewMode viewMode,
+      required Category? categoryFilter,
       required TimeMode timeMode,
       required SortMode sortMode,
       required DateTimeRange dateRange})
       : searchText = searchText,
-        viewMode = viewMode,
+        categoryFilter = categoryFilter,
         timeMode = timeMode,
         sortMode = sortMode,
         dateRange = dateRange;
@@ -89,20 +90,20 @@ class TransactionRequest extends Equatable {
   TransactionRequest.clone({required TransactionRequest request})
       : searchText = request.searchText,
         timeMode = request.timeMode,
-        viewMode = request.viewMode,
+        categoryFilter = request.categoryFilter,
         sortMode = request.sortMode,
         dateRange = request.dateRange;
 
   TransactionRequest copyOf({
     String? searchText,
-    ViewMode? viewMode,
+    Category? categoryFilter,
     TimeMode? timeMode,
     SortMode? sortMode,
     DateTimeRange? dateRange
   }) {
     return TransactionRequest(
       searchText: searchText ?? this.searchText, 
-      viewMode: viewMode ?? this.viewMode, 
+      categoryFilter: categoryFilter, 
       timeMode: timeMode ?? this.timeMode, 
       sortMode: sortMode ?? this.sortMode, 
       dateRange: dateRange ?? this.dateRange);
@@ -110,7 +111,7 @@ class TransactionRequest extends Equatable {
 
   @override
   List<Object?> get props =>
-      [searchText, viewMode, timeMode, sortMode, dateRange];
+      [searchText, categoryFilter, timeMode, sortMode, dateRange];
 }
 
 

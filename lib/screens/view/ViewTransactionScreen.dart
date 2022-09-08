@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/CategorySelectionSheet.dart';
-import 'package:project_ez_finance/components/PieChart.dart';
 import 'package:project_ez_finance/components/IconListTile.dart';
 import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
 import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
@@ -26,7 +25,7 @@ class ViewTransactionScreen extends StatefulWidget {
   final Function _eq = const ListEquality().equals;
   final TransactionRequest request = TransactionRequest(
       searchText: null,
-      viewMode: ViewMode.List,
+      categoryFilter: null,
       timeMode: TimeMode.Individual,
       sortMode: SortMode.DateAsc,
       dateRange: DateTimeRange(
@@ -93,37 +92,6 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
                     currentState.transactionList);
           },
           builder: (BuildContext context, TransactionState state) {
-            if (state is GraphLoaded) {
-              return Expanded(
-                child: Center(
-                  child: Card(
-                    elevation: 10,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: 20),
-                        Text(
-                          AppLocalizations.of(context)!.category_chart, 
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                          )
-                        ),
-                        SizedBox(height: 20),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.width * 1,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: PieLabelChart.fromChartInfo(state.chartInfo)
-                        ),
-                      ],
-                    )
-                  ),
-                ),
-              );
-            }
             if (state is TransactionLoaded) {
               if (state.transactionList.isEmpty) return _transactionsEmptyNotification();
               _transactions = state.transactionList;

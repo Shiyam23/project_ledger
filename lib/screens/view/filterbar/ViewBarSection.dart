@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:project_ez_finance/blocs/bloc/bloc.dart';
+import 'package:project_ez_finance/components/CategorySelectionSheet.dart';
 import 'package:project_ez_finance/components/dialogs/LoadingDialog.dart';
 import 'package:project_ez_finance/components/dialogs/ResponseDialog.dart';
 import 'package:project_ez_finance/components/dialogs/TextInputDialog.dart';
 import 'package:project_ez_finance/models/Modes.dart';
 import 'package:project_ez_finance/services/AdmobHelper.dart';
 import 'package:project_ez_finance/services/PDFGenerator.dart';
-import 'ViewFilterBarViewDialog.dart';
+import '../../../models/Category.dart';
 import 'ViewFilterBarSortDialog.dart';
 import 'ViewBarIcon.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,134 +43,123 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
     double _paddingWidth = 20;
     double _width = (MediaQuery.of(context).size.width - _paddingWidth * 2) / 6;
     TransactionBloc bloc = BlocProvider.of<TransactionBloc>(context);
-    return Column(
-      children: <Widget>[
-        AppBar(
-          actions: <Widget>[
-            SizedBox(width: _paddingWidth),
-            StatefulBuilder(
-              builder: (context, setState) {
-                ValueNotifier<bool> showIndicator = ValueNotifier(false);
-                return ViewBarIcon(
-                  showIndicatorNotifier: showIndicator,
-                  width: _width,
-                  icon: Icons.search,
-                  tooltip: AppLocalizations.of(context)!.search,
-                  onTap: () async {
-                    String? searchText = await showDialog(
-                      context: context, 
-                      builder: (context) => TextInputDialog(
-                        prefixIcon: Icon(Icons.search),
-                        controller: _searchController,
-                        title: Text(AppLocalizations.of(context)!.search),
-                      )
-                    );
-                    if (searchText != null) {
-                      _searchText = searchText;
-                      _request = _request.copyOf(searchText: _searchText);
-                      bloc.add(GetTransaction(_request));
-                    }
-                    showIndicator.value = (
-                      _searchText != null && _searchText != ""
-                    );
-                  },
-                );
-              }
-            ),
-            ViewBarIcon(
+    return AppBar(
+      actions: <Widget>[
+        SizedBox(width: _paddingWidth),
+        StatefulBuilder(
+          builder: (context, setState) {
+            ValueNotifier<bool> showIndicator = ValueNotifier(false);
+            return ViewBarIcon(
+              showIndicatorNotifier: showIndicator,
               width: _width,
-              tooltip: AppLocalizations.of(context)!.date,
-              icon: Icons.calendar_today,
+              icon: Icons.search,
+              tooltip: AppLocalizations.of(context)!.search,
               onTap: () async {
-                DateTime start = DateTime.now().subtract(Duration(days: 365));
-                DateTime end = DateTime.now().add(Duration(days: 365));
-                DateTimeRange? dateRange = await showDateRangePicker(
-                    context: context,
-                    firstDate: start,
-                    lastDate: end,
-                    initialDateRange: _request.dateRange);
-                if (dateRange != null) {
-                  _request = _request.copyOf(
-                    dateRange : DateTimeRange(
-                      start: dateRange.start,
-                      end: dateRange.end
-                          .add(Duration(days: 1))
-                          .subtract(Duration(microseconds: 1)))
-                  );
-                }
-                bloc.add(GetTransaction(_request));
-              },
-            ),
-            ViewBarIcon(
-              width: _width,
-              tooltip: AppLocalizations.of(context)!.view_mode,
-              icon: Icons.list,
-              onTap: () async {
-                ViewMode? viewOption = await showDialog(
-                  context: context,
-                  builder: (context) {
-                    return ViewFilterBarViewDialog(
-                      initialOption: _request.viewMode
-                    );
-                  }
+                String? searchText = await showDialog(
+                  context: context, 
+                  builder: (context) => TextInputDialog(
+                    prefixIcon: Icon(Icons.search),
+                    controller: _searchController,
+                    title: Text(AppLocalizations.of(context)!.search),
+                  )
                 );
-                if (viewOption != null) _request = _request.copyOf(
-                  viewMode: viewOption
-                );
-                bloc.add(GetTransaction(_request));
-              },
-            ),
-            ViewBarIcon(
-              width: _width,
-              tooltip: AppLocalizations.of(context)!.sort,
-              icon: Icons.sort,
-              onTap: () async {
-                SortMode? sortOption = await showDialog(
-                  context: context,
-                  builder: (context) {
-                    return ViewFilterBarSortDialog(
-                      initialOption: _request.sortMode
-                    );
-                  }
-                );
-                if (sortOption != null) {
-                  _request = _request.copyOf(sortMode: sortOption);
+                if (searchText != null) {
+                  _searchText = searchText;
+                  _request = _request.copyOf(searchText: _searchText);
                   bloc.add(GetTransaction(_request));
                 }
-              },
-            ),
-            ViewBarIcon(
-              width: _width,
-              tooltip: AppLocalizations.of(context)!.reset,
-              icon: Icons.history,
-              onTap: () async {
-                final TransactionRequest request = TransactionRequest(
-                  searchText: null,
-                  viewMode: ViewMode.List,
-                  timeMode: TimeMode.Individual,
-                  sortMode: SortMode.DateAsc,
-                  dateRange: DateTimeRange(
-                  start: DateTime(DateTime.now().year, DateTime.now().month),
-                  end: DateTime(DateTime.now().year, DateTime.now().month + 1)
-                    .subtract(Duration(microseconds: 1)))
+                showIndicator.value = (
+                  _searchText != null && _searchText != ""
                 );
-                bloc.add(GetTransaction(request));
-                setState(() {
-                  _request = request;
-                  _searchText = null;
-                  _searchController.text = "";
-                });
               },
-            ),
-            ViewBarIcon(
-              tooltip: AppLocalizations.of(context)!.create_invoice,
-              width: _width,
-              icon: FontAwesomeIcons.filePdf,
-              onTap: _showRewardedAd,
-            ),
-            SizedBox(width: _paddingWidth),
-          ],
+            );
+          }
         ),
+        ViewBarIcon(
+          width: _width,
+          tooltip: AppLocalizations.of(context)!.date,
+          icon: Icons.calendar_today,
+          onTap: () async {
+            DateTime start = DateTime.now().subtract(Duration(days: 365));
+            DateTime end = DateTime.now().add(Duration(days: 365));
+            DateTimeRange? dateRange = await showDateRangePicker(
+                context: context,
+                firstDate: start,
+                lastDate: end,
+                initialDateRange: _request.dateRange);
+            if (dateRange != null) {
+              _request = _request.copyOf(
+                dateRange : DateTimeRange(
+                  start: dateRange.start,
+                  end: dateRange.end
+                      .add(Duration(days: 1))
+                      .subtract(Duration(microseconds: 1)))
+              );
+            }
+            bloc.add(GetTransaction(_request));
+          },
+        ),
+        ViewBarIcon(
+          width: _width,
+          tooltip: AppLocalizations.of(context)!.category,
+          icon: Icons.circle,
+          onTap: () async {
+            Category? selectedCategory = await showCategorySelectionSheet(context);
+            _request = _request.copyOf(
+              categoryFilter: selectedCategory
+            );
+            bloc.add(GetTransaction(_request));
+          },
+        ),
+        ViewBarIcon(
+          width: _width,
+          tooltip: AppLocalizations.of(context)!.sort,
+          icon: Icons.sort,
+          onTap: () async {
+            SortMode? sortOption = await showDialog(
+              context: context,
+              builder: (context) {
+                return ViewFilterBarSortDialog(
+                  initialOption: _request.sortMode
+                );
+              }
+            );
+            if (sortOption != null) {
+              _request = _request.copyOf(sortMode: sortOption);
+              bloc.add(GetTransaction(_request));
+            }
+          },
+        ),
+        ViewBarIcon(
+          width: _width,
+          tooltip: AppLocalizations.of(context)!.reset,
+          icon: Icons.restart_alt_rounded,
+          onTap: () async {
+            final TransactionRequest request = TransactionRequest(
+              searchText: null,
+              categoryFilter: null,
+              timeMode: TimeMode.Individual,
+              sortMode: SortMode.DateAsc,
+              dateRange: DateTimeRange(
+              start: DateTime(DateTime.now().year, DateTime.now().month),
+              end: DateTime(DateTime.now().year, DateTime.now().month + 1)
+                .subtract(Duration(microseconds: 1)))
+            );
+            bloc.add(GetTransaction(request));
+            setState(() {
+              _request = request;
+              _searchText = null;
+              _searchController.text = "";
+            });
+          },
+        ),
+        ViewBarIcon(
+          tooltip: AppLocalizations.of(context)!.create_invoice,
+          width: _width,
+          icon: FontAwesomeIcons.filePdf,
+          onTap: _showRewardedAd,
+        ),
+        SizedBox(width: _paddingWidth),
       ],
     );
   }

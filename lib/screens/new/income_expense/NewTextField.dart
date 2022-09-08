@@ -36,6 +36,7 @@ class _NewTextFieldState extends State<_NewTextField> {
       width: MediaQuery.of(context).size.width * widget.widthRatio,
       child: TextFormField(
         enableInteractiveSelection: false,
+        readOnly: true,
         onTap: widget.onTap,
         initialValue: widget.content,
         enabled: widget.enabled,

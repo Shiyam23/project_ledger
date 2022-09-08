@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               margin: EdgeInsets.zero,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           maxHeight: MediaQuery.of(context).size.height * 0.12,
                         ),
                         child: const Image(
-                          image: AssetImage('assets/icons/invoice_new.png')
+                          image: const AssetImage('assets/icons/invoice_new.png')
                         ),
                       ),
                     )
@@ -105,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               elevation: 10,
+              margin: EdgeInsets.zero,
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -133,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
               elevation: 10,
               margin: EdgeInsets.zero,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -184,7 +185,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       future: context.read<AccountChangeNotifier>().categories,
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(
+                            child: const CircularProgressIndicator()
+                          );
                         }
                         else {
                           List<CategoryChartInfo> chartList = 

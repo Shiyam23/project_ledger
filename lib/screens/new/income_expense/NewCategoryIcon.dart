@@ -68,7 +68,7 @@ Widget build(BuildContext context) {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(5,5),
+                  offset: const Offset(5,5),
                   blurRadius: 5,
                   color: Colors.black26
                 )
@@ -89,7 +89,7 @@ Widget build(BuildContext context) {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(5,5),
+                  offset: const Offset(5,5),
                   blurRadius: 5,
                   color: Colors.black26
                 )
@@ -103,16 +103,13 @@ Widget build(BuildContext context) {
             padding: const EdgeInsets.all(1),
             child: SlideTransition(
               position: _offsetAnimation,
-              child: Transform.scale(
-                scale: 1,
-                child: CategoryIcon(
-                  size: MediaQuery.of(context).size.width / 17,
-                  onTap: onTap,
-                  iconData: CategoryIconData(
-                    backgroundColorInt: Colors.transparent.value,
-                    iconName: "pen",
-                    iconColorInt: Theme.of(context).primaryColor.value,
-                  ),
+              child: CategoryIcon(
+                size: MediaQuery.of(context).size.width / 17,
+                onTap: onTap,
+                iconData: CategoryIconData(
+                  backgroundColorInt: Colors.transparent.value,
+                  iconName: "pen",
+                  iconColorInt: Theme.of(context).primaryColor.value,
                 ),
               ),
             )),

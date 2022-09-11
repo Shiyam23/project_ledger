@@ -30,6 +30,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
   TextEditingController _searchController = TextEditingController();
   InterstitialAd? _interstitialAd;
   bool adFailedToLoad = false;
+  ValueNotifier<bool> showSearchIndicator = ValueNotifier(false);
+  ValueNotifier<bool> showCategoryIndicator = ValueNotifier(false);
 
   @override
   void initState() {
@@ -46,34 +48,30 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
     return AppBar(
       actions: <Widget>[
         SizedBox(width: _paddingWidth),
-        StatefulBuilder(
-          builder: (context, setState) {
-            ValueNotifier<bool> showIndicator = ValueNotifier(false);
-            return ViewBarIcon(
-              showIndicatorNotifier: showIndicator,
-              width: _width,
-              icon: Icons.search,
-              tooltip: AppLocalizations.of(context)!.search,
-              onTap: () async {
-                String? searchText = await showDialog(
-                  context: context, 
-                  builder: (context) => TextInputDialog(
-                    prefixIcon: Icon(Icons.search),
-                    controller: _searchController,
-                    title: Text(AppLocalizations.of(context)!.search),
-                  )
-                );
-                if (searchText != null) {
-                  _searchText = searchText;
-                  _request = _request.copyOf(searchText: _searchText);
-                  bloc.add(GetTransaction(_request));
-                }
-                showIndicator.value = (
-                  _searchText != null && _searchText != ""
-                );
-              },
+        ViewBarIcon(
+          showIndicatorNotifier: showSearchIndicator,
+          width: _width,
+          icon: Icons.search,
+          tooltip: AppLocalizations.of(context)!.search,
+          onTap: () async {
+            String? searchText = await showDialog(
+              barrierDismissible: false,
+              context: context, 
+              builder: (context) => TextInputDialog(
+                prefixIcon: Icon(Icons.search),
+                controller: _searchController,
+                title: Text(AppLocalizations.of(context)!.search),
+              )
             );
-          }
+            if (searchText != null) {
+              _searchText = searchText;
+              _request = _request.copyOf(searchText: _searchText);
+              bloc.add(GetTransaction(_request));
+            }
+            showSearchIndicator.value = (
+              _searchText != null && _searchText != ""
+            );
+          },
         ),
         ViewBarIcon(
           width: _width,
@@ -100,6 +98,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
           },
         ),
         ViewBarIcon(
+          showIndicatorNotifier: showCategoryIndicator,
           width: _width,
           tooltip: AppLocalizations.of(context)!.category,
           icon: Icons.circle,
@@ -108,6 +107,7 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
             _request = _request.copyOf(
               categoryFilter: selectedCategory
             );
+            showCategoryIndicator.value = selectedCategory != null;
             bloc.add(GetTransaction(_request));
           },
         ),

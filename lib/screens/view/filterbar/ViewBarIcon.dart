@@ -19,9 +19,9 @@ class ViewBarIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (showIndicatorNotifier == null) {
-      return SizedBox(
-        width: width,
+    if (showIndicatorNotifier != null) {
+      return ValueListenableBuilder<bool>(
+        valueListenable: showIndicatorNotifier!,
         child: IconButton(
           tooltip: tooltip,
           icon: Icon(icon, size: width / 2),
@@ -29,16 +29,27 @@ class ViewBarIcon extends StatelessWidget {
             onTap?.call();
           }
         ),
+        builder: (context, showIndicator, child) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: showIndicator ? Color(0xffba3636) : null,
+            ),
+            width: width,
+            child: child
+          );
+        }
       );
     }
     return SizedBox(
       width: width,
-      child: ValueListenableBuilder<bool>(
-        valueListenable: showIndicatorNotifier!,
-        builder: (context, showIndicator, child) => Stack(
-          alignment: Alignment.center,
-          children: getIcon(showIndicator)
-        ),
+      child: IconButton(
+        tooltip: tooltip,
+        icon: Icon(icon, size: width / 2),
+        onPressed: () {
+          onTap?.call();
+        }
       ),
     );
   }

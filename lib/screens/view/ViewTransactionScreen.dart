@@ -180,8 +180,10 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   void onSelectAll() async {
     _transactions.forEach((transaction) {
-      (transactionKeys[transaction.hashCode]?.currentWidget as IconListTile)
-      .selectedNotifier?.value = true;
+      Widget? currentWidget = transactionKeys[transaction.hashCode]?.currentWidget;
+      if (currentWidget != null) {
+        (currentWidget as IconListTile).selectedNotifier?.value = true;
+      }
     });
     _selectedTransactions.addAll(_transactions);
     selectedTransactionsNotifier.value = _selectedTransactions.length;

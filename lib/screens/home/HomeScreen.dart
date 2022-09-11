@@ -119,10 +119,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),  
                     SizedBox(height: factor * 20),
-                    SizedBox(
-                      height: _bottomBannerAd.size.height.toDouble(),
-                      width: _bottomBannerAd.size.width.toDouble(),
-                      child: AdWidget(ad: _bottomBannerAd)
+                    Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        height: _bottomBannerAd.size.height.toDouble(),
+                        width: _bottomBannerAd.size.width.toDouble(),
+                        child: AdWidget(ad: _bottomBannerAd)
+                      ),
                     ),
                   ],
                 ),

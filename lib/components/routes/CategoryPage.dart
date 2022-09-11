@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ez_finance/blocs/bloc/bloc.dart';
 import 'package:project_ez_finance/components/IconSelectionSheet.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
@@ -9,6 +10,7 @@ import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/Database.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import '../dialogs/ResponseDialog.dart';
 import '../dialogs/TextInputDialog.dart';
@@ -219,6 +221,7 @@ class _CategoryPageState extends State<CategoryPage> {
         allCategories = _database.getAllCategories();
         setState(() => {});
       }
+      context.read<AccountChangeNotifier>().notify();
     } 
   }
 
@@ -255,6 +258,7 @@ class _CategoryPageState extends State<CategoryPage> {
         }
       }
     }
+    context.read<AccountChangeNotifier>().notify();
   }
 
   void deleteCategory(BuildContext context, Category category) async {
@@ -276,6 +280,7 @@ class _CategoryPageState extends State<CategoryPage> {
       _database.deleteCategory(category);
       allCategories = _database.getAllCategories();
     }
+    context.read<AccountChangeNotifier>().notify();
   } 
 
   @override

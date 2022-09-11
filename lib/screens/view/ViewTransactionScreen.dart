@@ -191,8 +191,10 @@ class _ViewScreenState extends State<ViewTransactionScreen> with SingleTickerPro
 
   void onReset() {
     _selectedTransactions.forEach((transaction) {
-      (transactionKeys[transaction.hashCode]?.currentWidget as IconListTile)
-      .selectedNotifier?.value = false;
+      Widget? currentWidget = transactionKeys[transaction.hashCode]?.currentWidget;
+      if (currentWidget != null) {
+        (currentWidget as IconListTile).selectedNotifier?.value = false;
+      }
     });
     _selectedTransactions.clear();
     _flipToViewBar();

@@ -63,14 +63,11 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
               onSelect: (category) => setCategory(context, category)
             ),
           ),
-          Container(
-            child: NewTitleTextField(
-              setTitleController: (controller) => _titleController = controller,
-            )
+          NewTitleTextField(
+            setTitleController: (controller) => _titleController = controller,
           ),
           SizedBox(height: MediaQuery.of(context).size.height/40),
-          Container(
-            alignment: Alignment.center,
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.85,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

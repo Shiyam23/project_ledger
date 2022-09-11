@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),  
                     SizedBox(height: factor * 20),
-                    Container(
+                    SizedBox(
                       height: _bottomBannerAd.size.height.toDouble(),
                       width: _bottomBannerAd.size.width.toDouble(),
                       child: AdWidget(ad: _bottomBannerAd)
@@ -197,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.symmetric(vertical: 20),
                               child: Column(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     height: MediaQuery.of(context).size.height * 0.12,
                                     child: Image.asset("assets/icons/box2.png")
                                   ),

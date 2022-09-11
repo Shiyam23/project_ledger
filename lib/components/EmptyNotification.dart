@@ -13,35 +13,37 @@ class EmptyNotification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width * 0.75,
-      padding: const EdgeInsets.all(25.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: Icon(Icons.info),
-              color: Theme.of(context).primaryColor,
-              iconSize: MediaQuery.of(context).size.height * 0.03,
-              onPressed: () => _showInformation(context),
+      child: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon: Icon(Icons.info),
+                color: Theme.of(context).primaryColor,
+                iconSize: MediaQuery.of(context).size.height * 0.03,
+                onPressed: () => _showInformation(context),
+              )
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 4,
+              child: Image.asset("assets/icons/box2.png")
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 40),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).primaryColor
+              )
             )
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 4,
-            child: Image.asset("assets/icons/box2.png")
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height / 40),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              color: Theme.of(context).primaryColor
-            )
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

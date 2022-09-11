@@ -38,95 +38,92 @@ class NewRepetitionDialog {
               children: <Widget>[
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            child: DropdownButtonFormField(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          child: DropdownButtonFormField(
+                            isDense: true,
+                            isExpanded: true,
+                            value: isEnabled,
+                            onChanged: (dynamic enabled) =>
+                                setDialogState(() => isEnabled = enabled),
+                            items: [
+                              DropdownMenuItem(
+                                child: Center(child: Text(
+                                  AppLocalizations.of(context)!.never
+                                )),
+                                value: false,
+                              ),
+                              DropdownMenuItem(
+                                child: Center(child: Text(
+                                  AppLocalizations.of(context)!.every
+                                )),
+                                value: true,
+                              ),
+                            ],
+                          )),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.1,
+                        child: TextFormField(
+                          enabled: isEnabled,
+                          onChanged: (string) =>
+                              _selectedAmount = int.tryParse(string),
+                          initialValue: _selectedAmount.toString(),
+                          decoration: InputDecoration(
+                            counterText: "",
+                          ),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          maxLength: 2,
+                          style: TextStyle(
+                            color: isEnabled! ? Theme.of(context).colorScheme.primary : Colors.black26
+                          ),
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                          textAlign: TextAlign.center,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: StatefulBuilder(builder:
+                              (context, StateSetter setDropDownState) {
+                            return DropdownButtonFormField(
+                              value: _selectedUnit,
                               isDense: true,
                               isExpanded: true,
-                              value: isEnabled,
-                              onChanged: (dynamic enabled) =>
-                                  setDialogState(() => isEnabled = enabled),
-                              items: [
-                                DropdownMenuItem(
-                                  child: Center(child: Text(
-                                    AppLocalizations.of(context)!.never
-                                  )),
-                                  value: false,
-                                ),
-                                DropdownMenuItem(
-                                  child: Center(child: Text(
-                                    AppLocalizations.of(context)!.every
-                                  )),
-                                  value: true,
-                                ),
-                              ],
-                            )),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.1,
-                          child: TextFormField(
-                            enabled: isEnabled,
-                            onChanged: (string) =>
-                                _selectedAmount = int.tryParse(string),
-                            initialValue: _selectedAmount.toString(),
-                            decoration: InputDecoration(
-                              counterText: "",
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            maxLength: 2,
-                            style: TextStyle(
-                              color: isEnabled! ? Theme.of(context).colorScheme.primary : Colors.black26
-                            ),
-                            maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                            textAlign: TextAlign.center,
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.3,
-                            child: StatefulBuilder(builder:
-                                (context, StateSetter setDropDownState) {
-                              return DropdownButtonFormField(
-                                value: _selectedUnit,
-                                isDense: true,
-                                isExpanded: true,
-                                onChanged: (dynamic unit) => setDropDownState(
-                                    () => _selectedUnit = unit),
-                                decoration:
-                                    InputDecoration(enabled: isEnabled!),
-                                items: !isEnabled!
-                                    ? null
-                                    : [
-                                        DropdownMenuItem(
-                                          child: Text(
-                                            AppLocalizations.of(context)!.day_s
-                                          ),
-                                          value: CalenderUnit.daily,
+                              onChanged: (dynamic unit) => setDropDownState(
+                                  () => _selectedUnit = unit),
+                              decoration:
+                                  InputDecoration(enabled: isEnabled!),
+                              items: !isEnabled!
+                                  ? null
+                                  : [
+                                      DropdownMenuItem(
+                                        child: Text(
+                                          AppLocalizations.of(context)!.day_s
                                         ),
-                                        DropdownMenuItem(
-                                          child: Text(
-                                            AppLocalizations.of(context)!.month_s
-                                          ),
-                                          value: CalenderUnit.monthly,
+                                        value: CalenderUnit.daily,
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text(
+                                          AppLocalizations.of(context)!.month_s
                                         ),
-                                        DropdownMenuItem(
-                                          child: Text(
-                                            AppLocalizations.of(context)!.year_s
-                                          ),
-                                          value: CalenderUnit.yearly,
+                                        value: CalenderUnit.monthly,
+                                      ),
+                                      DropdownMenuItem(
+                                        child: Text(
+                                          AppLocalizations.of(context)!.year_s
                                         ),
-                                      ],
-                              );
-                            }))
-                      ],
-                    ),
+                                        value: CalenderUnit.yearly,
+                                      ),
+                                    ],
+                            );
+                          }))
+                    ],
                   ),
                 ),
                 SizedBox(

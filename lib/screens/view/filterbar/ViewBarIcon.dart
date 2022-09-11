@@ -20,7 +20,7 @@ class ViewBarIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (showIndicatorNotifier == null) {
-      return Container(
+      return SizedBox(
         width: width,
         child: IconButton(
           tooltip: tooltip,
@@ -31,7 +31,7 @@ class ViewBarIcon extends StatelessWidget {
         ),
       );
     }
-    return Container(
+    return SizedBox(
       width: width,
       child: ValueListenableBuilder<bool>(
         valueListenable: showIndicatorNotifier!,

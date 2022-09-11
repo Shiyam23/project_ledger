@@ -118,8 +118,7 @@ Widget build(BuildContext context) {
             )),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: Container(
-            alignment: Alignment.center,
+          child: SizedBox(
             child: Text(
               _selectedCategory?.name ?? AppLocalizations.of(context)!.category,
               style: TextStyle(
@@ -140,8 +139,6 @@ Widget build(BuildContext context) {
     Category? selectedCategory = await showCategorySelectionSheet(context);
     widget.onSelect(selectedCategory);
   }
-
-  
 
   void updateCategory(Category? category) {
     setState(() => _selectedCategory = category);

@@ -68,7 +68,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
           ),
           SizedBox(height: MediaQuery.of(context).size.height/40),
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.85,
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

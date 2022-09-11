@@ -16,7 +16,7 @@ class _NewTextField extends StatefulWidget {
   final IconData icon;
 
   _NewTextField({
-    this.widthRatio = 0.85,
+    this.widthRatio = 0.9,
     required this.labelText,
     this.content,
     this.enabled = true,
@@ -83,7 +83,7 @@ class _NewDateFieldState extends State<NewDateField> {
         return _NewTextField(
           key: ObjectKey(state.date),
           labelText: AppLocalizations.of(context)!.date,
-          widthRatio: 0.3,
+          widthRatio: 0.325,
           onTap: widget.onTap,
           content: state.date?.format(),
           icon: FontAwesomeIcons.clock,
@@ -140,7 +140,7 @@ class _NewAccountFieldState extends State<NewAccountField> {
           key: ObjectKey(state.account),
           labelText: AppLocalizations.of(context)!.account,
           onTap: widget.onTap,
-          widthRatio: 0.5,
+          widthRatio: 0.55,
           content: state.account.toString(),
           icon: FontAwesomeIcons.creditCard
         );
@@ -208,7 +208,7 @@ class _NewTitleTextFieldState extends State<NewTitleTextField> {
         }
       },
       child : SizedBox(
-        width: MediaQuery.of(context).size.width * 0.85,
+        width: MediaQuery.of(context).size.width * 0.9,
         child: TextField(
           enableInteractiveSelection: false,
           controller: controller,

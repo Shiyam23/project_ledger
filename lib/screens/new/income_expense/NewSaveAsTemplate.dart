@@ -21,7 +21,7 @@ class NewSaveAsTemplate extends StatelessWidget {
         children: <Widget>[
           Transform.scale(
             alignment: Alignment.centerLeft,
-            scale: 1,
+            scale: 1.1,
             child: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
                 return Checkbox(
@@ -36,7 +36,7 @@ class NewSaveAsTemplate extends StatelessWidget {
           ),
           Transform.scale(
             alignment: Alignment.centerLeft,
-            scale: 1,
+            scale: 1.1,
             child: Text(
               AppLocalizations.of(context)!.saveAsTemplate,
               textAlign: TextAlign.left, 

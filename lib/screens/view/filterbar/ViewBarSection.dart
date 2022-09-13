@@ -151,6 +151,8 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
                 .subtract(Duration(microseconds: 1)))
             );
             bloc.add(GetTransaction(request));
+            showCategoryIndicator.value = false;
+            showSearchIndicator.value = false;
             setState(() {
               _request = request;
               _searchText = null;

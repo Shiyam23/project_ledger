@@ -46,6 +46,11 @@ class _ViewFilterBarSectionState extends State<ViewFilterBarSection> {
     double _width = (MediaQuery.of(context).size.width - _paddingWidth * 2) / 6;
     TransactionBloc bloc = BlocProvider.of<TransactionBloc>(context);
     return AppBar(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(20)
+        )
+      ),
       actions: <Widget>[
         SizedBox(width: _paddingWidth),
         ViewBarIcon(
@@ -295,6 +300,11 @@ class _ViewSelectionBarSectionState extends State<ViewSelectionBarSection> {
       valueListenable: widget.selectedTransactionsNotifier,
       builder: (context, int numberSelected, _) {
         return AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20)
+            )
+          ),
           title: Row(
             children: [
               IconButton(

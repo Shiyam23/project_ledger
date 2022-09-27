@@ -83,36 +83,38 @@ Widget build(BuildContext context) {
               onTap: onTap,
               iconData: _selectedCategory!.icon!.iconData),
           )
-        : Container(
-            height: MediaQuery.of(context).size.width/6,
-            width: MediaQuery.of(context).size.width/6,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  offset: const Offset(5,5),
-                  blurRadius: 5,
+        : RepaintBoundary(
+            child: Container(
+              height: MediaQuery.of(context).size.width/6,
+              width: MediaQuery.of(context).size.width/6,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(5,5),
+                    blurRadius: 5,
+                    color: Colors.black26
+                  )
+                ],
+                borderRadius: BorderRadius.circular(50),
+                color: Theme.of(context).canvasColor,
+                border: Border.all(
                   color: Colors.black26
                 )
-              ],
-              borderRadius: BorderRadius.circular(50),
-              color: Theme.of(context).canvasColor,
-              border: Border.all(
-                color: Colors.black26
-              )
-            ),
-            padding: const EdgeInsets.all(1),
-            child: SlideTransition(
-              position: _offsetAnimation,
-              child: CategoryIcon(
-                size: MediaQuery.of(context).size.width / 17,
-                onTap: onTap,
-                iconData: CategoryIconData(
-                  backgroundColorInt: Colors.transparent.value,
-                  iconName: "pen",
-                  iconColorInt: Theme.of(context).primaryColor.value,
-                ),
               ),
-            )),
+              padding: const EdgeInsets.all(1),
+              child: SlideTransition(
+                position: _offsetAnimation,
+                child: CategoryIcon(
+                  size: MediaQuery.of(context).size.width / 17,
+                  onTap: onTap,
+                  iconData: CategoryIconData(
+                    backgroundColorInt: Colors.transparent.value,
+                    iconName: "pen",
+                    iconColorInt: Theme.of(context).primaryColor.value,
+                  ),
+                ),
+              )),
+        ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: SizedBox(

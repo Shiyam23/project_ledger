@@ -110,7 +110,7 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
               cursorWidth: 3,
               showCursor: true,
               enableInteractiveSelection: true,
-              onTap: () => KeyboardWidget.of(context)?.triggerKeyboard(true),
+              onTap: () => showKeyboard(context),
               toolbarOptions: ToolbarOptions(
                 copy: true,
                 cut: false,
@@ -192,17 +192,4 @@ class _NewMoneyAmountState extends State<NewMoneyAmount> {
     }
     return null;
   }
-
-  @override
-  void didChangeDependencies() {
-    
-    super.didChangeDependencies();
-    
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-  
 }

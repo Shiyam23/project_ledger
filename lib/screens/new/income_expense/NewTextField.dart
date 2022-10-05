@@ -212,9 +212,7 @@ class _NewTitleTextFieldState extends State<NewTitleTextField> {
         child: TextField(
           enableInteractiveSelection: false,
           controller: controller,
-          onTap: () {
-            KeyboardWidget.of(context)?.triggerKeyboard(false);
-          },
+          onTap: () => hideKeyboard(context),
           onChanged: (name) {
             TransactionDetailsCubit cubit = TransactionDetailsCubit.of(context);
             cubit.projectDetails(cubit.state.copyWith(

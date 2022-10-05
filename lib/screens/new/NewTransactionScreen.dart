@@ -110,7 +110,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
   void selectDate(BuildContext context) async {
     TransactionDetails details = TransactionDetailsCubit.of(context).state;
     FocusScope.of(context).unfocus();
-    KeyboardWidget.of(context)?.triggerKeyboard(false);
+    hideKeyboard(context);
     DateTime initialDate = details.date ?? DateTime.now();
     DateTime? pickedDateTime = await showDatePicker(
       context: context,
@@ -129,7 +129,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
   void selectRepetition(BuildContext context) async {
     TransactionDetails details = TransactionDetailsCubit.of(context).state;
     FocusScope.of(context).unfocus();
-    KeyboardWidget.of(context)?.triggerKeyboard(false);
+    hideKeyboard(context);
     NewRepetitionDialog dialog = NewRepetitionDialog(
       initialRepetition: details.repetition ?? Repetition.none);
     Repetition? selectedRepetition = await dialog.chooseRepetition(context);
@@ -143,7 +143,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
 
   void selectAccount(BuildContext context) async {
     FocusScope.of(context).unfocus();
-    KeyboardWidget.of(context)?.triggerKeyboard(false);
+    hideKeyboard(context);
     TransactionDetails details = TransactionDetailsCubit.of(context).state;
     Account? account = await NewAccountDialog
         .chooseAccount(context, allAccounts!);
@@ -233,7 +233,7 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
   }
   
   void setCategory(BuildContext context, Category? category) {
-    FocusScope.of(context).unfocus();
+    hideKeyboard(context);
     TransactionDetails details = TransactionDetailsCubit.of(context).state;
     details = details.copyWith(
       category: category,
@@ -271,8 +271,6 @@ class _NewTransactionScreenState extends State<NewTransactionScreen>{
     );
   }  
 }
-
-
 
 enum NewTransactionError {
   NoName,

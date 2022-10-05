@@ -33,7 +33,7 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    keyboard = KeyBoard(triggerKeyboard: triggerKeyboard);
+    keyboard = KeyBoard();
     super.initState();
     transactionBloc.add(UpdateStandingOrderTransactions());
     lController = LayoutController(
@@ -52,30 +52,15 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardWidget(
-      keyboard: keyboard,
-      triggerKeyboard: triggerKeyboard,
-      child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: builder()
-          ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: getTopBar(lController!.currentPage!) as PreferredSizeWidget? ,
+      body: buildPageView(),
+      bottomNavigationBar: MainBottomNaviationBar(
+        layoutController: lController,
+        setPage: setPage,
+      )
     );
-  }
-
-  List<Widget> builder() {
-    List<Widget> stackList = [
-      Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: getTopBar(lController!.currentPage!) as PreferredSizeWidget? ,
-            body: buildPageView(),
-            bottomNavigationBar: MainBottomNaviationBar(
-              layoutController: lController,
-              setPage: setPage,
-            )
-          ),
-    ];
-    if (keyboardOpen) stackList.add(keyboard);
-    return stackList;
   }
 
   Widget buildPageView() {
@@ -100,12 +85,9 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
   }
 
   void pageChanged(int index) {
-
-    if (index != 3 && keyboardOpen) {
-      FocusScope.of(context).unfocus();
-      triggerKeyboard(false); 
+    if (index != 3) {
+      hideKeyboard(context);
     }
-
     lController!.currentPage = index;
     if (lController!.pageController.page! + index < 2) {
       lController!.overViewTabController
@@ -151,11 +133,6 @@ class _LayoutState extends State<Layout> with TickerProviderStateMixin {
     transactionBloc.close();
     super.dispose();
   }
-
-  void triggerKeyboard(bool open) {
-    if (keyboardOpen != open) setState(() => keyboardOpen = open);
-  }
-
 }
 
 class CustomPageViewScrollPhysics extends ScrollPhysics {

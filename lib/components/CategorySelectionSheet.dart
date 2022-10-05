@@ -1,5 +1,4 @@
  import 'package:flutter/material.dart';
-import 'package:project_ez_finance/components/Keyboard.dart';
 import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
 import 'package:project_ez_finance/models/Category.dart';
 import 'package:project_ez_finance/services/HiveDatabase.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
  
  Future<Category?> showCategorySelectionSheet(BuildContext context) async {
     Future<List<Category>> allCategories = HiveDatabase().getAllCategories();
-    KeyboardWidget.of(context)!.triggerKeyboard(false);
     Category? selectedCategory = await showModalBottomSheet<Category>(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),

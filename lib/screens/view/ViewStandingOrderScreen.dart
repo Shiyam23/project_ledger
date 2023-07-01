@@ -1,9 +1,9 @@
-import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
-import 'package:project_ez_finance/services/DateTimeFormatter.dart';
+import 'package:dollavu/components/dialogs/ConfirmDialog.dart';
+import 'package:dollavu/services/DateTimeFormatter.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/models/StandingOrder.dart';
-import 'package:project_ez_finance/models/currencies.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:dollavu/models/StandingOrder.dart';
+import 'package:dollavu/models/currencies.dart';
+import 'package:dollavu/services/HiveDatabase.dart';
 import '../../components/EmptyNotification.dart';
 import '../../components/IconListTile.dart';
 import '../../components/dialogs/ResponseDialog.dart';

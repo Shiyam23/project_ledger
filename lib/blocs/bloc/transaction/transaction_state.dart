@@ -1,4 +1,4 @@
-import 'package:project_ez_finance/models/Transaction.dart';
+import 'package:dollavu/models/Transaction.dart';
 
 abstract class TransactionState {
   const TransactionState();

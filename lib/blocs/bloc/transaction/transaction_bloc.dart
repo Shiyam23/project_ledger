@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart' show DateTimeRange;
-import 'package:project_ez_finance/blocs/bloc/transaction/transaction_event.dart';
-import 'package:project_ez_finance/blocs/bloc/transaction/transaction_state.dart';
-import 'package:project_ez_finance/models/Repetition.dart';
-import 'package:project_ez_finance/models/Transaction.dart';
-import 'package:project_ez_finance/models/filters/TransactionFilter.dart';
-import 'package:project_ez_finance/services/Database.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:dollavu/blocs/bloc/transaction/transaction_event.dart';
+import 'package:dollavu/blocs/bloc/transaction/transaction_state.dart';
+import 'package:dollavu/models/Repetition.dart';
+import 'package:dollavu/models/Transaction.dart';
+import 'package:dollavu/models/filters/TransactionFilter.dart';
+import 'package:dollavu/services/Database.dart';
+import 'package:dollavu/services/HiveDatabase.dart';
 
 import '../../../models/StandingOrder.dart';
 

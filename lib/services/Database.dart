@@ -1,7 +1,7 @@
-import 'package:project_ez_finance/models/Account.dart';
-import 'package:project_ez_finance/models/Category.dart';
-import 'package:project_ez_finance/models/StandingOrder.dart';
-import 'package:project_ez_finance/models/Transaction.dart';
+import 'package:dollavu/models/Account.dart';
+import 'package:dollavu/models/Category.dart';
+import 'package:dollavu/models/StandingOrder.dart';
+import 'package:dollavu/models/Transaction.dart';
 
 abstract class Database {
   bool get changed;

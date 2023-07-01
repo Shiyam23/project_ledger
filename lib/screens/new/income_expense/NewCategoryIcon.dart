@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
-import 'package:project_ez_finance/components/CategorySelectionSheet.dart';
-import 'package:project_ez_finance/components/Keyboard.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
-import 'package:project_ez_finance/models/Category.dart';
-import 'package:project_ez_finance/services/Database.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:dollavu/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:dollavu/components/CategorySelectionSheet.dart';
+import 'package:dollavu/components/Keyboard.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIconData.dart';
+import 'package:dollavu/models/Category.dart';
+import 'package:dollavu/services/Database.dart';
+import 'package:dollavu/services/HiveDatabase.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewCategoryIcon extends StatefulWidget {

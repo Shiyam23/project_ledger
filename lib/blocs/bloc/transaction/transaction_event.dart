@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/models/Modes.dart';
-import 'package:project_ez_finance/models/Transaction.dart';
+import 'package:dollavu/models/Modes.dart';
+import 'package:dollavu/models/Transaction.dart';
 import '../../../models/Category.dart';
 
 abstract class TransactionEvent extends Equatable {

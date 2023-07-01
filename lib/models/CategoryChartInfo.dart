@@ -1,7 +1,7 @@
-import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
-import 'package:project_ez_finance/models/Category.dart';
-import 'package:project_ez_finance/models/currencies.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIconData.dart';
+import 'package:dollavu/models/Category.dart';
+import 'package:dollavu/models/currencies.dart';
+import 'package:dollavu/services/HiveDatabase.dart';
 import 'Transaction.dart';
 
 class CategoryChartInfo{

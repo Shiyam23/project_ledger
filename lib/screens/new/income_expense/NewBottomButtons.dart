@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/components/button/Button.dart';
+import 'package:dollavu/components/button/Button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 

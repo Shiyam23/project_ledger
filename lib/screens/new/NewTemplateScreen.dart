@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
-import 'package:project_ez_finance/components/EmptyNotification.dart';
-import 'package:project_ez_finance/components/IconListTile.dart';
-import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
-import 'package:project_ez_finance/models/Transaction.dart';
-import 'package:project_ez_finance/services/Database.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:dollavu/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:dollavu/components/EmptyNotification.dart';
+import 'package:dollavu/components/IconListTile.dart';
+import 'package:dollavu/components/dialogs/ConfirmDialog.dart';
+import 'package:dollavu/models/Transaction.dart';
+import 'package:dollavu/services/Database.dart';
+import 'package:dollavu/services/HiveDatabase.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../components/dialogs/ResponseDialog.dart';
 class NewTemplateScreen extends StatefulWidget {

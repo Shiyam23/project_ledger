@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ez_finance/models/Account.dart';
-import 'package:project_ez_finance/models/Category.dart';
-import 'package:project_ez_finance/models/Repetition.dart';
+import 'package:dollavu/models/Account.dart';
+import 'package:dollavu/models/Category.dart';
+import 'package:dollavu/models/Repetition.dart';
 
 class TransactionDetailsCubit extends Cubit<TransactionDetails> {
   

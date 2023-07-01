@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/models/CategoryChartInfo.dart';
+import 'package:dollavu/models/CategoryChartInfo.dart';
 class AccountChangeNotifier extends ChangeNotifier {
   
   Future<List<CategoryChartInfo>> _categories 

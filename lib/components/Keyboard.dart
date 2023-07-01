@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:project_ez_finance/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
+import 'package:dollavu/screens/new/income_expense/newMoneyAmountWidgets/NewMoneyAmountController.dart';
 
 bool showingKeyboard = false;
 

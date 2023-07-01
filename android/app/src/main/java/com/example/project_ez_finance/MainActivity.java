@@ -1,4 +1,4 @@
-package com.shadowswitch.project_ez_finance;
+package com.shadowswitch.dollavu;
 
 import io.flutter.embedding.android.FlutterActivity;
 

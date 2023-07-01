@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
 
 part 'Account.g.dart';
 

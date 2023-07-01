@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 import 'dart:math' as math;
-import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIconData.dart';
 
 part 'CategoryIcon.g.dart';
 

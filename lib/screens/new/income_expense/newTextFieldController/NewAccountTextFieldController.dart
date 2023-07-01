@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
-import 'package:project_ez_finance/models/Account.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIconData.dart';
+import 'package:dollavu/models/Account.dart';
 
 class NewAccountDialog {
 

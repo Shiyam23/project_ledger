@@ -1,12 +1,12 @@
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
-import 'package:project_ez_finance/models/Account.dart';
-import 'package:project_ez_finance/models/Category.dart';
-import 'package:project_ez_finance/models/Repetition.dart';
-import 'package:project_ez_finance/models/StandingOrder.dart';
-import 'package:project_ez_finance/models/Transaction.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIconData.dart';
+import 'package:dollavu/models/Account.dart';
+import 'package:dollavu/models/Category.dart';
+import 'package:dollavu/models/Repetition.dart';
+import 'package:dollavu/models/StandingOrder.dart';
+import 'package:dollavu/models/Transaction.dart';
 import 'Database.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 

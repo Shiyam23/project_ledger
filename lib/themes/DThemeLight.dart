@@ -27,7 +27,9 @@ class DThemeLight implements DTheme {
       900: Color(0xff1a1f23),
     }),
     canvasColor: Color(0xfff0f1f5),
-    bottomAppBarColor: primaryColor,
+    bottomAppBarTheme: BottomAppBarTheme(
+      color: primaryColor
+    ),
     tabBarTheme: TabBarTheme(
         labelPadding: EdgeInsets.only(top: 15, bottom: 7.5),
         unselectedLabelStyle:

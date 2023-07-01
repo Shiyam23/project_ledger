@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:project_ez_finance/components/LayoutController.dart';
-import 'package:project_ez_finance/themes/DTheme.dart';
+import 'package:dollavu/components/LayoutController.dart';
+import 'package:dollavu/themes/DTheme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainBottomNaviationBar extends StatefulWidget {
@@ -52,7 +52,7 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        backgroundColor: DTheme.of(context)!.themeData.bottomAppBarColor,
+        backgroundColor: DTheme.of(context)!.themeData.bottomAppBarTheme.color,
         currentIndex: lController!.bottomSelectedIndex,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white38,

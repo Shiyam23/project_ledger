@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/blocs/bloc/bloc.dart';
-import 'package:project_ez_finance/models/Category.dart';
-import 'package:project_ez_finance/models/Modes.dart';
+import 'package:dollavu/blocs/bloc/bloc.dart';
+import 'package:dollavu/models/Category.dart';
+import 'package:dollavu/models/Modes.dart';
 
 import '../Transaction.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
 
 abstract class SelectableTile {
   CategoryIcon? get icon;

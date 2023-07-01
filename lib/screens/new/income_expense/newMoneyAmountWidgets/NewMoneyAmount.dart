@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
-import 'package:project_ez_finance/components/Keyboard.dart';
-import 'package:project_ez_finance/models/Account.dart';
+import 'package:dollavu/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:dollavu/components/Keyboard.dart';
+import 'package:dollavu/models/Account.dart';
 import 'NewMoneyAmountController.dart';
 
 class NewMoneyAmount extends StatefulWidget {

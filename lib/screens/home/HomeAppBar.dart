@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/blocs/bloc/bloc.dart';
-import 'package:project_ez_finance/components/dialogs/LoadingDialog.dart';
-import 'package:project_ez_finance/services/Backup.dart';
+import 'package:dollavu/blocs/bloc/bloc.dart';
+import 'package:dollavu/components/dialogs/LoadingDialog.dart';
+import 'package:dollavu/services/Backup.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

@@ -1,7 +1,7 @@
  import 'package:flutter/material.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
-import 'package:project_ez_finance/models/Category.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/models/Category.dart';
+import 'package:dollavu/services/HiveDatabase.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
  
  Future<Category?> showCategorySelectionSheet(BuildContext context) async {

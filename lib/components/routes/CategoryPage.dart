@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/blocs/bloc/bloc.dart';
-import 'package:project_ez_finance/components/IconSelectionSheet.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIconData.dart';
-import 'package:project_ez_finance/components/dialogs/ConfirmDialog.dart';
-import 'package:project_ez_finance/models/Category.dart';
-import 'package:project_ez_finance/services/Database.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:dollavu/blocs/bloc/bloc.dart';
+import 'package:dollavu/components/IconSelectionSheet.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIconData.dart';
+import 'package:dollavu/components/dialogs/ConfirmDialog.dart';
+import 'package:dollavu/models/Category.dart';
+import 'package:dollavu/services/Database.dart';
+import 'package:dollavu/services/HiveDatabase.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 

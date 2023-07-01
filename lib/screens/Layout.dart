@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/physics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/bloc.dart';
-import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
-import 'package:project_ez_finance/components/LayoutController.dart';
-import 'package:project_ez_finance/components/MainBottomNavigationBar.dart';
-import 'package:project_ez_finance/screens/home/HomeAppBar.dart';
-import 'package:project_ez_finance/screens/home/HomeScreen.dart';
-import 'package:project_ez_finance/screens/new/NewTransactionScreen.dart';
-import 'package:project_ez_finance/screens/new/NewTabBar.dart';
-import 'package:project_ez_finance/screens/new/NewTemplateScreen.dart';
-import 'package:project_ez_finance/screens/view/ViewStandingOrderScreen.dart';
-import 'package:project_ez_finance/screens/view/ViewTransactionScreen.dart';
-import 'package:project_ez_finance/screens/view/ViewTabBar.dart';
-import 'package:project_ez_finance/components/Keyboard.dart';
+import 'package:dollavu/blocs/bloc/bloc.dart';
+import 'package:dollavu/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:dollavu/components/LayoutController.dart';
+import 'package:dollavu/components/MainBottomNavigationBar.dart';
+import 'package:dollavu/screens/home/HomeAppBar.dart';
+import 'package:dollavu/screens/home/HomeScreen.dart';
+import 'package:dollavu/screens/new/NewTransactionScreen.dart';
+import 'package:dollavu/screens/new/NewTabBar.dart';
+import 'package:dollavu/screens/new/NewTemplateScreen.dart';
+import 'package:dollavu/screens/view/ViewStandingOrderScreen.dart';
+import 'package:dollavu/screens/view/ViewTransactionScreen.dart';
+import 'package:dollavu/screens/view/ViewTabBar.dart';
+import 'package:dollavu/components/Keyboard.dart';
 
 class Layout extends StatefulWidget {
 

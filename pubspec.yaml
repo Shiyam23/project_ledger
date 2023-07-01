@@ -1,17 +1,6 @@
-name: project_ez_finance
+name: dollavu
 description: Finance app
-
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.1.0+5
+version: 0.1.0
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -29,13 +18,13 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.4
   font_awesome_flutter: ^10.1.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   hive_flutter: ^1.1.0
   hive: ^2.2.3
   path_provider: ^2.0.10
   dotted_border: ^2.0.0
   currency_picker: ^2.0.11
-  charts_flutter: ^0.12.0
+  community_charts_flutter: ^1.0.1
   google_mobile_ads: ^1.3.0
   pdf: ^3.8.1
   share_plus: ^4.0.10

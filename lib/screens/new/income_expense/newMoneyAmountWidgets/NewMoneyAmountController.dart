@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/models/Account.dart';
-import 'package:project_ez_finance/models/currencies.dart';
-import 'package:project_ez_finance/services/HiveDatabase.dart';
+import 'package:dollavu/models/Account.dart';
+import 'package:dollavu/models/currencies.dart';
+import 'package:dollavu/services/HiveDatabase.dart';
 
 
 class NewMoneyAmountController extends TextEditingController {

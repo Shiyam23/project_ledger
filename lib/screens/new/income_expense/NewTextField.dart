@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:project_ez_finance/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
-import 'package:project_ez_finance/components/Keyboard.dart';
-import 'package:project_ez_finance/services/DateTimeFormatter.dart';
+import 'package:dollavu/blocs/bloc/transactionDetails/cubit/transactiondetails_cubit.dart';
+import 'package:dollavu/components/Keyboard.dart';
+import 'package:dollavu/services/DateTimeFormatter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 

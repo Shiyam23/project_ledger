@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
-import 'package:project_ez_finance/models/SelectableTile.dart';
-import 'package:project_ez_finance/models/Transaction.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/models/SelectableTile.dart';
+import 'package:dollavu/models/Transaction.dart';
 import 'package:hive/hive.dart';
-import 'package:project_ez_finance/services/DateTimeFormatter.dart';
+import 'package:dollavu/services/DateTimeFormatter.dart';
 part 'StandingOrder.g.dart';
 
 @HiveType(typeId: 7)

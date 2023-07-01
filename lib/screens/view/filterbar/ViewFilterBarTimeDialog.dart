@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_ez_finance/components/dialogs/DollavuDialog.dart';
-import 'package:project_ez_finance/models/Modes.dart' show TimeMode;
+import 'package:dollavu/components/dialogs/DollavuDialog.dart';
+import 'package:dollavu/models/Modes.dart' show TimeMode;
 
 class ViewFilterBarTimeDialog extends StatefulWidget {
   ViewFilterBarTimeDialog({

@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:project_ez_finance/components/categoryIcon/CategoryIcon.dart';
-import 'package:project_ez_finance/models/Category.dart' as Dollavu;
-import 'package:project_ez_finance/models/SelectableTile.dart';
-import 'package:project_ez_finance/services/DateTimeFormatter.dart';
+import 'package:dollavu/components/categoryIcon/CategoryIcon.dart';
+import 'package:dollavu/models/Category.dart' as Dollavu;
+import 'package:dollavu/models/SelectableTile.dart';
+import 'package:dollavu/services/DateTimeFormatter.dart';
 import 'Account.dart';
 import 'Repetition.dart';
 

@@ -21,11 +21,11 @@ class ViewTabBar extends StatelessWidget implements PreferredSizeWidget {
         tabs: <Widget>[
           Text(
             AppLocalizations.of(context)!.repetition_tab,
-            style: TextStyle(fontSize: 18.0),
+            style: TextStyle(fontSize: 18.0, color: Colors.white),
           ),
           Text(
             AppLocalizations.of(context)!.transactions_tab,
-            style: TextStyle(fontSize: 18.0),
+            style: TextStyle(fontSize: 18.0, color: Colors.white),
           ),
         ],
       ),

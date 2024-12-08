@@ -12,18 +12,18 @@ import 'package:dollavu/components/routes/AccountPage.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HiveDatabase().setupDatabase();
   MobileAds.instance.initialize();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(DThemeContainer(
-    initialDTheme: DThemeLight(),
-    child: MyApp(),
-  ));
+  runApp(
+    DThemeContainer(
+      initialDTheme: DThemeLight(),
+      child: MyApp(),
+    ),
+  );
 }
-
 
 class MyApp extends StatefulWidget {
   @override
@@ -36,17 +36,17 @@ class _MyAppState extends State<MyApp> {
     return ChangeNotifierProvider(
       create: (_) => AccountChangeNotifier(),
       child: MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          title: 'Dollavu',
-          theme: DTheme.of(context)?.themeData,
-          home: Layout(),
-          routes: {
-            "account": (context) => AccountPage(),
-            "category": (context) => CategoryPage(),
-          },
-          debugShowCheckedModeBanner: false,
-        ),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        title: 'Dollavu',
+        theme: DTheme.of(context)?.themeData,
+        home: Layout(),
+        routes: {
+          "account": (context) => AccountPage(),
+          "category": (context) => CategoryPage(),
+        },
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 

@@ -8,8 +8,8 @@ import 'package:dollavu/services/Database.dart';
 import 'package:dollavu/services/HiveDatabase.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../components/dialogs/ResponseDialog.dart';
-class NewTemplateScreen extends StatefulWidget {
 
+class NewTemplateScreen extends StatefulWidget {
   final Future<void> Function(int) setPage;
 
   NewTemplateScreen(this.setPage);
@@ -43,16 +43,23 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
           return AnimatedList(
             key: _listKey,
             initialItemCount: _templates.length,
-            itemBuilder: (context, index, animation) 
-              => _listBuilder(context, _templates[index], animation)
+            itemBuilder: (context, index, animation) =>
+                _listBuilder(context, _templates[index], animation),
+          );
+        } else {
+          return const Center(
+            child: const CircularProgressIndicator(),
           );
         }
-        else return const Center(child: const CircularProgressIndicator());
-      }
+      },
     );
   }
 
-  Widget _listBuilder (BuildContext context, Transaction template, Animation<double> animation) {
+  Widget _listBuilder(
+    BuildContext context,
+    Transaction template,
+    Animation<double> animation,
+  ) {
     return SizeTransition(
       sizeFactor: animation,
       child: Card(
@@ -76,69 +83,72 @@ class _NewTemplateScreenState extends State<NewTemplateScreen> {
             cubit.projectDetails(details);
           },
           tile: template,
-        )
+        ),
       ),
     );
   }
 
   void showAccountMenu(BuildContext context, Transaction template) {
-    showModalBottomSheet(context: context, builder: (sheetContext) {
-      return SafeArea(
-        bottom: true,
-        left: false,
-        top: false,
-        right: false,
-        child: Wrap(
-          children: [
+    showModalBottomSheet(
+      context: context,
+      builder: (sheetContext) {
+        return SafeArea(
+          bottom: true,
+          left: false,
+          top: false,
+          right: false,
+          child: Wrap(children: [
             ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 3, horizontal: 16),
               title: Text(AppLocalizations.of(context)!.delete_template),
               leading: const Icon(Icons.delete),
-              onTap: () => deleteTemplate(context, template)
+              onTap: () => deleteTemplate(context, template),
             ),
-          ]
-        ),
-      );
-    });    
+          ]),
+        );
+      },
+    );
   }
 
   void deleteTemplate(BuildContext context, Transaction template) async {
-      Navigator.of(context).pop();
-      bool? sureToDelete = await showDialog<bool>(
-        context: context, 
-        builder: (context) => ConfirmDeleteDialog(
-          title: "Delete template?",
-          content: "Are you sure that you want to delete this template?",
-        )
-      );
-      if (sureToDelete ?? false) {
-        bool noError = await _database.deleteTemplate(template);
-        if (noError) {
-          allTemplates = _database.getTemplates();
-          int index = _templates.indexOf(template);
-          _listKey.currentState!.removeItem(
-            index, 
-            (context, animation) => _listBuilder(context, template, animation)
-          );
-          _templates.removeAt(index);
-          if (_templates.isEmpty) setState(() {
-          });
-        } else {
-          showDialog(
-            context: context, 
-            builder: (_) => ResponseDialog(
-              description: AppLocalizations.of(context)!.delete_template_error_description, 
-              response: Response.Error
-            )
-          );
-        }
+    Navigator.of(context).pop();
+    bool? sureToDelete = await showDialog<bool>(
+      context: context,
+      builder: (context) => ConfirmDeleteDialog(
+        title: "Delete template?",
+        content: "Are you sure that you want to delete this template?",
+      ),
+    );
+    if (sureToDelete ?? false) {
+      bool noError = await _database.deleteTemplate(template);
+      if (noError) {
+        allTemplates = _database.getTemplates();
+        int index = _templates.indexOf(template);
+        _listKey.currentState!.removeItem(index,
+            (context, animation) => _listBuilder(context, template, animation));
+        _templates.removeAt(index);
+        if (_templates.isEmpty) setState(() {});
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => ResponseDialog(
+            description:
+                AppLocalizations.of(context)!.delete_template_error_description,
+            response: Response.Error,
+          ),
+        );
       }
     }
+  }
 
   Widget _templatesEmptyNotification() {
-    return Center(child: EmptyNotification(
-      title: AppLocalizations.of(context)!.no_templates_available,
-      information: AppLocalizations.of(context)!.no_templates_available_description
-    ));
-  } 
+    return Center(
+      child: EmptyNotification(
+        title: AppLocalizations.of(context)!.no_templates_available,
+        information:
+            AppLocalizations.of(context)!.no_templates_available_description,
+      ),
+    );
+  }
 }

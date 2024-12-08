@@ -7,27 +7,22 @@ import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-
   const HomeAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
-    final titleDollavuText = new Text(
-      "Dollavu",
-      style: new TextStyle(fontFamily: "Pacifico", fontSize: 28.0),
-    );
-
     return AppBar(
-      titleSpacing: 20, 
-      title: titleDollavuText,
-      centerTitle: true, 
+      titleSpacing: 20,
+      title: Text(
+        "Dollavu",
+      ),
+      centerTitle: true,
       actions: [
         PopupMenuButton<String>(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          onSelected: (choice) =>  choiceAction(choice, context),
+          onSelected: (choice) => choiceAction(choice, context),
           itemBuilder: (BuildContext context) {
             return PopUpMenuButtonChoices.choices(context).map((String choice) {
               return PopupMenuItem<String>(
@@ -37,7 +32,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             }).toList();
           },
         ),
-      ]
+      ],
     );
   }
 
@@ -49,12 +44,14 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       Navigator.of(rootContext).pushNamed("category");
     }
     if (choice == PopUpMenuButtonChoices.backup(rootContext)) {
-      showModalBottomSheet(context: rootContext, builder: (context) => 
-        SafeArea(
+      showModalBottomSheet(
+        context: rootContext,
+        builder: (context) => SafeArea(
           child: Wrap(
             children: [
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                 title: Text(AppLocalizations.of(context)!.create_backup),
                 leading: const Icon(Icons.arrow_upward),
                 onTap: () {
@@ -67,19 +64,19 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 height: 1,
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                 title: Text(AppLocalizations.of(context)!.import_backup),
                 leading: const Icon(Icons.arrow_downward),
                 onTap: () {
                   Navigator.pop(context);
                   _importBackup(rootContext);
-                }
+                },
               ),
             ],
           ),
-        )
+        ),
       );
-      //createBackup();
     }
   }
 
@@ -90,12 +87,13 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     LoadingProgress progress = LoadingProgress();
     showDialog(
       barrierDismissible: false,
-      context: context, 
-      builder: (context) { 
+      context: context,
+      builder: (context) {
         return LoadingDialog(
-        loadingProgress: progress, 
-        title: AppLocalizations.of(context)!.creating_backup);
-      }
+          loadingProgress: progress,
+          title: AppLocalizations.of(context)!.creating_backup,
+        );
+      },
     );
     createBackup(progress);
   }
@@ -106,27 +104,29 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (backupFilePath == null) return;
     showDialog(
       barrierDismissible: false,
-      context: context, 
-      builder: (context) { 
+      context: context,
+      builder: (context) {
         return LoadingDialog(
-        loadingProgress: progress, 
-        title: AppLocalizations.of(context)!.importing_backup);
-      }
+          loadingProgress: progress,
+          title: AppLocalizations.of(context)!.importing_backup,
+        );
+      },
     );
     List<File>? backupFiles = await checksum(backupFilePath, progress);
     if (backupFiles == null) {
       showDialog(
-        context: context, 
+        context: context,
         builder: (context) => AlertDialog(
-          title: Text(AppLocalizations.of(context)!.backup_corrupted), 
-          content: Text(AppLocalizations.of(context)!.backup_corrupted_description),
+          title: Text(AppLocalizations.of(context)!.backup_corrupted),
+          content:
+              Text(AppLocalizations.of(context)!.backup_corrupted_description),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context), 
-              child: Text(MaterialLocalizations.of(context).okButtonLabel)
+              onPressed: () => Navigator.pop(context),
+              child: Text(MaterialLocalizations.of(context).okButtonLabel),
             )
           ],
-        )
+        ),
       );
       return;
     }
@@ -136,13 +136,16 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class PopUpMenuButtonChoices {
-  static String accounts(BuildContext context) => AppLocalizations.of(context)!.account;
-  static String categories(BuildContext context) => AppLocalizations.of(context)!.categories;
-  static String backup(BuildContext context) => AppLocalizations.of(context)!.backup;
+  static String accounts(BuildContext context) =>
+      AppLocalizations.of(context)!.account;
+  static String categories(BuildContext context) =>
+      AppLocalizations.of(context)!.categories;
+  static String backup(BuildContext context) =>
+      AppLocalizations.of(context)!.backup;
 
   static List<String> choices(BuildContext context) => <String>[
-    accounts(context),
-    categories(context),
-    backup(context),
-  ];
+        accounts(context),
+        categories(context),
+        backup(context),
+      ];
 }

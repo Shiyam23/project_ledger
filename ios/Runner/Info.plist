@@ -45,5 +45,7 @@
 	<string>ca-app-pub-5288793768363497~8841734005</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>

@@ -5,13 +5,14 @@ import 'package:dollavu/themes/DTheme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainBottomNaviationBar extends StatefulWidget {
-  //
   final LayoutController? layoutController;
   final void Function(int index) setPage;
 
-  MainBottomNaviationBar(
-      {required this.layoutController, required this.setPage, key})
-      : super(key: key);
+  MainBottomNaviationBar({
+    required this.layoutController,
+    required this.setPage,
+    key,
+  }) : super(key: key);
 
   _MainBottomNaviationBarState createState() =>
       _MainBottomNaviationBarState(this.layoutController, this.setPage);
@@ -28,14 +29,14 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
           padding: const EdgeInsets.only(bottom: 5),
           child: new Icon(FontAwesomeIcons.book),
         ),
-        label: AppLocalizations.of(context)!.tab_overview
+        label: AppLocalizations.of(context)!.tab_overview,
       ),
       BottomNavigationBarItem(
         icon: Padding(
           padding: const EdgeInsets.only(bottom: 5),
           child: Icon(FontAwesomeIcons.house),
         ),
-        label: AppLocalizations.of(context)!.tab_home
+        label: AppLocalizations.of(context)!.tab_home,
       ),
       BottomNavigationBarItem(
         icon: Padding(
@@ -43,7 +44,7 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
           child: Icon(FontAwesomeIcons.circlePlus),
         ),
         label: AppLocalizations.of(context)!.tab_new,
-      )
+      ),
     ];
   }
 
@@ -52,16 +53,18 @@ class _MainBottomNaviationBarState extends State<MainBottomNaviationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-        backgroundColor: DTheme.of(context)!.themeData.bottomAppBarTheme.color,
-        currentIndex: lController!.bottomSelectedIndex,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white38,
-        items: bottomNavBarItems(context),
-        onTap: (index) {
-          lController!.bottomSelectedIndex = index;
-          setPage(index);
-          lController!.overViewTabController.index = 1;
-          lController!.newTabController.index = 0;
-        });
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: DTheme.of(context)!.themeData.bottomAppBarTheme.color,
+      currentIndex: lController!.bottomSelectedIndex,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white38,
+      items: bottomNavBarItems(context),
+      onTap: (index) {
+        lController!.bottomSelectedIndex = index;
+        setPage(index);
+        lController!.overViewTabController.index = 1;
+        lController!.newTabController.index = 0;
+      },
+    );
   }
 }

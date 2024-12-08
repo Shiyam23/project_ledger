@@ -215,4 +215,8 @@ class KeyBoard extends TransitionRoute {
 
   @override
   Duration get reverseTransitionDuration => const Duration(milliseconds: 250);
+
+  @override
+  // TODO: implement popGestureEnabled
+  bool get popGestureEnabled => throw UnimplementedError();
 }
